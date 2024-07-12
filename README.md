@@ -5,7 +5,7 @@
 
 DB 마리아db 11.4.2
 
-MySQL workbench 8.0.38
+HeidiSQL 12.8
 
 프론트
 
