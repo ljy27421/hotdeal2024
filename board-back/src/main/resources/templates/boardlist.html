@@ -36,8 +36,11 @@
             </tbody>
         </table>
 
+        <!--페이징 처리, 현재 페이지에서 -4, +5 페이지 까지 표시-->
         <th:block th:each ="page : ${#numbers.sequence(startPage, endPage)}">
+            <!--현재 페이지가 아닌 페이지 표시-->
             <a th:if="${page != curPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
+            <!--현재 페이지는 빨간색으로 표시-->
             <strong th:if="${page == curPage}" th:text="${page}" style="color : red"></strong>
         </th:block>
     </div>
