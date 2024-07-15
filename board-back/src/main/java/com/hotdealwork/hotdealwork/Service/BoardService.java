@@ -3,6 +3,8 @@ package com.hotdealwork.hotdealwork.Service;
 import com.hotdealwork.hotdealwork.entity.Board;
 import com.hotdealwork.hotdealwork.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +22,9 @@ public class BoardService {
     }
 
     // 글 리스트 처리
-    public List<Board> boardList() {
-        return boardRepository.findAll();
+    public Page<Board> boardList(Pageable pageable) {
+
+        return boardRepository.findAll(pageable);
     }
 
     // 글 불러오기 처리
