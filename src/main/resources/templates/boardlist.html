@@ -19,7 +19,7 @@
 
     <div class="layout">
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
-        <table>
+        <table th:unless="${list.getTotalPages()==0}">
             <thead>
                 <tr>
                     <th>글번호</th>
@@ -40,17 +40,32 @@
             </tbody>
         </table>
 
+        <div th:if="${list.getTotalPages==0}">글이 없습니다.</div>
+
         <!--페이징 처리, 현재 페이지에서 -4, +5 페이지 까지 표시-->
-        <th:block th:each ="page : ${#numbers.sequence(startPage, endPage)}">
+        <th:block th:each ="page : ${#numbers.sequence(startPage, endPage)}" th:unless="${list.getTotalPages()==0}">
             <!--현재 페이지가 아닌 페이지 표시-->
-            <a th:if="${page != curPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+            <a th:if="${page != curPage}" th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword}, category = ${param.category})}" th:text="${page}"></a>
             <!--현재 페이지는 빨간색으로 표시-->
             <strong th:if="${page == curPage}" th:text="${page}" style="color : red"></strong>
         </th:block>
+
+        <strong th:if="${list.getTotalPages==0}" style="color : red">1</strong>
+
         <form th:action="@{/board/list}" method="get">
             <input type="text" name="searchKeyword">
+            <input type="hidden" name="category" th:value="${category}">
             <button type="submit">검색</button>
         </form>
+        <div>
+            <a th:href="@{/board/list(category='')}">전체</a>
+            <a th:href="@{/board/list(category='food')}">식품</a>
+            <a th:href="@{/board/list(category='clothing')}">의류</a>
+            <a th:href="@{/board/list(category='household')}">생활용품</a>
+            <a th:href="@{/board/list(category='electronics')}">전자제품</a>
+            <a th:href="@{/board/list(category='voucher')}">상품권</a>
+            <a th:href="@{/board/list(category='etc')}">기타</a>
+        </div>
     </div>
 </body>
 </html>
