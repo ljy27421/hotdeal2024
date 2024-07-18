@@ -95,6 +95,7 @@ public class BoardController {
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        boardTemp.setCategory(board.getCategory());
         boardService.boardWrite(boardTemp);
         return "redirect:/board/list";
     }
