@@ -31,6 +31,15 @@
         <form action="/board/writePro" method="post">
             <input name="title" type="text">
             <textarea name="content"></textarea>
+<!--카테고리 설정-->
+            <select name="category">
+                <option value="food">식품</option>
+                <option value="clothing">의류</option>
+                <option value="household">생활용품</option>
+                <option value="electronics">전자제품</option>
+                <option value="voucher">상품권</option>
+                <option value="etc">기타</option>
+            </select>
             <button type="submit">작성</button>
         </form>
     </div>
