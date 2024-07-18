@@ -24,6 +24,7 @@
                 <tr>
                     <th>글번호</th>
                     <th>제목</th>
+                    <th>카테고리</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,9 @@
                     <td th:text="${board.id}">1</td>
                     <td>
                         <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+                    </td>
+                    <td>
+                        <a th:text="${board.category}" th:href="@{/board/view(id=${board.id})}"></a>
                     </td>
                 </tr>
             </tbody>
