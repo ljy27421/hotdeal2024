@@ -32,17 +32,30 @@ public class BoardService {
         return boardRepository.findByCategory(category, pageable);
     }
 
-    // 검색 리스트 처리
-    public Page<Board> boardSearchList(String searchKeyword, Pageable pageable) {
+    // 제목 검색 리스트 처리
+    public Page<Board> boardTSearchList(String searchKeyword, Pageable pageable) {
 
         return boardRepository.findByTitleContaining(searchKeyword, pageable);
     }
 
-    // 카테고리 별 검색 리스트 처리
+    // 카테고리 별 제목 검색 리스트 처리
 
-    public Page<Board> boardCategorySearchList(String searchKeyword, String category, Pageable pageable) {
+    public Page<Board> boardCategoryTSearchList(String searchKeyword, String category, Pageable pageable) {
 
         return boardRepository.findByTitleContainingAndCategory(searchKeyword, category, pageable);
+    }
+
+    // 내용 검색 리스트 처리
+    public Page<Board> boardCSearchList(String searchKeyword, Pageable pageable) {
+
+        return boardRepository.findByContentContaining(searchKeyword, pageable);
+    }
+
+    // 카테고리 별 내용 검색 리스트 처리
+
+    public Page<Board> boardCategoryCSearchList(String searchKeyword, String category, Pageable pageable) {
+
+        return boardRepository.findByContentContainingAndCategory(searchKeyword, category, pageable);
     }
 
     // 글 불러오기 처리

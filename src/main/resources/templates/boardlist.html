@@ -40,6 +40,7 @@
             </tbody>
         </table>
 
+<!--검색 결과 없을 시 안내문-->
         <div th:if="${list.getTotalPages==0}">글이 없습니다.</div>
 
         <!--페이징 처리, 현재 페이지에서 -4, +5 페이지 까지 표시-->
@@ -50,13 +51,22 @@
             <strong th:if="${page == curPage}" th:text="${page}" style="color : red"></strong>
         </th:block>
 
+
+<!--검색 결과 없을 시 페이지 번호 표시-->
         <strong th:if="${list.getTotalPages==0}" style="color : red">1</strong>
 
-        <form th:action="@{/board/list}" method="get">
+<!--검색 버튼-->
+        <form th:action="@{/board/list}" method="get" id="searchForm">
             <input type="text" name="searchKeyword">
             <input type="hidden" name="category" th:value="${category}">
             <button type="submit">검색</button>
         </form>
+
+        <select name="searchType" form="searchForm">
+            <option value="title" th:selected="${searchType == 'title'}">제목</option>
+            <option value="content" th:selected="${searchType == 'content'}">내용</option>
+        </select>
+
         <div>
             <a th:href="@{/board/list(category='')}">전체</a>
             <a th:href="@{/board/list(category='food')}">식품</a>
