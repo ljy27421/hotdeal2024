@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-    Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
     Page<Board> findByCategory(String category, Pageable pageable);
+    Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
     Page<Board> findByTitleContainingAndCategory(String searchKeyword, String category, Pageable pageable);
+    Page<Board> findByContentContaining(String searchKeyword, Pageable pageable);
+    Page<Board> findByContentContainingAndCategory(String searchKeyword, String category, Pageable pageable);
+
 }
