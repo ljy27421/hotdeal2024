@@ -1,7 +1,5 @@
-package com.hotdealwork.hotdealwork.controller;
+package com.hotdealwork.hotdealwork.board;
 
-import com.hotdealwork.hotdealwork.Service.BoardService;
-import com.hotdealwork.hotdealwork.entity.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

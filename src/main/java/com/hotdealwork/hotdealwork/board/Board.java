@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.entity;
+package com.hotdealwork.hotdealwork.board;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
