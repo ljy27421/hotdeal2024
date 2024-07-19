@@ -18,4 +18,6 @@ public class Board {
 
     private  String content;
 
+    private String category;
+
 }

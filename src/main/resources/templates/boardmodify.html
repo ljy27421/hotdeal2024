@@ -31,6 +31,14 @@
         <form th:action="@{/board/update/{id}(id=${board.id})}" method="post">
             <input name="title" type="text" th:value="${board.title}">
             <textarea name="content" th:text="${board.content}"></textarea>
+            <select name="category">
+                <option value="food">식품</option>
+                <option value="clothing">의류</option>
+                <option value="household">생활용품</option>
+                <option value="electronics">전자제품</option>
+                <option value="voucher">상품권</option>
+                <option value="etc">기타</option>
+            </select>
             <button type="submit">수정</button>
         </form>
     </div>
