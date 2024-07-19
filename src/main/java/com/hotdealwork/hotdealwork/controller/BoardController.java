@@ -2,7 +2,6 @@ package com.hotdealwork.hotdealwork.controller;
 
 import com.hotdealwork.hotdealwork.Service.BoardService;
 import com.hotdealwork.hotdealwork.entity.Board;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,16 +45,34 @@ public class BoardController {
     @GetMapping("/board/list")
     public String boardList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC ) Pageable pageable,
-                            @RequestParam(name = "searchKeyword", defaultValue = "") String searchKeyword){
+                            @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
+                            @RequestParam(name = "category", required = false) String category,
+                            @RequestParam(name = "searchType", required = false) String searchType){
 
         Page<Board> list = null;
 
-        if(searchKeyword == null) {
-            list = boardService.boardList(pageable);
-        } else {
-            list = boardService.boardSearchList(searchKeyword, pageable);
-        }
 
+        if ("content".equals(searchType)) {
+            if (StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
+                list = boardService.boardCategoryCSearchList(searchKeyword, category, pageable);
+            } else if (StringUtils.hasText(searchKeyword) && !StringUtils.hasText(category)) {
+                list = boardService.boardCSearchList(searchKeyword, pageable);
+            } else if (!StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
+                list = boardService.boardCategoryList(category, pageable);
+            } else {
+                list = boardService.boardList(pageable);
+            }
+        } else {
+            if (StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
+                list = boardService.boardCategoryTSearchList(searchKeyword, category, pageable);
+            } else if (StringUtils.hasText(searchKeyword) && !StringUtils.hasText(category)) {
+                list = boardService.boardTSearchList(searchKeyword, pageable);
+            } else if (!StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
+                list = boardService.boardCategoryList(category, pageable);
+            } else {
+                list = boardService.boardList(pageable);
+            }
+        }
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
@@ -64,6 +82,8 @@ public class BoardController {
         model.addAttribute("curPage", curPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("category", category);
+        model.addAttribute("searchType", searchType);
 
         return "boardlist";
     }
@@ -95,6 +115,7 @@ public class BoardController {
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        boardTemp.setCategory(board.getCategory());
         boardService.boardWrite(boardTemp);
         return "redirect:/board/list";
     }
