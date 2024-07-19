@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 
@@ -35,9 +36,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/writePro")
-    public String boardWritePro(Board board) throws Exception{
+    public String boardWritePro(Board board, @RequestParam(name = "file", required = false) MultipartFile file) throws Exception{
 
-        boardService.boardWrite(board);
+        boardService.boardWrite(board, file);
 
         return "redirect:/board/list";
     }
@@ -57,7 +58,7 @@ public class BoardController {
                 list = boardService.boardCategoryCSearchList(searchKeyword, category, pageable);
             } else if (StringUtils.hasText(searchKeyword) && !StringUtils.hasText(category)) {
                 list = boardService.boardCSearchList(searchKeyword, pageable);
-            } else if (!StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
+            } else if (!StringUtils.hasText(searchKeyword)  && StringUtils.hasText(category)) {
                 list = boardService.boardCategoryList(category, pageable);
             } else {
                 list = boardService.boardList(pageable);
@@ -106,17 +107,20 @@ public class BoardController {
     public String boardModify(@PathVariable("id") Integer id, Model model){
 
         model.addAttribute("board", boardService.boardView(id));
+
         return "boardmodify";
     }
 
     @PostMapping("board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board){
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, @RequestParam(name = "file", required = false) MultipartFile file) throws Exception{
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
         boardTemp.setCategory(board.getCategory());
-        boardService.boardWrite(boardTemp);
+
+        boardService.boardWrite(boardTemp, file);
+
         return "redirect:/board/list";
     }
 }
