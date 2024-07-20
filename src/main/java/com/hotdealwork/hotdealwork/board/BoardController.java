@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 
 public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping("/")
     public String boardHome() {
@@ -34,9 +41,9 @@ public class BoardController {
     }
 
     @PostMapping("/board/writePro")
-    public String boardWritePro(Board board, @RequestParam(name = "file", required = false) MultipartFile file) throws Exception{
+    public String boardWritePro(Board board, @RequestParam(name = "files", required = false) List<MultipartFile> files) throws Exception{
 
-        boardService.boardWrite(board, file);
+        boardService.boardWrite(board, files);
 
         return "redirect:/board/list";
     }
@@ -104,20 +111,29 @@ public class BoardController {
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model){
 
-        model.addAttribute("board", boardService.boardView(id));
+        Board board = boardService.boardView(id);
+
+        model.addAttribute("board", board);
 
         return "boardmodify";
     }
 
     @PostMapping("board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, @RequestParam(name = "file", required = false) MultipartFile file) throws Exception{
+    public String boardUpdate(@PathVariable("id") Integer id, Board board,
+                              @RequestParam(name = "files", required = false) List<MultipartFile> files,
+                              @RequestParam(name = "deleteImageIds", required = false) List<Long> deleteImageIds) throws Exception{
 
         Board boardTemp = boardService.boardView(id);
+
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
         boardTemp.setCategory(board.getCategory());
 
-        boardService.boardWrite(boardTemp, file);
+        if(deleteImageIds != null) {
+            boardService.deleteImages(deleteImageIds);
+        }
+
+        boardService.boardWrite(boardTemp, files);
 
         return "redirect:/board/list";
     }
