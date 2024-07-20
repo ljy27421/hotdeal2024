@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,21 +17,32 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
     // 글 작성 처리
-    public void boardWrite(Board board, MultipartFile file) throws Exception{
+    public void boardWrite(Board board, List<MultipartFile> files) throws Exception{
 
-        if(file != null && !file.isEmpty()){
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-            UUID uuid = UUID.randomUUID();
-            String fileName = uuid + "_" + file.getOriginalFilename();
-            File saveFile = new File(projectPath, fileName);
-            file.transferTo(saveFile);
+        if (board.getImages() == null) {
+            board.setImages(new ArrayList<>());
+        }
 
-            board.setFilename(fileName);
-            board.setFilepath("/files/" + fileName);
-        } else {
-            board.setFilename(null);
-            board.setFilepath(null);
+        if(files != null && !files.isEmpty()){
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    UUID uuid = UUID.randomUUID();
+                    String fileName = uuid + "_" + file.getOriginalFilename();
+                    File saveFile = new File(projectPath, fileName);
+                    file.transferTo(saveFile);
+
+                    Image image = new Image();
+                    image.setFilename(fileName);
+                    image.setFilepath("/files/" + fileName);
+                    image.setBoard(board);
+                    board.getImages().add(image);
+                }
+            }
         }
 
         boardRepository.save(board);
@@ -83,6 +96,28 @@ public class BoardService {
     // 특정 글 삭제
     public void boardDelete(Integer id) {
 
-        boardRepository.deleteById(id);
+        Board board = boardRepository.findById(id).orElseThrow();
+        for (Image image : board.getImages()) {
+            File file = new File(System.getProperty("user.dir") + "/src/main/resources/static/files/" + image.getFilename());
+            if (file.exists()) {
+                file.delete();
+            }
+            imageRepository.delete(image);
+        }
+
+        boardRepository.delete(board);
     }
+
+    // 첨부된 이미지 삭제
+    public void deleteImages(List<Long> deleteImageIds) {
+        for (Long imageId : deleteImageIds) {
+            Image image = imageRepository.findById(imageId).orElseThrow();
+            File file = new File(System.getProperty("user.dir") + "/src/main/resources/static/files/" + image.getFilename());
+            if (file.exists()) {
+                file.delete();
+            }
+            imageRepository.delete(image);
+        }
+    }
+
 }

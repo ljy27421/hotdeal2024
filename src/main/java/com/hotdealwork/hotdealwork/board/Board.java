@@ -1,10 +1,9 @@
 package com.hotdealwork.hotdealwork.board;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,8 +19,12 @@ public class Board {
 
     private String category;
 
-    private String filename;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 
-    private String filepath;
+    @Override
+    public String toString() {
+        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
+    }
 
 }
