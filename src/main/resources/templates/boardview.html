@@ -6,11 +6,15 @@
 </head>
 <body>
 
-<h1 th:text="${board.title}">제목</h1>
-<img th:if="${board.filepath != null}" th:src="@{${board.filepath}}" alt="${board.filepath}"></img>
-<p th:text="${board.content}">내용</p>
-<a th:href="@{/board/delete?(id=${board.id})}">글삭제</a>
-<a th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
+    <h1 th:text="${board.title}">제목</h1>
+
+    <div th:each="image : ${board.images}">
+        <img th:src="@{${image.filepath}}" alt="${image.filename}" th:width="500px">
+    </div>
+
+    <p th:text="${board.content}">내용</p>
+    <a th:href="@{/board/delete?(id=${board.id})}">글삭제</a>
+    <a th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
 
 </body>
 </html>
