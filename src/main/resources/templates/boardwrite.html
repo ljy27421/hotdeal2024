@@ -28,20 +28,38 @@
 
 <body>
     <div class="layout">
-        <form action="/board/writePro" method="post">
-            <input name="title" type="text">
-            <textarea name="content"></textarea>
-<!--카테고리 설정-->
+        <form action="/board/writePro" method="post" enctype="multipart/form-data">
+            <input name="title" type="text" placeholder="제목">
+            <textarea name="content" placeholder="내용"></textarea>
+            <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
+
             <select name="category">
+                <option value="etc">기타</option>
                 <option value="food">식품</option>
                 <option value="clothing">의류</option>
                 <option value="household">생활용품</option>
                 <option value="electronics">전자제품</option>
                 <option value="voucher">상품권</option>
-                <option value="etc">기타</option>
             </select>
+
             <button type="submit">작성</button>
         </form>
     </div>
+
+    <!--이미지 형식 체크-->
+    <script type="text/javascript">
+        function fileCheck(obj) {
+            const fileInput = obj;
+            const filePath = fileInput.value;
+            const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            if (!allowed.exec(filePath)) {
+                alert('이미지 파일만 선택할 수 있습니다.');
+                fileInput.value = '';
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>

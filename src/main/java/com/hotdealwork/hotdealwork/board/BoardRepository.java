@@ -1,7 +1,6 @@
-package com.hotdealwork.hotdealwork.repository;
+package com.hotdealwork.hotdealwork.board;
 
 
-import com.hotdealwork.hotdealwork.entity.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
