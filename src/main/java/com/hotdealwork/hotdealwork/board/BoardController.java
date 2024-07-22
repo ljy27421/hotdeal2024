@@ -41,11 +41,14 @@ public class BoardController {
     }
 
     @PostMapping("/board/writePro")
-    public String boardWritePro(Board board, @RequestParam(name = "files", required = false) List<MultipartFile> files) throws Exception{
+    public String boardWritePro(Board board, @RequestParam(name = "files", required = false) List<MultipartFile> files, Model model) throws Exception{
 
         boardService.boardWrite(board, files);
 
-        return "redirect:/board/list";
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("URL", "/board/list");
+
+        return "message";
     }
 
     @GetMapping("/board/list")
