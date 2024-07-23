@@ -1,5 +1,9 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.DataNotFoundException;
+import com.hotdealwork.hotdealwork.user.SiteUser;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,8 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class BoardService {
 
@@ -19,6 +25,15 @@ public class BoardService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    public Board getBoard(Integer id) {
+        Optional<Board> board = this.boardRepository.findById(id);
+        if (board.isPresent()) {
+            return board.get();
+        } else {
+            throw new DataNotFoundException("board not found");
+        }
+    }
 
     // 글 작성 처리
     public void boardWrite(Board board, List<MultipartFile> files) throws Exception{
@@ -118,6 +133,12 @@ public class BoardService {
             }
             imageRepository.delete(image);
         }
+    }
+
+    // 게시글 추천
+    public void boardLike(Board board, SiteUser siteUser) {
+        board.getLiked().add(siteUser);
+        boardRepository.save(board);
     }
 
 }
