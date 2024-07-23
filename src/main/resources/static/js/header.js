@@ -43,23 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/check-session')
-        .then(response => response.json())
-        .then(data => {
-            const authButtons = document.querySelector('.auth-buttons');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            if (data.loggedIn) {
-                authButtons.innerHTML = `
-                    <span>안녕하세요, ${data.username}님</span>
-                    <a href="/logout" id="logout">로그아웃</a>
-                `;
-            } else {
-                authButtons.innerHTML = `
-                    <a href="/user/login">로그인</a>
-                    <a href="/user/signup">회원가입</a>
-                `;
-            }
-        });
-});
+//document.addEventListener('DOMContentLoaded', function() {
+//    fetch('/check-session')
+//        .then(response => response.json())
+//        .then(data => {
+//            const authButtons = document.querySelector('.auth-buttons');
+//            const navMenu = document.querySelector('.nav-menu');
+//
+//            if (data.loggedIn) {
+//                authButtons.innerHTML = `
+//                    <span>안녕하세요, ${data.username}님</span>
+//                    <a href="/logout" id="logout">로그아웃</a>
+//                `;
+//            } else {
+//                authButtons.innerHTML = `
+//                    <a href="/user/login">로그인</a>
+//                    <a href="/user/signup">회원가입</a>
+//                `;
+//            }
+//        });
+//});
