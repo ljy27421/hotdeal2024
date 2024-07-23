@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             } else {
                 authButtons.innerHTML = `
-                    <a href="login_form.html">로그인</a>
-                    <a href="signup_form.html">회원가입</a>
+                    <a href="/user/login">로그인</a>
+                    <a href="/user/signup">회원가입</a>
                 `;
             }
         });
