@@ -1,9 +1,11 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,6 +23,9 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
+
+    @ManyToMany
+    Set<SiteUser> liked;
 
     @Override
     public String toString() {

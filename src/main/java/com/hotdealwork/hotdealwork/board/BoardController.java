@@ -1,10 +1,13 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.user.SiteUser;
+import com.hotdealwork.hotdealwork.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -139,5 +146,16 @@ public class BoardController {
         boardService.boardWrite(boardTemp, files);
 
         return "redirect:/board/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/like/{id}")
+    public String boardLike(Principal principal, @PathVariable("id") Integer id) {
+        Board board = boardService.getBoard(id);
+        SiteUser siteUser = userService.getUser(principal.getName());
+        this.boardService.boardLike(board, siteUser);
+        System.out.println("liked!");
+
+        return String.format("redirect:/board/view?id=%s", id);
     }
 }
