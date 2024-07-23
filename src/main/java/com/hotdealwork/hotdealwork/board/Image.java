@@ -17,7 +17,8 @@ public class Image {
     private String filepath;
 
     @ManyToOne
-    @JoinColumn(name = "board_id") @JsonBackReference
+    @JoinColumn(name = "board_id")
+    @JsonBackReference
     private Board board;
 
     @Override
