@@ -53,41 +53,41 @@ function showSlider(type){
 // app.js
 
 // 로그인 상태 확인
-document.addEventListener('DOMContentLoaded', function () {
-    const loginBtn = document.getElementById('login-btn');
-    const signupBtn = document.getElementById('signup-btn');
-    const profileBtn = document.getElementById('profile-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    function updateAuthButtons() {
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-        if (isLoggedIn) {
-            loginBtn.style.display = 'none';
-            signupBtn.style.display = 'none';
-            profileBtn.style.display = 'inline-block';
-            logoutBtn.style.display = 'inline-block';
-        } else {
-            loginBtn.style.display = 'inline-block';
-            signupBtn.style.display = 'inline-block';
-            profileBtn.style.display = 'none';
-            logoutBtn.style.display = 'none';
-        }
-    }
-
-    // 로그인 버튼 클릭 이벤트
-    loginBtn.addEventListener('click', function () {
-        // 여기서 로그인 처리를 하고, 성공하면 아래 코드를 실행
-        localStorage.setItem('isLoggedIn', 'true');
-        updateAuthButtons();
-    });
-
-    // 로그아웃 버튼 클릭 이벤트
-    logoutBtn.addEventListener('click', function () {
-        localStorage.removeItem('isLoggedIn');
-        updateAuthButtons();
-    });
-
-    // 초기 로그인 상태 확인
-    updateAuthButtons();
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//    const loginBtn = document.getElementById('login-btn');
+//    const signupBtn = document.getElementById('signup-btn');
+//    const profileBtn = document.getElementById('profile-btn');
+//    const logoutBtn = document.getElementById('logout-btn');
+//
+//    function updateAuthButtons() {
+//        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+//
+//        if (isLoggedIn) {
+//            loginBtn.style.display = 'none';
+//            signupBtn.style.display = 'none';
+//            profileBtn.style.display = 'inline-block';
+//            logoutBtn.style.display = 'inline-block';
+//        } else {
+//            loginBtn.style.display = 'inline-block';
+//            signupBtn.style.display = 'inline-block';
+//            profileBtn.style.display = 'none';
+//            logoutBtn.style.display = 'none';
+//        }
+//    }
+//
+//    // 로그인 버튼 클릭 이벤트
+//    loginBtn.addEventListener('click', function () {
+//        // 여기서 로그인 처리를 하고, 성공하면 아래 코드를 실행
+//        localStorage.setItem('isLoggedIn', 'true');
+//        updateAuthButtons();
+//    });
+//
+//    // 로그아웃 버튼 클릭 이벤트
+//    logoutBtn.addEventListener('click', function () {
+//        localStorage.removeItem('isLoggedIn');
+//        updateAuthButtons();
+//    });
+//
+//    // 초기 로그인 상태 확인
+//    updateAuthButtons();
+//});
