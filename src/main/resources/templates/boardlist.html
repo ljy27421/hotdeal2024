@@ -22,6 +22,7 @@
         <table th:unless="${list.getTotalPages()==0}">
             <thead>
                 <tr>
+                    <th>●</th>
                     <th>글번호</th>
                     <th>제목</th>
                     <th>추천수</th>
@@ -30,6 +31,8 @@
             </thead>
             <tbody>
                 <tr th:each="board : ${list}">
+                    <td th:if="${#lists.size(board.liked)} >= 1" style="color:red">●</td>
+                    <td th:unless="${#lists.size(board.liked)} >= 1" style="color:black">○</td>
                     <td th:text="${board.id}">1</td>
                     <td>
                         <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
