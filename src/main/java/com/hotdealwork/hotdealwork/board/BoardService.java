@@ -77,10 +77,15 @@ public class BoardService {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (StringUtils.hasText(searchKeyword)) {
-            if ("content".equals(searchType)) {
-                builder.and(board.content.containsIgnoreCase(searchKeyword));
-            } else {
+            if ("title".equals(searchType)) {
                 builder.and(board.title.containsIgnoreCase(searchKeyword));
+            } else if ("content".equals(searchType)) {
+                builder.and(board.content.containsIgnoreCase(searchKeyword));
+            } else if ("torc".equals(searchType)){
+                builder.and(board.title.containsIgnoreCase(searchKeyword)
+                        .or(board.content.containsIgnoreCase(searchKeyword)));
+            } else {
+                builder.and(board.author.username.containsIgnoreCase(searchKeyword));
             }
         }
 
