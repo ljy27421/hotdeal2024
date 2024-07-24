@@ -63,32 +63,10 @@ public class BoardController {
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC ) Pageable pageable,
                             @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
                             @RequestParam(name = "category", required = false) String category,
-                            @RequestParam(name = "searchType", required = false) String searchType){
+                            @RequestParam(name = "searchType", required = false) String searchType,
+                            @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
-        Page<Board> list = null;
-
-
-        if ("content".equals(searchType)) {
-            if (StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
-                list = boardService.boardCategoryCSearchList(searchKeyword, category, pageable);
-            } else if (StringUtils.hasText(searchKeyword) && !StringUtils.hasText(category)) {
-                list = boardService.boardCSearchList(searchKeyword, pageable);
-            } else if (!StringUtils.hasText(searchKeyword)  && StringUtils.hasText(category)) {
-                list = boardService.boardCategoryList(category, pageable);
-            } else {
-                list = boardService.boardList(pageable);
-            }
-        } else {
-            if (StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
-                list = boardService.boardCategoryTSearchList(searchKeyword, category, pageable);
-            } else if (StringUtils.hasText(searchKeyword) && !StringUtils.hasText(category)) {
-                list = boardService.boardTSearchList(searchKeyword, pageable);
-            } else if (!StringUtils.hasText(searchKeyword) && StringUtils.hasText(category)) {
-                list = boardService.boardCategoryList(category, pageable);
-            } else {
-                list = boardService.boardList(pageable);
-            }
-        }
+        Page<Board> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
@@ -100,6 +78,7 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("category", category);
         model.addAttribute("searchType", searchType);
+        model.addAttribute("hot", hot);
 
         return "boardlist";
     }
