@@ -25,6 +25,9 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
+    @ManyToOne
+    private SiteUser author;
+
     @ManyToMany
     Set<SiteUser> liked;
 
