@@ -2,21 +2,21 @@ package com.hotdealwork.hotdealwork.board;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.user.SiteUser;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-@RequiredArgsConstructor
 @Service
 public class BoardService {
 
@@ -25,6 +25,13 @@ public class BoardService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    private final JPAQueryFactory queryFactory;
+
+    @Autowired
+    public BoardService(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
 
     public Board getBoard(Integer id) {
         Optional<Board> board = this.boardRepository.findById(id);
@@ -63,43 +70,41 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    // 글 리스트 처리
-    public Page<Board> boardList(Pageable pageable) {
+    // 동적 쿼리 리스트 처리
+    public Page<Board> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+        QBoard board = QBoard.board;
+        BooleanBuilder builder = new BooleanBuilder();
 
-        return boardRepository.findAll(pageable);
-    }
+        if (StringUtils.hasText(searchKeyword)) {
+            if ("content".equals(searchType)) {
+                builder.and(board.content.containsIgnoreCase(searchKeyword));
+            } else {
+                builder.and(board.title.containsIgnoreCase(searchKeyword));
+            }
+        }
 
-    // 카테고리 별 글 리스트 처리
+        if (StringUtils.hasText(category)) {
+            builder.and(board.category.eq(category));
+        }
 
-    public Page<Board> boardCategoryList(String category, Pageable pageable) {
+        if (hot > 0) {
+            builder.and(board.liked.size().goe(hot));
+        }
 
-        return boardRepository.findByCategory(category, pageable);
-    }
+        List<Board> result = queryFactory
+                .selectFrom(board)
+                .where(builder)
+                .offset(pageable.getOffset())
+                .orderBy(board.id.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
 
-    // 제목 검색 리스트 처리
-    public Page<Board> boardTSearchList(String searchKeyword, Pageable pageable) {
+        long total =queryFactory
+                .selectFrom(board)
+                .where(builder)
+                .fetch().size();
 
-        return boardRepository.findByTitleContaining(searchKeyword, pageable);
-    }
-
-    // 카테고리 별 제목 검색 리스트 처리
-
-    public Page<Board> boardCategoryTSearchList(String searchKeyword, String category, Pageable pageable) {
-
-        return boardRepository.findByTitleContainingAndCategory(searchKeyword, category, pageable);
-    }
-
-    // 내용 검색 리스트 처리
-    public Page<Board> boardCSearchList(String searchKeyword, Pageable pageable) {
-
-        return boardRepository.findByContentContaining(searchKeyword, pageable);
-    }
-
-    // 카테고리 별 내용 검색 리스트 처리
-
-    public Page<Board> boardCategoryCSearchList(String searchKeyword, String category, Pageable pageable) {
-
-        return boardRepository.findByContentContainingAndCategory(searchKeyword, category, pageable);
+        return new PageImpl<>(result, pageable, total);
     }
 
     // 글 불러오기 처리
