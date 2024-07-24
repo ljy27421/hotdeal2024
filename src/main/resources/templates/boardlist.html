@@ -27,21 +27,27 @@
                     <th>제목</th>
                     <th>추천수</th>
                     <th>카테고리</th>
+                    <th>작성일</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="board : ${list}">
-                    <td th:if="${#lists.size(board.liked)} >= 1" style="color:red">●</td>
-                    <td th:unless="${#lists.size(board.liked)} >= 1" style="color:black">○</td>
+                    <td>
+                        <span th:if="${#lists.size(board.liked)} >= 1" style="color:red">●</span>
+                        <span th:unless="${#lists.size(board.liked)} >= 1">○</span>
+                    </td>
+
                     <td th:text="${board.id}">1</td>
                     <td>
                         <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
                     </td>
+                    <td th:text="${#lists.size(board.liked)}"></td>
+                    <td th:text="${board.category}"></td>
                     <td>
-                        <a th:text="${#lists.size(board.liked)}" th:href="@{/board/view(id=${board.id})}"></a>
-                    </td>
-                    <td>
-                        <a th:text="${board.category}" th:href="@{/board/view(id=${board.id})}"></a>
+                        <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                              th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                        <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                              th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
                     </td>
                 </tr>
             </tbody>
