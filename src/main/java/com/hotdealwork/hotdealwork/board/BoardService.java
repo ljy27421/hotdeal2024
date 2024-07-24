@@ -43,7 +43,7 @@ public class BoardService {
     }
 
     // 글 작성 처리
-    public void boardWrite(Board board, List<MultipartFile> files) throws Exception{
+    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
@@ -66,6 +66,7 @@ public class BoardService {
                 }
             }
         }
+        board.setAuthor(author);
 
         boardRepository.save(board);
     }

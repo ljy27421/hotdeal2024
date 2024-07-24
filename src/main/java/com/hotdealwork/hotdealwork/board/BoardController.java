@@ -41,16 +41,19 @@ public class BoardController {
         return "boardhome";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/write") //localhost:8080/board/write
     public String boardWriteForm() {
 
         return "boardwrite";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/board/writePro")
-    public String boardWritePro(Board board, @RequestParam(name = "files", required = false) List<MultipartFile> files, Model model) throws Exception{
+    public String boardWritePro(Board board, Model model, Principal principal,
+                                @RequestParam(name = "files", required = false) List<MultipartFile> files) throws Exception{
 
-        boardService.boardWrite(board, files);
+        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
         model.addAttribute("URL", "/board/list");
@@ -97,6 +100,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model){
 
@@ -107,6 +111,7 @@ public class BoardController {
         return "boardmodify";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("board/update/{id}")
     public String boardUpdate(@PathVariable("id") Integer id, Board board,
                               @RequestParam(name = "files", required = false) List<MultipartFile> files,
@@ -122,7 +127,7 @@ public class BoardController {
             boardService.deleteImages(deleteImageIds);
         }
 
-        boardService.boardWrite(boardTemp, files);
+        boardService.boardWrite(boardTemp, files, board.getAuthor());
 
         return "redirect:/board/list";
     }
