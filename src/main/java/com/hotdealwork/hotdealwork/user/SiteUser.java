@@ -1,7 +1,10 @@
 package com.hotdealwork.hotdealwork.user;
 
+import com.hotdealwork.hotdealwork.board.Board;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -17,4 +20,7 @@ public class SiteUser {
     private String username;
 
     private String password;
+
+    @ManyToMany
+    Set<Board> likes;
 }
