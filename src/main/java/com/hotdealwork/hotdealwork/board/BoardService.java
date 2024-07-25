@@ -43,7 +43,7 @@ public class BoardService {
     }
 
     // 글 작성 처리
-    public void boardWrite(Board board, List<MultipartFile> files) throws Exception{
+    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
@@ -66,6 +66,7 @@ public class BoardService {
                 }
             }
         }
+        board.setAuthor(author);
 
         boardRepository.save(board);
     }
@@ -76,10 +77,15 @@ public class BoardService {
         BooleanBuilder builder = new BooleanBuilder();
 
         if (StringUtils.hasText(searchKeyword)) {
-            if ("content".equals(searchType)) {
-                builder.and(board.content.containsIgnoreCase(searchKeyword));
-            } else {
+            if ("title".equals(searchType)) {
                 builder.and(board.title.containsIgnoreCase(searchKeyword));
+            } else if ("content".equals(searchType)) {
+                builder.and(board.content.containsIgnoreCase(searchKeyword));
+            } else if ("torc".equals(searchType)){
+                builder.and(board.title.containsIgnoreCase(searchKeyword)
+                        .or(board.content.containsIgnoreCase(searchKeyword)));
+            } else {
+                builder.and(board.author.username.containsIgnoreCase(searchKeyword));
             }
         }
 
