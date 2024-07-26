@@ -25,6 +25,15 @@
         </tbody>
     </table>
 
+    <div>
+        <p th:text="'쇼핑몰 : ' + ${board.mall}"></p>
+        <p th:text="'제품명 : ' + ${board.productName}"></p>
+        <p th:text="'가격 : ' + ${board.price} + '원'"></p>
+        <p>판매 URL : <a th:href="${board.saleUrl}" target="_blank" th:text="${board.saleUrl}">판매 URL</a></p>
+        <p th:text="'시작 날짜: ' + ${#temporals.format(board.startDate, 'yyyy-MM-dd')}"></p>
+        <p th:text="'종료 날짜: ' + ${#temporals.format(board.endDate, 'yyyy-MM-dd')}"></p>
+    </div>
+
     <div th:each="image : ${board.images}">
         <img th:src="@{${image.filepath}}" alt="${image.filename}" th:width="500px">
     </div>
