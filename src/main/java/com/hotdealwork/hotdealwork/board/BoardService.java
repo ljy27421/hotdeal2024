@@ -36,7 +36,10 @@ public class BoardService {
     public Board getBoard(Integer id) {
         Optional<Board> board = this.boardRepository.findById(id);
         if (board.isPresent()) {
-            return board.get();
+            Board board1 = board.get();
+            board1.setView(board1.getView()+1);
+            this.boardRepository.save(board1);
+            return board1;
         } else {
             throw new DataNotFoundException("board not found");
         }
