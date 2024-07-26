@@ -22,6 +22,9 @@ public class Board {
 
     private String category;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private Integer view = 0;
+
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
