@@ -281,7 +281,7 @@
                 <tr th:each="board : ${list}">
                     <td>
                         <span th:if="${#lists.size(board.liked) >= 1}" style="color:red">●</span>
-                        <span th:unless="${#lists.size(board.liked) >= 1}">○</span>
+                        <span th:unless="${#lists.size(board.liked) >= 1}">●</span>
                     </td>
                     <td th:text="${board.id}">1</td>
                     <td>
@@ -306,7 +306,7 @@
         <!-- 페이징 처리 -->
         <div class="pagination" th:if="${list.totalPages > 0}">
             <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                <a th:if="${page != curPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword}, category=${param.category})}" th:text="${page}"></a>
+                <a th:if="${page != curPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword}, category=${param.category}, hot=${param.hot})}" th:text="${page}"></a>
                 <strong th:if="${page == curPage}" th:text="${page}"></strong>
             </th:block>
         </div>
