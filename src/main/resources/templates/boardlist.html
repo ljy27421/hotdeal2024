@@ -275,6 +275,7 @@
                     <th>카테고리</th>
                     <th>작성일</th>
                     <th>작성자</th>
+                    <th>조회수</th>
                 </tr>
             </thead>
             <tbody>
@@ -295,7 +296,8 @@
                         <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
                               th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
                     </td>
-                    <td th:if="${board.author != null}" th:text="${board.author.username}"></td>
+                    <td th:text="${board.author.username}"></td>
+                    <td th:text="${board.view}"></td>
                 </tr>
             </tbody>
         </table>
