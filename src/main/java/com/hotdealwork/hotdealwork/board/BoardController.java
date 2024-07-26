@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.reply.ReplyService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-
 public class BoardController {
 
     @Autowired
@@ -34,6 +31,9 @@ public class BoardController {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private ReplyService replyService;
 
     @GetMapping("/")
     public String boardHome() {
@@ -90,6 +90,7 @@ public class BoardController {
     public String boardView(Model model, @RequestParam(name="id") Integer id) {
 
         model.addAttribute("board", boardService.boardView(id));
+        model.addAttribute("replys", replyService.getReplyByBoard(boardService.getBoard(id)));
         return "boardview";
     }
 
