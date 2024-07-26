@@ -123,6 +123,12 @@ public class BoardController {
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
         boardTemp.setCategory(board.getCategory());
+        boardTemp.setMall(board.getMall());
+        boardTemp.setProductName(board.getProductName());
+        boardTemp.setPrice(board.getPrice());
+        boardTemp.setSaleUrl(board.getSaleUrl());
+        boardTemp.setStartDate(board.getStartDate());
+        boardTemp.setEndDate(board.getEndDate());
 
         if(deleteImageIds != null) {
             boardService.deleteImages(deleteImageIds);
