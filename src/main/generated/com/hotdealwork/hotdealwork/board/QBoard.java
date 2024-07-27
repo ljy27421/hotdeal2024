@@ -30,7 +30,11 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
+    public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> disliked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("disliked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
+
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
+
+    public final BooleanPath expired = createBoolean("expired");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
