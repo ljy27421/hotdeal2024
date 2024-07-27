@@ -27,6 +27,8 @@ public class Board {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    private Boolean expired = false;
+
     @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer view = 0;
 
@@ -38,6 +40,9 @@ public class Board {
 
     @ManyToMany
     Set<SiteUser> liked;
+
+    @ManyToMany
+    Set<SiteUser> disliked;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;

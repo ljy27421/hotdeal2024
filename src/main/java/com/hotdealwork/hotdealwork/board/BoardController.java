@@ -89,8 +89,9 @@ public class BoardController {
     @GetMapping("/board/view") //localhost:8080/board/view?id=1
     public String boardView(Model model, @RequestParam(name="id") Integer id) {
 
-        model.addAttribute("board", boardService.boardView(id));
+        model.addAttribute("board", boardService.getBoard(id));
         model.addAttribute("replys", replyService.getReplyByBoard(boardService.getBoard(id)));
+        boardService.boardIncreaseViewCount(boardService.getBoard(id));
         return "boardview";
     }
 
@@ -105,7 +106,7 @@ public class BoardController {
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model){
 
-        Board board = boardService.boardView(id);
+        Board board = boardService.getBoard(id);
 
         model.addAttribute("board", board);
 
@@ -114,27 +115,21 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board,
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, Principal principal,
                               @RequestParam(name = "files", required = false) List<MultipartFile> files,
                               @RequestParam(name = "deleteImageIds", required = false) List<Long> deleteImageIds) throws Exception{
 
-        Board boardTemp = boardService.boardView(id);
+        Board boardTemp = boardService.getBoard(id);
 
-        boardTemp.setTitle(board.getTitle());
-        boardTemp.setContent(board.getContent());
-        boardTemp.setCategory(board.getCategory());
-        boardTemp.setMall(board.getMall());
-        boardTemp.setProductName(board.getProductName());
-        boardTemp.setPrice(board.getPrice());
-        boardTemp.setSaleUrl(board.getSaleUrl());
-        boardTemp.setStartDate(board.getStartDate());
-        boardTemp.setEndDate(board.getEndDate());
+        board.setView(boardTemp.getView());
+        board.setLiked(boardTemp.getLiked());
+        board.setDisliked(boardTemp.getDisliked());
 
         if(deleteImageIds != null) {
             boardService.deleteImages(deleteImageIds);
         }
 
-        boardService.boardWrite(boardTemp, files, board.getAuthor());
+        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
         return "redirect:/board/list";
     }
@@ -145,7 +140,16 @@ public class BoardController {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
         this.boardService.boardLike(board, siteUser);
-        System.out.println("liked!");
+
+        return String.format("redirect:/board/view?id=%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/board/dislike/{id}")
+    public String boardDislike(Principal principal, @PathVariable("id") Integer id) {
+        Board board = boardService.getBoard(id);
+        SiteUser siteUser = userService.getUser(principal.getName());
+        this.boardService.boardDislike(board, siteUser);
 
         return String.format("redirect:/board/view?id=%s", id);
     }
