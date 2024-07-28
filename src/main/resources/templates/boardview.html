@@ -42,8 +42,12 @@
     <a th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
     <span th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}"></span>
     <a th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
-    <a th:href="@{/board/delete?(id=${board.id})}">글삭제</a>
-    <a th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
+    <a th:href="@{/board/list}">목록</a>
+    <div th:if="${loggedUser != null}">
+        <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/delete?(id=${board.id})}">삭제</a>
+        <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
+    </div>
+
 
 <!--댓글-->
     <div>
@@ -60,8 +64,6 @@
                 <th>작성자</th>
                 <th>내용</th>
                 <th>작성 시간</th>
-                <th>수정</th>
-                <th>삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -69,14 +71,16 @@
                 <td th:text="${reply.author.username}">작성자</td>
                 <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
                 <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
-                <td>
-                    <button th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
-                </td>
-                <td>
-                    <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
-                        <button type="submit">삭제</button>
-                    </form>
-                </td>
+                <div th:if="${loggedUser != null}">
+                    <td>
+                        <button th:if="${reply.author.id} == ${loggedUser.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
+                    </td>
+                    <td>
+                        <form th:if="${reply.author.id} == ${loggedUser.id}" th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
+                            <button type="submit">삭제</button>
+                        </form>
+                    </td>
+                </div>
             </tr>
             <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" style="display:none;">
                 <td colspan="5">
