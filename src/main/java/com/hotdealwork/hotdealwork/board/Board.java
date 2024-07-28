@@ -4,6 +4,7 @@ import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -15,12 +16,18 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String title;
-
     private  String content;
-
     private String category;
+
+    private String mall;
+    private String productName;
+    private Long price;
+    private String saleUrl;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    private Boolean expired = false;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer view = 0;
@@ -34,10 +41,8 @@ public class Board {
     @ManyToMany
     Set<SiteUser> liked;
 
-    @Override
-    public String toString() {
-        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
-    }
+    @ManyToMany
+    Set<SiteUser> disliked;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
@@ -45,6 +50,11 @@ public class Board {
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
     }
 
 }
