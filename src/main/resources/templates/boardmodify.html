@@ -50,7 +50,13 @@
                 <option value="electronics">전자제품</option>
                 <option value="voucher">상품권</option>
             </select>
-<!--기존 이미지 표시 및 삭제 선택-->
+
+            <input name="mall" type="text" th:value="${board.mall}">
+            <input name="productName" type="text" th:value="${board.productName}">
+            <input name="price" type="number" step="0.01" th:value="${board.price}">
+            <input name="saleUrl" type="text" th:value="${board.saleUrl}">
+            <input name="startDate" type="date" th:value="${board.startDate}">
+            <input name="endDate" type="date" th:value="${board.endDate}">
 
             <button type="submit">수정</button>
         </form>
