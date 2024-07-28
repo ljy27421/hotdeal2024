@@ -87,11 +87,17 @@ public class BoardController {
     }
 
     @GetMapping("/board/view") //localhost:8080/board/view?id=1
-    public String boardView(Model model, @RequestParam(name="id") Integer id) {
+    public String boardView(Model model, Principal principal, @RequestParam(name="id") Integer id) {
 
         model.addAttribute("board", boardService.getBoard(id));
         model.addAttribute("replys", replyService.getReplyByBoard(boardService.getBoard(id)));
         boardService.boardIncreaseViewCount(boardService.getBoard(id));
+
+        if (principal != null) {
+            SiteUser loggedUser = userService.getUser(principal.getName());
+            model.addAttribute("loggedUser", loggedUser);
+        }
+
         return "boardview";
     }
 
