@@ -1,6 +1,8 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.image;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.commu.Commu;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,6 +22,11 @@ public class Image {
     @JoinColumn(name = "board_id")
     @JsonBackReference
     private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "commu_id")
+    @JsonBackReference
+    private Commu commu;
 
     @Override
     public String toString() {
