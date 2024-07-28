@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -33,16 +34,25 @@ public class BoardService {
         this.queryFactory = queryFactory;
     }
 
+//    public Board getBoard(Integer id) {
+//        Optional<Board> board = this.boardRepository.findById(id);
+//        if (board.isPresent()) {
+//            Board board1 = board.get();
+//            board1.setView(board1.getView()+1);
+//            this.boardRepository.save(board1);
+//            return board1;
+//        } else {
+//            throw new DataNotFoundException("board not found");
+//        }
+//    }
     public Board getBoard(Integer id) {
-        Optional<Board> board = this.boardRepository.findById(id);
-        if (board.isPresent()) {
-            Board board1 = board.get();
-            board1.setView(board1.getView()+1);
-            this.boardRepository.save(board1);
-            return board1;
-        } else {
-            throw new DataNotFoundException("board not found");
-        }
+        return boardRepository.findById(id).orElseThrow(() -> new DataNotFoundException("board not found"));
+    }
+
+// 조회수 증가
+    public void boardIncreaseViewCount(Board board) {
+        board.setView(board.getView() + 1);
+        boardRepository.save(board);
     }
 
     // 글 작성 처리
@@ -69,7 +79,9 @@ public class BoardService {
                 }
             }
         }
+
         board.setAuthor(author);
+        System.out.println(board.getView());
 
         boardRepository.save(board);
     }
@@ -87,6 +99,10 @@ public class BoardService {
             } else if ("torc".equals(searchType)){
                 builder.and(board.title.containsIgnoreCase(searchKeyword)
                         .or(board.content.containsIgnoreCase(searchKeyword)));
+            } else if ("mall".equals(searchType)) {
+                builder.and(board.mall.containsIgnoreCase(searchKeyword));
+            } else if ("productName".equals(searchType)) {
+                builder.and(board.productName.containsIgnoreCase(searchKeyword));
             } else {
                 builder.and(board.author.username.containsIgnoreCase(searchKeyword));
             }
@@ -113,14 +129,21 @@ public class BoardService {
                 .where(builder)
                 .fetch().size();
 
+        result.forEach(b -> {
+            if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
+                b.setExpired(true);
+                boardRepository.save(b);
+            }
+        });
+
         return new PageImpl<>(result, pageable, total);
     }
 
     // 글 불러오기 처리
-    public Board boardView(Integer id) {
-
-        return boardRepository.findById(id).get();
-    }
+//    public Board boardView(Integer id) {
+//
+//        return boardRepository.findById(id).get();
+//    }
 
     // 특정 글 삭제
     public void boardDelete(Integer id) {
@@ -152,6 +175,11 @@ public class BoardService {
     // 게시글 추천
     public void boardLike(Board board, SiteUser siteUser) {
         board.getLiked().add(siteUser);
+        boardRepository.save(board);
+    }
+    // 게시글 비추천
+    public void boardDislike(Board board, SiteUser siteUser) {
+        board.getDisliked().add(siteUser);
         boardRepository.save(board);
     }
 
