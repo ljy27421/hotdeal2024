@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.image.Image;
@@ -19,10 +19,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class BoardService {
+public class CommuService {
 
     @Autowired
-    private BoardRepository boardRepository;
+    private CommuRepository commuRepository;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -30,36 +30,36 @@ public class BoardService {
     private final JPAQueryFactory queryFactory;
 
     @Autowired
-    public BoardService(JPAQueryFactory queryFactory) {
+    public CommuService(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 
-//    public Board getBoard(Integer id) {
-//        Optional<Board> board = this.boardRepository.findById(id);
-//        if (board.isPresent()) {
-//            Board board1 = board.get();
-//            board1.setView(board1.getView()+1);
-//            this.boardRepository.save(board1);
-//            return board1;
+    //    public Commu getCommu(Integer id) {
+//        Optional<Commu> commu = this.commuRepository.findById(id);
+//        if (commu.isPresent()) {
+//            Commu commu1 = commu.get();
+//            commu1.setView(commu1.getView()+1);
+//            this.commuRepository.save(commu1);
+//            return commu1;
 //        } else {
-//            throw new DataNotFoundException("board not found");
+//            throw new DataNotFoundException("commu not found");
 //        }
 //    }
-    public Board getBoard(Integer id) {
-        return boardRepository.findById(id).orElseThrow(() -> new DataNotFoundException("board not found"));
+    public Commu getCommu(Integer id) {
+        return commuRepository.findById(id).orElseThrow(() -> new DataNotFoundException("commu not found"));
     }
 
-// 조회수 증가
-    public void boardIncreaseViewCount(Board board) {
-        board.setView(board.getView() + 1);
-        boardRepository.save(board);
+    // 조회수 증가
+    public void commuIncreaseViewCount(Commu commu) {
+        commu.setView(commu.getView() + 1);
+        commuRepository.save(commu);
     }
 
     // 글 작성 처리
-    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
+    public void commuWrite(Commu commu, List<MultipartFile> files, SiteUser author) throws Exception{
 
-        if (board.getImages() == null) {
-            board.setImages(new ArrayList<>());
+        if (commu.getImages() == null) {
+            commu.setImages(new ArrayList<>());
         }
 
         if(files != null && !files.isEmpty()){
@@ -74,82 +74,72 @@ public class BoardService {
                     Image image = new Image();
                     image.setFilename(fileName);
                     image.setFilepath("/files/" + fileName);
-                    image.setBoard(board);
-                    board.getImages().add(image);
+                    image.setCommu(commu);
+                    commu.getImages().add(image);
                 }
             }
         }
 
-        board.setAuthor(author);
-        System.out.println(board.getView());
+        commu.setAuthor(author);
+        System.out.println(commu.getView());
 
-        boardRepository.save(board);
+        commuRepository.save(commu);
     }
 
     // 동적 쿼리 리스트 처리
-    public Page<Board> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
-        QBoard board = QBoard.board;
+    public Page<Commu> commuList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+        QCommu commu = QCommu.commu;
         BooleanBuilder builder = new BooleanBuilder();
 
         if (StringUtils.hasText(searchKeyword)) {
             if ("title".equals(searchType)) {
-                builder.and(board.title.containsIgnoreCase(searchKeyword));
+                builder.and(commu.title.containsIgnoreCase(searchKeyword));
             } else if ("content".equals(searchType)) {
-                builder.and(board.content.containsIgnoreCase(searchKeyword));
+                builder.and(commu.content.containsIgnoreCase(searchKeyword));
             } else if ("torc".equals(searchType)){
-                builder.and(board.title.containsIgnoreCase(searchKeyword)
-                        .or(board.content.containsIgnoreCase(searchKeyword)));
-            } else if ("mall".equals(searchType)) {
-                builder.and(board.mall.containsIgnoreCase(searchKeyword));
-            } else if ("productName".equals(searchType)) {
-                builder.and(board.productName.containsIgnoreCase(searchKeyword));
+                builder.and(commu.title.containsIgnoreCase(searchKeyword)
+                        .or(commu.content.containsIgnoreCase(searchKeyword)));
             } else {
-                builder.and(board.author.username.containsIgnoreCase(searchKeyword));
+                builder.and(commu.author.username.containsIgnoreCase(searchKeyword));
             }
         }
 
         if (StringUtils.hasText(category)) {
-            builder.and(board.category.eq(category));
+            builder.and(commu.category.eq(category));
         }
 
         if (hot > 0) {
-            builder.and(board.liked.size().goe(hot));
+            builder.and(commu.liked.size().goe(hot));
         }
 
-        List<Board> result = queryFactory
-                .selectFrom(board)
+        List<Commu> result = queryFactory
+                .selectFrom(commu)
                 .where(builder)
                 .offset(pageable.getOffset())
-                .orderBy(board.id.desc())
+                .orderBy(commu.id.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         long total =queryFactory
-                .selectFrom(board)
+                .selectFrom(commu)
                 .where(builder)
                 .fetch().size();
-
-        result.forEach(b -> {
-            if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
-                b.setExpired(true);
-                boardRepository.save(b);
-            }
-        });
+        ;
 
         return new PageImpl<>(result, pageable, total);
     }
 
     // 글 불러오기 처리
-//    public Board boardView(Integer id) {
+//    public Commu commuView(Integer id) {
 //
-//        return boardRepository.findById(id).get();
+//        return commuRepository.findById(id).get();
 //    }
 
     // 특정 글 삭제
-    public void boardDelete(Integer id) {
+    public void commuDelete(Integer id) {
 
-        Board board = boardRepository.findById(id).orElseThrow();
-        for (Image image : board.getImages()) {
+        Commu commu = commuRepository.findById(id).orElseThrow();
+        for (Image image : commu.getImages()) {
             File file = new File(System.getProperty("user.dir") + "/src/main/resources/static/files/" + image.getFilename());
             if (file.exists()) {
                 file.delete();
@@ -157,7 +147,7 @@ public class BoardService {
             imageRepository.delete(image);
         }
 
-        boardRepository.delete(board);
+        commuRepository.delete(commu);
     }
 
     // 첨부된 이미지 삭제
@@ -173,14 +163,14 @@ public class BoardService {
     }
 
     // 게시글 추천
-    public void boardLike(Board board, SiteUser siteUser) {
-        board.getLiked().add(siteUser);
-        boardRepository.save(board);
+    public void commuLike(Commu commu, SiteUser siteUser) {
+        commu.getLiked().add(siteUser);
+        commuRepository.save(commu);
     }
     // 게시글 비추천
-    public void boardDislike(Board board, SiteUser siteUser) {
-        board.getDisliked().add(siteUser);
-        boardRepository.save(board);
+    public void commuDislike(Commu commu, SiteUser siteUser) {
+        commu.getDisliked().add(siteUser);
+        commuRepository.save(commu);
     }
 
 }

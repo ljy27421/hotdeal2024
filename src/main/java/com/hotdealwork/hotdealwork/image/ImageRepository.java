@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.image;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

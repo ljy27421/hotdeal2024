@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 작성 폼</title>
+</head>
+
+<style>
+    .layout {
+        width : 500px;
+        margin : 0 auto;
+        margin-top : 40px;
+    }
+
+    .layout input {
+        width : 100%;
+        box-size : border-box;
+        margin-top : 10px;
+    }
+
+    .layout textarea {
+        width : 100%;
+        margin-top : 10px;
+        min-height : 300px;
+    }
+
+</style>
+
+<body>
+<div class="layout">
+    <form th:action="@{/commu/update/{id}(id=${commu.id})}" method="post" enctype="multipart/form-data">
+        <input name="title" type="text" th:value="${commu.title}">
+        <div th:unless="${commu.images.isEmpty()}">
+            <h3>첨부된 이미지</h3>
+            <ul>
+                <li th:each="image : ${commu.images}">
+                    <img th:src="@{${image.filepath}}" alt="${image.filename}" width="100">
+                    <input type="checkbox" name="deleteImageIds" th:value="${image.id}">
+                    <label>삭제</label>
+                </li>
+            </ul>
+        </div>
+        <textarea name="content" th:text="${commu.content}"></textarea>
+        <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
+        <select name="category">
+            <option value="자유">자유</option>
+            <option value="질문">질문</option>
+            <option value="후기">후기</option>
+        </select>
+
+        <button type="submit">수정</button>
+    </form>
+</div>
+
+<!--이미지 형식 체크-->
+<script type="text/javascript">
+    function fileCheck(obj) {
+        const fileInput = obj;
+        const filePath = fileInput.value;
+        const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if (!allowed.exec(filePath)) {
+            alert('이미지 파일만 선택할 수 있습니다.');
+            fileInput.value = '';
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
