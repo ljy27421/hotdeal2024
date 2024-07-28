@@ -1,18 +1,17 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
-public class Board {
+public class Commu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,19 +20,10 @@ public class Board {
     private  String content;
     private String category;
 
-    private String mall;
-    private String productName;
-    private Long price;
-    private String saleUrl;
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    private Boolean expired = false;
-
     @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer view = 0;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "commu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
     @ManyToOne
