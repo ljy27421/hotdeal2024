@@ -2,6 +2,8 @@ package com.hotdealwork.hotdealwork.reply;
 
 import com.hotdealwork.hotdealwork.board.Board;
 import com.hotdealwork.hotdealwork.board.BoardService;
+import com.hotdealwork.hotdealwork.commu.Commu;
+import com.hotdealwork.hotdealwork.commu.CommuService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class ReplyController {
     private final ReplyService replyService;
     private final BoardService boardService;
     private final UserService userService;
+    private final CommuService commuService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write/{boardId}")
@@ -44,5 +47,29 @@ public class ReplyController {
         Reply reply = replyService.getReplyById(replyId).orElseThrow();
         replyService.deleteReply(reply);
         return "redirect:/board/view?id=" + reply.getBoard().getId();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/writec/{commuId}")
+    public String writeCommuReply(@PathVariable("commuId") Integer commuId, @RequestParam(name = "content") String content, Principal principal) {
+        Commu commu = commuService.getCommu(commuId);
+        SiteUser author = userService.getUser(principal.getName());
+        replyService.commuCreate(commu, author, content);
+        return "redirect:/commu/view?id=" + commuId;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/updatec/{replyId}")
+    public String updateCommuReply(@PathVariable("replyId") Long replyId, @RequestParam(name = "content") String content) {
+        Reply reply = replyService.getReplyById(replyId).orElseThrow();
+        replyService.updateReply(reply, content);
+        return "redirect:/commu/view?id=" + reply.getCommu().getId();
+    }
+
+    @PostMapping("/deletec/{replyId}")
+    public String deleteCommuReply(@PathVariable("replyId") Long replyId) {
+        Reply reply = replyService.getReplyById(replyId).orElseThrow();
+        replyService.deleteReply(reply);
+        return "redirect:/commu/view?id=" + reply.getCommu().getId();
     }
 }
