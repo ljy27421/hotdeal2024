@@ -2,11 +2,26 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서 제목</title>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <title>로그인</title>
 	<link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 
 <body>
+<div id="header"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+    });
+</script>
 <div class="box">
     <form th:action="@{/user/login}" method="post">
         <h2>로그인</h2>
@@ -30,6 +45,16 @@
         <button type="submit">로그인</button>
     </form>
 </div>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
 
 <!--<script src="/login.js"></script>-->
 </body>
