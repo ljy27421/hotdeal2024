@@ -2,10 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서 제목</title>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="/css/view.css">
     <title>게시글 상세 페이지</title>
 </head>
 <body>
+<div id="header"></div>
 
     <h1 th:text="${board.title}">제목</h1>
 
@@ -25,6 +31,15 @@
             </tr>
         </tbody>
     </table>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+    });
+</script>
 
     <div>
         <p th:text="'쇼핑몰 : ' + ${board.mallname}">쇼핑몰 이름</p>
@@ -112,6 +127,16 @@
             editForms.forEach(form => form.style.display = 'none');
         });
     </script>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
 
 </body>
 </html>

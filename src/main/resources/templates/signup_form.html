@@ -2,11 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문서 제목</title>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <title>회원가입</title>
 	<link rel="stylesheet" type="text/css" href="/css/signup.css">
 </head>
 
 <body>
+<div id="header"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+    });
+</script>
 <div class="box">
     <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
         <h2>회원가입</h2>
@@ -30,6 +45,16 @@
         <button type="submit">회원가입</button>
     </form>
 </div>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
 
 <!--<script src="/signup.js"></script>-->
 </body>
