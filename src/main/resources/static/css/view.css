@@ -1,0 +1,249 @@
+        /* 기본 스타일 설정 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef; /* 부드러운 배경색 */
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            text-align: center;
+            color: #343a40; /* 어두운 회색 */
+            margin-top: 30px;
+            font-size: 2.5em; /* 큰 제목 크기 */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* 제목에 그림자 효과 */
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 깊이 있는 그림자 */
+            border-radius: 8px; /* 모서리 둥글게 */
+            overflow: hidden; /* 테두리 둥글게 처리 */
+        }
+
+        th, td {
+            padding: 15px; /* 여백 증가 */
+            text-align: left;
+            border-bottom: 1px solid #dee2e6; /* 연한 회색 선 */
+        }
+
+        th {
+            background-color: #f8f9fa; /* 밝은 회색 */
+            color: #495057; /* 어두운 회색 */
+            font-weight: bold; /* 두꺼운 글씨 */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* 짝수 행 배경색 */
+        }
+
+        tbody tr:hover {
+            background-color: #e2e6ea; /* 마우스 오버 시 배경색 */
+        }
+
+        /* 링크 스타일 */
+        a {
+            color: #007bff; /* 파란색 */
+            text-decoration: none;
+            transition: color 0.3s; /* 부드러운 색상 전환 */
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #0056b3; /* 어두운 파란색 */
+        }
+
+        /* div 스타일 */
+        div {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px; /* 모서리 둥글게 */
+        }
+
+        /* 단락 스타일 */
+        p {
+            margin: 10px 0;
+            color: #495057; /* 어두운 회색 */
+        }
+
+        /* 이미지 스타일 */
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px; /* 이미지 모서리 둥글게 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 버튼 스타일 */
+        button {
+            background-color: #007bff; /* 파란색 */
+            color: white;
+            border: none;
+            padding: 12px 24px; /* 여백 증가 */
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-size: 1em; /* 버튼 글씨 크기 */
+            transition: background-color 0.3s, transform 0.2s; /* 부드러운 전환 효과 */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* 어두운 파란색 */
+            transform: translateY(-2px); /* 버튼 상승 효과 */
+        }
+
+        /* 폼 스타일 */
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        /* 텍스트 영역 스타일 */
+        textarea {
+            width: 100%;
+            height: 120px; /* 높이 증가 */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da; /* 연한 회색 테두리 */
+            border-radius: 5px;
+            resize: vertical; /* 수직으로만 크기 조절 가능 */
+            font-size: 1em; /* 글씨 크기 */
+        }
+
+        /* 서브 제목 스타일 */
+        h2 {
+            color: #343a40;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 2em; /* 큰 서브 제목 크기 */
+        }
+
+        /* 댓글 폼 스타일 */
+        .comment-form {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* 댓글 섹션 스타일 */
+        .comment-section {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* 댓글 테이블 스타일 */
+        .comment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* 상단 여백 추가 */
+        }
+
+        .comment-table th, .comment-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .comment-table th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .comment-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .comment-table tbody tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        /* 댓글 수정/삭제 버튼 스타일 */
+        .table-button {
+            background-color: #007bff; /* 파란색 */
+            color: white;
+            border: none;
+            padding: 8px 16px; /* 여백 증가 */
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9em; /* 버튼 글씨 크기 */
+            transition: background-color 0.3s, transform 0.2s; /* 부드러운 전환 효과 */
+        }
+
+        .table-button:hover {
+            background-color: #0056b3; /* 어두운 파란색 */
+            transform: translateY(-2px); /* 버튼 상승 효과 */
+        }
+
+        .table-form {
+            display: inline;
+        }
+
+        .table-cell {
+            text-align: right;
+        }
+
+        /* 댓글 수정 폼 스타일 */
+        .edit-form {
+            display: none;
+            width: 100%;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .edit-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            resize: vertical;
+            font-size: 1em;
+        }
+
+        .edit-form button {
+            margin-top: 10px;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            table, .comment-form, .comment-section, div {
+                width: 95%;
+                margin: 10px auto;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            textarea {
+                height: 80px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
