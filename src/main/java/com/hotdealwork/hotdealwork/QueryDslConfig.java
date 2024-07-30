@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.image;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,13 +16,15 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QImage extends EntityPathBase<Image> {
 
-    private static final long serialVersionUID = -412248578L;
+    private static final long serialVersionUID = -816520013L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QImage image = new QImage("image");
 
-    public final QBoard board;
+    public final com.hotdealwork.hotdealwork.board.QBoard board;
+
+    public final com.hotdealwork.hotdealwork.commu.QCommu commu;
 
     public final StringPath filename = createString("filename");
 
@@ -48,7 +50,8 @@ public class QImage extends EntityPathBase<Image> {
 
     public QImage(Class<? extends Image> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.board = inits.isInitialized("board") ? new QBoard(forProperty("board"), inits.get("board")) : null;
+        this.board = inits.isInitialized("board") ? new com.hotdealwork.hotdealwork.board.QBoard(forProperty("board"), inits.get("board")) : null;
+        this.commu = inits.isInitialized("commu") ? new com.hotdealwork.hotdealwork.commu.QCommu(forProperty("commu"), inits.get("commu")) : null;
     }
 
 }
