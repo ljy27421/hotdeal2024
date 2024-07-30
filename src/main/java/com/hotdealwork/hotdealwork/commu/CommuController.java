@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
@@ -19,11 +19,11 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
-public class BoardController {
+@RequestMapping("/commu")
+public class CommuController {
 
     @Autowired
-    private BoardService boardService;
+    private CommuService commuService;
 
     @Autowired
     private UserService userService;
@@ -34,41 +34,35 @@ public class BoardController {
     @Autowired
     private ReplyService replyService;
 
-//    @GetMapping("/")
-//    public String boardHome() {
-//
-//        return "boardhome";
-//    }
-
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/write") //localhost:8080/board/write
-    public String boardWriteForm() {
+    @GetMapping("/write") //localhost:8080/commu/write
+    public String commuWriteForm() {
 
-        return "boardwrite";
+        return "commuwrite";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/writePro")
-    public String boardWritePro(Board board, Model model, Principal principal,
+    public String commuWritePro(Commu commu, Model model, Principal principal,
                                 @RequestParam(name = "files", required = false) List<MultipartFile> files) throws Exception{
 
-        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
+        commuService.commuWrite(commu, files, userService.getUser(principal.getName()));
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
-        model.addAttribute("URL", "/board/list");
+        model.addAttribute("URL", "/commu/list");
 
         return "message";
     }
 
     @GetMapping("/list")
-    public String boardList(Model model,
+    public String commuList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC ) Pageable pageable,
                             @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
                             @RequestParam(name = "category", required = false) String category,
                             @RequestParam(name = "searchType", required = false) String searchType,
                             @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
-        Page<Board> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
+        Page<Commu> list = commuService.commuList(searchKeyword, category, searchType, hot, pageable);
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
@@ -82,80 +76,80 @@ public class BoardController {
         model.addAttribute("searchType", searchType);
         model.addAttribute("hot", hot);
 
-        return "boardlist";
+        return "commulist";
     }
 
-    @GetMapping("/view") //localhost:8080/board/view?id=1
-    public String boardView(Model model, Principal principal, @RequestParam(name="id") Integer id) {
+    @GetMapping("/view") //localhost:8080/commu/view?id=1
+    public String commuView(Model model, Principal principal, @RequestParam(name="id") Integer id) {
 
-        model.addAttribute("board", boardService.getBoard(id));
-        model.addAttribute("replys", replyService.getReplyByBoard(boardService.getBoard(id)));
-        boardService.boardIncreaseViewCount(boardService.getBoard(id));
+        model.addAttribute("commu", commuService.getCommu(id));
+        model.addAttribute("replys", replyService.getReplyByCommu(commuService.getCommu(id)));
+        commuService.commuIncreaseViewCount(commuService.getCommu(id));
 
         if (principal != null) {
             SiteUser loggedUser = userService.getUser(principal.getName());
             model.addAttribute("loggedUser", loggedUser);
         }
 
-        return "boardview";
+        return "commuview";
     }
 
     @GetMapping("/delete")
-    public String boardDelete(@RequestParam(name="id") Integer id) {
+    public String commuDelete(@RequestParam(name="id") Integer id) {
 
-        boardService.boardDelete(id);
-        return "redirect:/board/list";
+        commuService.commuDelete(id);
+        return "redirect:/commu/list";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id, Model model){
+    public String commuModify(@PathVariable("id") Integer id, Model model){
 
-        Board board = boardService.getBoard(id);
+        Commu commu = commuService.getCommu(id);
 
-        model.addAttribute("board", board);
+        model.addAttribute("commu", commu);
 
-        return "boardmodify";
+        return "commumodify";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, Principal principal,
+    public String commuUpdate(@PathVariable("id") Integer id, Commu commu, Principal principal,
                               @RequestParam(name = "files", required = false) List<MultipartFile> files,
                               @RequestParam(name = "deleteImageIds", required = false) List<Long> deleteImageIds) throws Exception{
 
-        Board boardTemp = boardService.getBoard(id);
+        Commu commuTemp = commuService.getCommu(id);
 
-        board.setView(boardTemp.getView());
-        board.setLiked(boardTemp.getLiked());
-        board.setDisliked(boardTemp.getDisliked());
+        commu.setView(commuTemp.getView());
+        commu.setLiked(commuTemp.getLiked());
+        commu.setDisliked(commuTemp.getDisliked());
 
         if(deleteImageIds != null) {
-            boardService.deleteImages(deleteImageIds);
+            commuService.deleteImages(deleteImageIds);
         }
 
-        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
+        commuService.commuWrite(commu, files, userService.getUser(principal.getName()));
 
-        return "redirect:/board/list";
+        return "redirect:/commu/list";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
-    public String boardLike(Principal principal, @PathVariable("id") Integer id) {
-        Board board = boardService.getBoard(id);
+    public String commuLike(Principal principal, @PathVariable("id") Integer id) {
+        Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-        this.boardService.boardLike(board, siteUser);
+        this.commuService.commuLike(commu, siteUser);
 
-        return String.format("redirect:/board/view?id=%s", id);
+        return String.format("redirect:/commu/view?id=%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/dislike/{id}")
-    public String boardDislike(Principal principal, @PathVariable("id") Integer id) {
-        Board board = boardService.getBoard(id);
+    public String commuDislike(Principal principal, @PathVariable("id") Integer id) {
+        Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-        this.boardService.boardDislike(board, siteUser);
+        this.commuService.commuDislike(commu, siteUser);
 
-        return String.format("redirect:/board/view?id=%s", id);
+        return String.format("redirect:/commu/view?id=%s", id);
     }
 }

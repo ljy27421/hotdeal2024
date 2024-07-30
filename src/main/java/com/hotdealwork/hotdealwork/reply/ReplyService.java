@@ -1,6 +1,7 @@
 package com.hotdealwork.hotdealwork.reply;
 
 import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.commu.Commu;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,20 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
+    public Reply commuCreate(Commu commu, SiteUser author, String content) {
+        Reply reply = new Reply();
+        reply.setCommu(commu);
+        reply.setAuthor(author);
+        reply.setContent(content);
+        return replyRepository.save(reply);
+    }
+
     public List<Reply> getReplyByBoard(Board board) {
         return replyRepository.findByBoard(board);
+    }
+
+    public List<Reply> getReplyByCommu(Commu commu) {
+        return replyRepository.findByCommu(commu);
     }
 
     public Optional<Reply> getReplyById(Long id) {
