@@ -20,7 +20,7 @@
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
 
-    <div class="filter-buttons">
+		<div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="hotForm">
             <input type="hidden" name="hot" value="1">
             <button type="submit">인기글</button>
@@ -29,14 +29,15 @@
             <button type="submit">전체글</button>
         </form>
     </div>
+        
     <!-- 카테고리 링크 -->
     <div class="category-links">
-        <a th:href="@{/board/list(category='food', hot=${param.hot})}">식품</a>
-        <a th:href="@{/board/list(category='clothing', hot=${param.hot})}">의류</a>
-        <a th:href="@{/board/list(category='household', hot=${param.hot})}">생활용품</a>
-        <a th:href="@{/board/list(category='electronics', hot=${param.hot})}">전자제품</a>
-        <a th:href="@{/board/list(category='voucher', hot=${param.hot})}">상품권</a>
-        <a th:href="@{/board/list(category='etc', hot=${param.hot})}">기타</a>
+        <a th:href="@{/board/list(category='식품', hot=${param.hot})}">식품</a>
+        <a th:href="@{/board/list(category='의류', hot=${param.hot})}">의류</a>
+        <a th:href="@{/board/list(category='생활용품', hot=${param.hot})}">생활용품</a>
+        <a th:href="@{/board/list(category='전자제품', hot=${param.hot})}">전자제품</a>
+        <a th:href="@{/board/list(category='상품권', hot=${param.hot})}">상품권</a>
+        <a th:href="@{/board/list(category='기타', hot=${param.hot})}">기타</a>
     </div>
 
     <table th:if="${list.totalPages > 0}">

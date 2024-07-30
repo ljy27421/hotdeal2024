@@ -1,4 +1,4 @@
-package com.hotdealwork.hotdealwork.board;
+package com.hotdealwork.hotdealwork.commu;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QBoard is a Querydsl query type for Board
+ * QCommu is a Querydsl query type for Commu
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QBoard extends EntityPathBase<Board> {
+public class QCommu extends EntityPathBase<Commu> {
 
-    private static final long serialVersionUID = -418653303L;
+    private static final long serialVersionUID = -350743217L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QBoard board = new QBoard("board");
+    public static final QCommu commu = new QCommu("commu");
 
     public final com.hotdealwork.hotdealwork.user.QSiteUser author;
 
@@ -32,47 +32,33 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> disliked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("disliked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
 
-    public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
-
-    public final BooleanPath expired = createBoolean("expired");
-
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final ListPath<com.hotdealwork.hotdealwork.image.Image, com.hotdealwork.hotdealwork.image.QImage> images = this.<com.hotdealwork.hotdealwork.image.Image, com.hotdealwork.hotdealwork.image.QImage>createList("images", com.hotdealwork.hotdealwork.image.Image.class, com.hotdealwork.hotdealwork.image.QImage.class, PathInits.DIRECT2);
 
     public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> liked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("liked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
 
-    public final StringPath mall = createString("mall");
-
-    public final NumberPath<Long> price = createNumber("price", Long.class);
-
-    public final StringPath productName = createString("productName");
-
-    public final StringPath saleUrl = createString("saleUrl");
-
-    public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
-
     public final StringPath title = createString("title");
 
     public final NumberPath<Integer> view = createNumber("view", Integer.class);
 
-    public QBoard(String variable) {
-        this(Board.class, forVariable(variable), INITS);
+    public QCommu(String variable) {
+        this(Commu.class, forVariable(variable), INITS);
     }
 
-    public QBoard(Path<? extends Board> path) {
+    public QCommu(Path<? extends Commu> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QBoard(PathMetadata metadata) {
+    public QCommu(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QBoard(PathMetadata metadata, PathInits inits) {
-        this(Board.class, metadata, inits);
+    public QCommu(PathMetadata metadata, PathInits inits) {
+        this(Commu.class, metadata, inits);
     }
 
-    public QBoard(Class<? extends Board> type, PathMetadata metadata, PathInits inits) {
+    public QCommu(Class<? extends Commu> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.author = inits.isInitialized("author") ? new com.hotdealwork.hotdealwork.user.QSiteUser(forProperty("author")) : null;
     }

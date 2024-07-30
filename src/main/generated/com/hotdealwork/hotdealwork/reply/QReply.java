@@ -26,6 +26,8 @@ public class QReply extends EntityPathBase<Reply> {
 
     public final com.hotdealwork.hotdealwork.board.QBoard board;
 
+    public final com.hotdealwork.hotdealwork.commu.QCommu commu;
+
     public final StringPath content = createString("content");
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
@@ -52,6 +54,7 @@ public class QReply extends EntityPathBase<Reply> {
         super(type, metadata, inits);
         this.author = inits.isInitialized("author") ? new com.hotdealwork.hotdealwork.user.QSiteUser(forProperty("author")) : null;
         this.board = inits.isInitialized("board") ? new com.hotdealwork.hotdealwork.board.QBoard(forProperty("board"), inits.get("board")) : null;
+        this.commu = inits.isInitialized("commu") ? new com.hotdealwork.hotdealwork.commu.QCommu(forProperty("commu"), inits.get("commu")) : null;
     }
 
 }
