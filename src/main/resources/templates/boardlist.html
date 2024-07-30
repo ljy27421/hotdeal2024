@@ -2,17 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문서 제목</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/list.css">
     <title>게시글 리스트 페이지</title>
 </head>
 <body>
-<div id="header"></div>
 <div class="layout">
 
     <div class="header">
@@ -20,7 +14,7 @@
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
 
-		<div class="filter-buttons">
+    <div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="hotForm">
             <input type="hidden" name="hot" value="1">
             <button type="submit">인기글</button>
@@ -29,7 +23,7 @@
             <button type="submit">전체글</button>
         </form>
     </div>
-        
+
     <!-- 카테고리 링크 -->
     <div class="category-links">
         <a th:href="@{/board/list(category='식품', hot=${param.hot})}">식품</a>
@@ -77,16 +71,6 @@
         </tr>
         </tbody>
     </table>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                });
-        });
-    </script>
-
     <!-- 검색 결과 없을 시 안내문 -->
     <div th:if="${list.totalPages == 0}" class="no-posts-message">글이 없습니다.</div>
 
@@ -116,15 +100,5 @@
         </form>
     </div>
 </div>
-<div id="footer"></div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-    });
-</script>
 </body>
 </html>
