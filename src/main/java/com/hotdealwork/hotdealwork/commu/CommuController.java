@@ -127,6 +127,7 @@ public class CommuController {
         if(deleteImageIds != null) {
             commuService.deleteImages(deleteImageIds);
         }
+        commu.setImages(commuTemp.getImages());
 
         commuService.commuWrite(commu, files, userService.getUser(principal.getName()));
 

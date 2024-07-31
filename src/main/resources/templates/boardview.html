@@ -74,8 +74,8 @@
             <button type="submit">댓글 작성</button>
         </form>
     </div>
-
-    <table class="comment-table">
+    <div th:if="${replys.isEmpty()}">댓글이 없습니다.</div>
+    <table class="comment-table" th:unless="${replys.isEmpty()}">
         <thead>
             <tr>
                 <th>작성자</th>
