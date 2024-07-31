@@ -133,6 +133,7 @@ public class BoardController {
         if(deleteImageIds != null) {
             boardService.deleteImages(deleteImageIds);
         }
+        board.setImages(boardTemp.getImages());
 
         boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
