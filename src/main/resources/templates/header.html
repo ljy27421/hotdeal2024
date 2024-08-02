@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotdeal 2024</title>
-    <link rel="stylesheet" href="style.css"> <!-- CSS 파일 경로 -->
+    <title th:text="${pageTitle}">Hotdeal 2024</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- CSS 파일 경로 -->
 </head>
 <body>
-<div class="header">
-    <h1>Hotdeal 2024</h1>
-    <nav>
-        <a href="#" class="logo">
-            <img src="image/logo.jpg" alt="사이트 로고">
-        </a>
-        <div class="mobile-menu-toggle">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-        <ul>
-            <li><a href="#">메인</a></li>
-            <li><a href="#">핫딜</a></li>
-            <li><a href="#">자유</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-        <div class="auth-buttons">
-            <a href="/user/login">로그인</a>
-            <a href="/user/logout">로그아웃</a>
-            <a href="/user/signup">회원가입</a>
-            <a href="/user/delete">회원 탈퇴</a>
-        </div>
-    </nav>
-</div>
+<header>
+    <div class="header">
+        <h1 th:text="${siteTitle}">Hotdeal 2024</h1>
+        <nav>
+            <a href="#" class="logo">
+                <img src="/images/logo.jpg" alt="사이트 로고">
+            </a>
+            <div class="mobile-menu-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul>
+                <li><a href="/" th:text="#{menu.main}">메인</a></li>
+                <li><a href="/hotdeals" th:text="#{menu.hotdeals}">핫딜</a></li>
+                <li><a href="/free" th:text="#{menu.free}">자유</a></li>
+                <li><a href="/contact" th:text="#{menu.contact}">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="/user/login" th:text="#{auth.login}">로그인</a>
+                <a href="/user/logout" th:text="#{auth.logout}">로그아웃</a>
+                <a href="/user/signup" th:text="#{auth.signup}">회원가입</a>
+                <a href="/user/delete" th:text="#{auth.delete}">회원 탈퇴</a>
+            </div>
+        </nav>
+    </div>
+</header>
 </body>
 </html>
