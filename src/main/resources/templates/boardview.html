@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문서 제목</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="/css/view.css">
     <title>게시글 상세 페이지</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/css/view.css">
 </head>
 <body>
-<!--<div id="header"></div>-->
+    <div id="header"></div>
 
     <h1 th:text="${board.title}">제목</h1>
 
@@ -31,15 +29,6 @@
             </tr>
         </tbody>
     </table>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-    });
-</script>
 
     <div>
         <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
@@ -48,41 +37,45 @@
         <p th:text="'종료 날짜: ' + ${#temporals.format(board.endDate, 'yyyy-MM-dd')}">종료 날짜</p>
     </div>
 
-    <div th:each="image : ${board.images}">
+    <div class="image-gallery" th:each="image : ${board.images}">
         <img th:src="@{${image.filepath}}" th:alt="${image.filename}" alt="image">
     </div>
 
-    <p th:text="${board.content}">내용</p>
-
-    <div>
-        <a th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
-        <span th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">0</span>
-        <a th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
-        <a th:href="@{/board/list}">목록</a>
+    <p class="content" th:text="${board.content}">내용</p>
+    
+    <div class="vote-buttons">
+        <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
+        <span class="vote-count" th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">0</span>
+        <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
     </div>
 
+    <div>
+        <a th:href="@{/board/list}">목록</a>
+    </div>
+    
     <div th:if="${loggedUser != null}">
         <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/delete?(id=${board.id})}">삭제</a>
         <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
     </div>
 
-    <!-- 댓글 섹션 -->
     <div class="comment-section">
         <h2>댓글</h2>
         <form th:action="@{/replys/write/{boardId}(boardId=${board.id})}" method="post" class="comment-form">
-            <textarea name="content" placeholder="댓글을 입력하세요..."></textarea>
+            <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea>
             <button type="submit">댓글 작성</button>
         </form>
     </div>
+
     <div th:if="${replys.isEmpty()}">댓글이 없습니다.</div>
+
     <table class="comment-table" th:unless="${replys.isEmpty()}">
         <thead>
             <tr>
                 <th>작성자</th>
                 <th>내용</th>
                 <th>작성 시간</th>
-                <th class="table-cell">수정</th>
-                <th class="table-cell">삭제</th>
+                <th>수정</th>
+                <th>삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -90,11 +83,11 @@
                 <td th:text="${reply.author.username}">작성자</td>
                 <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
                 <td th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
-                <td class="table-cell" th:if="${reply.author.id} == ${loggedUser.id}">
+                <td th:if="${reply.author.id} == ${loggedUser.id}">
                     <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
                 </td>
-                <td class="table-cell" th:if="${reply.author.id} == ${loggedUser.id}">
-                    <form class="table-form" th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
+                <td th:if="${reply.author.id} == ${loggedUser.id}">
+                    <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
                         <button type="submit" class="table-button">삭제</button>
                     </form>
                 </td>
@@ -102,7 +95,7 @@
             <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" class="edit-form">
                 <td colspan="5">
                     <form th:action="@{/replys/update/{replyId}(replyId=${reply.id})}" method="post">
-                        <textarea name="content" th:text="${reply.content}"></textarea>
+                        <textarea name="content" th:text="${reply.content}" required></textarea>
                         <button type="submit" class="table-button">수정</button>
                         <button type="button" class="table-button" th:onclick="'hideEditForm(' + ${reply.id} + ')'">취소</button>
                     </form>
@@ -112,6 +105,29 @@
     </table>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('header');
+            if (header) {
+                fetch('header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        header.innerHTML = data;
+                    });
+            }
+
+            const footer = document.getElementById('footer');
+            if (footer) {
+                fetch('footer.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        footer.innerHTML = data;
+                    });
+            }
+
+            const editForms = document.querySelectorAll('.edit-form');
+            editForms.forEach(form => form.style.display = 'none');
+        });
+
         function showEditForm(replyId) {
             document.getElementById('reply-row-' + replyId).style.display = 'none';
             document.getElementById('edit-row-' + replyId).style.display = 'table-row';
@@ -121,22 +137,8 @@
             document.getElementById('reply-row-' + replyId).style.display = 'table-row';
             document.getElementById('edit-row-' + replyId).style.display = 'none';
         }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const editForms = document.querySelectorAll('.edit-form');
-            editForms.forEach(form => form.style.display = 'none');
-        });
     </script>
-<!--<div id="footer"></div>-->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-    });
-</script>
 
+    <div id="footer"></div>
 </body>
 </html>
