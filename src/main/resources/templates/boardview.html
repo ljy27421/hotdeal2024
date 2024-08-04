@@ -49,8 +49,8 @@
         <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
     </div>
 
-    <div>
-        <a th:href="@{/board/list}">목록</a>
+    <div class="vote-buttons">
+        <a class="vote-button" th:href="@{/board/list}">목록</a>
     </div>
     
     <div th:if="${loggedUser != null}">
@@ -83,10 +83,10 @@
                 <td th:text="${reply.author.username}">작성자</td>
                 <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
                 <td th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
-                <td th:if="${reply.author.id} == ${loggedUser.id}">
+                <td th:if="${reply.author.id} == ${loggedUser?.id}">
                     <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
                 </td>
-                <td th:if="${reply.author.id} == ${loggedUser.id}">
+                <td th:if="${reply.author.id} == ${loggedUser?.id}">
                     <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
                         <button type="submit" class="table-button">삭제</button>
                     </form>
