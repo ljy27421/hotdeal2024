@@ -65,10 +65,10 @@
         <td th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
         <div th:if="${loggedUser != null}">
             <td>
-                <button th:if="${reply.author.id} == ${loggedUser.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
+                <button th:if="${reply.author.id} == ${loggedUser?.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
             </td>
             <td>
-                <form th:if="${reply.author.id} == ${loggedUser.id}" th:action="@{/replys/deletec/{replyId}(replyId=${reply.id})}" method="post">
+                <form th:if="${reply.author.id} == ${loggedUser?.id}" th:action="@{/replys/deletec/{replyId}(replyId=${reply.id})}" method="post">
                     <button type="submit">삭제</button>
                 </form>
             </td>
