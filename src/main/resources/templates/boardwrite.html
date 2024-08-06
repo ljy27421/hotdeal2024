@@ -7,63 +7,63 @@
     <title>문서 제목</title>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="/css/write.css">
+    <link rel="stylesheet" type="text/css" href="/css/write.css">
     <title>게시물 작성 폼</title>
 </head>
 
 <body>
 <!--<div id="header"></div>-->
-    <div class="layout">
-        <h1>게시물 작성</h1>
-        <form action="/board/writePro" method="post" enctype="multipart/form-data">
-            <input name="title" type="text" placeholder="제목" required>
-            <textarea name="content" placeholder="내용" required></textarea>
-            <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
+<div class="layout">
+    <h1>게시물 작성</h1>
+    <form action="/board/writePro" method="post" enctype="multipart/form-data">
+        <input name="title" type="text" placeholder="제목" required>
+        <textarea name="content" placeholder="내용" required></textarea>
+        <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
 
-            <select name="category" required>
-                <option value="기타">기타</option>
-                <option value="식품">식품</option>
-                <option value="의류">의류</option>
-                <option value="생활용품">생활용품</option>
-                <option value="전자제품">전자제품</option>
-                <option value="상품권">상품권</option>
-            </select>
+        <select name="category" required>
+            <option value="기타">기타</option>
+            <option value="식품">식품</option>
+            <option value="의류">의류</option>
+            <option value="생활용품">생활용품</option>
+            <option value="전자제품">전자제품</option>
+            <option value="상품권">상품권</option>
+        </select>
 
-            <input name="mall" type="text" placeholder="쇼핑몰">
-            <input name="productName" type="text" placeholder="상품명">
-            <input name="price" type="number" step="0.01" placeholder="가격">
-            <input name="saleUrl" type="text" placeholder="판매 URL">
-            <input name="startDate" type="date" placeholder="시작 날짜">
-            <input name="endDate" type="date" placeholder="종료 날짜">
+        <input name="mall" type="text" placeholder="쇼핑몰">
+        <input name="productName" type="text" placeholder="상품명">
+        <input name="price" type="number" step="0.01" placeholder="가격">
+        <input name="saleUrl" type="text" placeholder="판매 URL">
+        <input name="startDate" type="date" placeholder="시작 날짜">
+        <input name="endDate" type="date" placeholder="종료 날짜">
 
-            <button type="submit">작성</button>
-        </form>
-    </div>
-    <script>
+        <button type="submit">작성</button>
+    </form>
+</div>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('header').innerHTML = data;
             });
-        });
-      </script>
+    });
+</script>
 
-    <!--이미지 형식 체크-->
-    <script type="text/javascript">
-        function fileCheck(obj) {
-            const fileInput = obj;
-            const filePath = fileInput.value;
-            const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+<!--이미지 형식 체크-->
+<script type="text/javascript">
+    function fileCheck(obj) {
+        const fileInput = obj;
+        const filePath = fileInput.value;
+        const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
-            if (!allowed.exec(filePath)) {
-                alert('이미지 파일만 선택할 수 있습니다.');
-                fileInput.value = '';
-                return false;
-            }
-            return true;
+        if (!allowed.exec(filePath)) {
+            alert('이미지 파일만 선택할 수 있습니다.');
+            fileInput.value = '';
+            return false;
         }
-    </script>
+        return true;
+    }
+</script>
 <!--<div id="footer"></div>-->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
