@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="/css/modify.css">
+    <link rel="stylesheet" type="text/css" href="/css/modify.css">
     <title>게시물 작성 폼</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,40 +12,40 @@
 </head>
 <body>
 <!--<div id="header"></div>-->
-    <div class="layout">
-        <form th:action="@{/board/update/{id}(id=${board.id})}" method="post" enctype="multipart/form-data">
-            <input name="title" type="text" th:value="${board.title}">
-            <div th:unless="${board.images.isEmpty()}">
-                <h3>첨부된 이미지</h3>
-                <ul>
-                    <li th:each="image : ${board.images}">
-                        <img th:src="@{${image.filepath}}" alt="${image.filename}" width="100">
-                        <input type="checkbox" name="deleteImageIds" th:value="${image.id}">
-                        <label>삭제</label>
-                    </li>
-                </ul>
-            </div>
-            <textarea name="content" th:text="${board.content}"></textarea>
-            <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
-            <select name="category">
-                <option value="기타">기타</option>
-                <option value="식품">식품</option>
-                <option value="의류">의류</option>
-                <option value="생활용품">생활용품</option>
-                <option value="전자제품">전자제품</option>
-                <option value="상품권">상품권</option>
-            </select>
+<div class="layout">
+    <form th:action="@{/board/update/{id}(id=${board.id})}" method="post" enctype="multipart/form-data">
+        <input name="title" type="text" th:value="${board.title}">
+        <div th:unless="${board.images.isEmpty()}">
+            <h3>첨부된 이미지</h3>
+            <ul>
+                <li th:each="image : ${board.images}">
+                    <img th:src="@{${image.filepath}}" alt="${image.filename}" width="100">
+                    <input type="checkbox" name="deleteImageIds" th:value="${image.id}">
+                    <label>삭제</label>
+                </li>
+            </ul>
+        </div>
+        <textarea name="content" th:text="${board.content}"></textarea>
+        <input type="file" name="files" accept="image/gif, image/png, image/jpeg, image/jpg" multiple="multiple" onchange="fileCheck(this)">
+        <select name="category">
+            <option value="기타">기타</option>
+            <option value="식품">식품</option>
+            <option value="의류">의류</option>
+            <option value="생활용품">생활용품</option>
+            <option value="전자제품">전자제품</option>
+            <option value="상품권">상품권</option>
+        </select>
 
-            <input name="mall" type="text" th:value="${board.mall}">
-            <input name="productName" type="text" th:value="${board.productName}">
-            <input name="price" type="number" step="0.01" th:value="${board.price}">
-            <input name="saleUrl" type="text" th:value="${board.saleUrl}">
-            <input name="startDate" type="date" th:value="${board.startDate}">
-            <input name="endDate" type="date" th:value="${board.endDate}">
+        <input name="mall" type="text" th:value="${board.mall}">
+        <input name="productName" type="text" th:value="${board.productName}">
+        <input name="price" type="number" step="0.01" th:value="${board.price}">
+        <input name="saleUrl" type="text" th:value="${board.saleUrl}">
+        <input name="startDate" type="date" th:value="${board.startDate}">
+        <input name="endDate" type="date" th:value="${board.endDate}">
 
-            <button type="submit">수정</button>
-        </form>
-    </div>
+        <button type="submit">수정</button>
+    </form>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         fetch('header.html')
@@ -56,21 +56,21 @@
     });
 </script>
 
-    <!--이미지 형식 체크-->
-    <script type="text/javascript">
-        function fileCheck(obj) {
-            const fileInput = obj;
-            const filePath = fileInput.value;
-            const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+<!--이미지 형식 체크-->
+<script type="text/javascript">
+    function fileCheck(obj) {
+        const fileInput = obj;
+        const filePath = fileInput.value;
+        const allowed = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
-            if (!allowed.exec(filePath)) {
-                alert('이미지 파일만 선택할 수 있습니다.');
-                fileInput.value = '';
-                return false;
-            }
-            return true;
+        if (!allowed.exec(filePath)) {
+            alert('이미지 파일만 선택할 수 있습니다.');
+            fileInput.value = '';
+            return false;
         }
-    </script>
+        return true;
+    }
+</script>
 <!--<div id="footer"></div>-->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
