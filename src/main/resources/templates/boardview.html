@@ -7,30 +7,39 @@
     <title>게시글 상세 페이지</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" type="text/css" href="/css/view.css">
+    <style>
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .info-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .info-table td strong {
+            display: inline-block;
+            width: 100px; /* Label width */
+        }
+    </style>
 </head>
 <body>
 <div id="header"></div>
 
 <h1 th:text="${board.title}">제목</h1>
 
-<table>
-    <thead>
+<table class="info-table">
     <tr>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>조회수</th>
+        <td><strong>작성자:</strong> <span th:text="${board.author.username}">작성자</span></td>
+        <td><strong>작성일:</strong> <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span></td>
+        <td><strong>조회수:</strong> <span th:text="${board.view}">조회수</span></td>
     </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${board.author.username}">작성자</td>
-        <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</td>
-        <td th:text="${board.view}">조회수</td>
-    </tr>
-    </tbody>
 </table>
 
-<div>
+<div class="info-container">
     <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
     <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
     <p th:text="'시작 날짜: ' + ${#temporals.format(board.startDate, 'yyyy-MM-dd')}">시작 날짜</p>
