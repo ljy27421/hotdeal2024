@@ -81,8 +81,6 @@ public class BoardService {
         }
 
         board.setAuthor(author);
-        System.out.println(board.getView());
-
         boardRepository.save(board);
     }
 
