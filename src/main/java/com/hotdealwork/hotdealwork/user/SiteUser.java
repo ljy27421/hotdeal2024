@@ -4,6 +4,7 @@ import com.hotdealwork.hotdealwork.board.Board;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,11 @@ public class SiteUser {
     private String username;
 
     private String password;
+
+    private List<Double> interestVector;
+
+    private List<Integer> interest;
+
 
     @ManyToMany
     Set<Board> likes;

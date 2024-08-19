@@ -1,9 +1,12 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.google.gson.Gson;
 import com.hotdealwork.hotdealwork.DataNotFoundException;
+import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
+import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +29,9 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ImageRepository imageRepository;
 
     private final JPAQueryFactory queryFactory;
@@ -33,6 +40,9 @@ public class BoardService {
     public BoardService(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
+
+    @Autowired
+    private EmbeddingService embeddingService;
 
 //    public Board getBoard(Integer id) {
 //        Optional<Board> board = this.boardRepository.findById(id);
@@ -56,6 +66,7 @@ public class BoardService {
     }
 
     // 글 작성 처리
+    @Transactional
     public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
         if (board.getImages() == null) {
@@ -79,6 +90,10 @@ public class BoardService {
                 }
             }
         }
+
+        String combinedText = String.join(" ", board.getProductName(), board.getCategory(), board.getContent());
+        List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+        board.setEmbeddingVector(embeddingVector);
 
         board.setAuthor(author);
         boardRepository.save(board);
@@ -179,6 +194,23 @@ public class BoardService {
     public void boardDislike(Board board, SiteUser siteUser) {
         board.getDisliked().add(siteUser);
         boardRepository.save(board);
+    }
+    // 관심 처리
+    public void boardInterest(Integer id, SiteUser siteUser){
+        if (siteUser.getInterest() == null){
+            siteUser.setInterest(new ArrayList<>());
+        }
+
+        List<Integer> interest = siteUser.getInterest();
+
+        if (siteUser.getInterest().contains(id)){
+            interest.remove(Integer.valueOf(id));
+        } else {
+            interest.add(id);
+        }
+
+        siteUser.setInterest(interest);
+        userRepository.save(siteUser);
     }
 
 }
