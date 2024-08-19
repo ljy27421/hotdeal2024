@@ -58,4 +58,6 @@ public class Board {
         return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
     }
 
+    private List<Double> embeddingVector;
+
 }
