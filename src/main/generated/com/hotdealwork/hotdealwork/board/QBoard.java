@@ -32,6 +32,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> disliked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("disliked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
 
+    public final ListPath<Double, NumberPath<Double>> embeddingVector = this.<Double, NumberPath<Double>>createList("embeddingVector", Double.class, NumberPath.class, PathInits.DIRECT2);
+
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
     public final BooleanPath expired = createBoolean("expired");
