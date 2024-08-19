@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 @Controller
 @RequestMapping("/board")
@@ -156,6 +158,17 @@ public class BoardController {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
         this.boardService.boardDislike(board, siteUser);
+
+        return String.format("redirect:/board/view?id=%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/interest/{id}")
+    public String boardInterest(Model model,Principal principal, @PathVariable("id") Integer id) {
+        SiteUser siteUser = userService.getUser(principal.getName());
+
+        System.out.println(siteUser.getInterest());
+        this.boardService.boardInterest(id, siteUser);
 
         return String.format("redirect:/board/view?id=%s", id);
     }
