@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<div id="header"></div>
+<!--<div id="header"></div>-->
 
 <h1 th:text="${board.title}">제목</h1>
 
@@ -65,6 +65,10 @@
 <div th:if="${loggedUser != null}">
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/delete?(id=${board.id})}">삭제</a>
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
+</div>
+
+<div class="vote-buttons">
+    <a class="vote-button" th:href="@{/board/interest/{id}(id=${board.id})}">관심</a>
 </div>
 
 <div class="comment-section">
@@ -148,6 +152,6 @@
     }
 </script>
 
-<div id="footer"></div>
+<!--<div id="footer"></div>-->
 </body>
 </html>
