@@ -165,10 +165,11 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest/{id}")
     public String boardInterest(Model model,Principal principal, @PathVariable("id") Integer id) {
+        Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
 
         System.out.println(siteUser.getInterest());
-        this.boardService.boardInterest(id, siteUser);
+        this.boardService.boardInterest(board,siteUser);
 
         return String.format("redirect:/board/view?id=%s", id);
     }
