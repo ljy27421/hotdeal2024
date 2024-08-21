@@ -196,20 +196,36 @@ public class BoardService {
         boardRepository.save(board);
     }
     // 관심 처리
-    public void boardInterest(Integer id, SiteUser siteUser){
+    public void boardInterest(Board board, SiteUser siteUser){
         if (siteUser.getInterest() == null){
             siteUser.setInterest(new ArrayList<>());
+            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
         }
 
+        int id = board.getId();
+        List<Double> newVector = board.getEmbeddingVector();
+
         List<Integer> interest = siteUser.getInterest();
+        List<Double> curVector = siteUser.getInterestVector();
+
+        int count = interest.size();
 
         if (siteUser.getInterest().contains(id)){
             interest.remove(Integer.valueOf(id));
+            if (count - 1 == 0){
+                siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+            } else {
+                for (int i = 0; i < 1536; i++) {
+                    curVector.set(i, (curVector.get(i) * count - newVector.get(i)) / (count - 1));
+                }
+            }
         } else {
             interest.add(id);
+            for (int i = 0; i < 1536; i++){
+                curVector.set(i, (curVector.get(i) * count + newVector.get(i)) / (count + 1));
+            }
         }
 
-        siteUser.setInterest(interest);
         userRepository.save(siteUser);
     }
 
