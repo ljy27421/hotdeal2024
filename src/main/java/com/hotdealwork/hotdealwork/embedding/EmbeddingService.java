@@ -13,7 +13,7 @@ public class EmbeddingService {
 
     private final OpenAiService openAiService;
 
-    public EmbeddingService(@Value("${openai.api-key}") String apiKey) {
+    public EmbeddingService(@Value("${openai.api.key}") String apiKey) {
         this.openAiService = new OpenAiService(apiKey);
     }
 
