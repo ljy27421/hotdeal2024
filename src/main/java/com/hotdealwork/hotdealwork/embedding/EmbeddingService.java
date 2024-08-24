@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +60,19 @@ public class EmbeddingService {
     }
 
     public List<Board> recommandBoards(SiteUser siteUser){
+        List<Board> userInterestBoards = new ArrayList<>();
+        for (int i = 0; i < siteUser.getInterest().size(); i++){
+            userInterestBoards.add(boardRepository.getById(siteUser.getInterest().get(i)));
+        }
+
+        List<Double> userVector = new ArrayList<>(Collections.nCopies(1536,0.0));
+        for (int i = 0; i < 1536; i++){
+            for (int j = 0; j < siteUser.getInterest().size(); j++){
+                userVector.set(i, userVector.get(i)+userInterestBoards.get(j).getEmbeddingVector().get(i));
+            }
+            userVector.set(i, userVector.get(i)/siteUser.getInterest().size());
+        }
+
         List<Board> allBoards = boardRepository.findAll();
 
         List<Board> validBoards = allBoards.stream()
@@ -67,8 +82,10 @@ public class EmbeddingService {
 
         List<Board> recommandedBoards = validBoards.stream()
                 .sorted((board1, board2) -> {
-                    double similarity1 = calculatingCosineSimilarity(siteUser.getInterestVector(), board1.getEmbeddingVector());
-                    double similarity2 = calculatingCosineSimilarity(siteUser.getInterestVector(), board2.getEmbeddingVector());
+//                    double similarity1 = calculatingCosineSimilarity(siteUser.getInterestVector(), board1.getEmbeddingVector());
+//                    double similarity2 = calculatingCosineSimilarity(siteUser.getInterestVector(), board2.getEmbeddingVector());
+                    double similarity1 = calculatingCosineSimilarity(userVector, board1.getEmbeddingVector());
+                    double similarity2 = calculatingCosineSimilarity(userVector, board2.getEmbeddingVector());
                     return Double.compare(similarity2, similarity1);
                 })
                 .limit(10)
