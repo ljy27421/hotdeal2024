@@ -22,7 +22,7 @@ public class SiteUser {
 
     private String password;
 
-    private List<Double> interestVector;
+//    private List<Double> interestVector;
 
     private List<Integer> interest;
 
