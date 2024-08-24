@@ -58,7 +58,7 @@ public class BoardController {
     public String boardWritePro(Board board, Model model, Principal principal,
                                 @RequestParam(name = "files", required = false) List<MultipartFile> files) throws Exception{
 
-        boardService.boardWrite(board, files, userService.getUser(principal.getName()), 0);
+        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
         model.addAttribute("URL", "/board/list");
@@ -142,7 +142,7 @@ public class BoardController {
         }
         board.setImages(boardTemp.getImages());
 
-        boardService.boardWrite(board, files, userService.getUser(principal.getName()), 1);
+        boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
         return "redirect:/board/list";
     }
