@@ -91,7 +91,7 @@ public class BoardService {
             }
         }
 
-        String combinedText = String.join(" ", board.getProductName(), board.getCategory(), board.getContent());
+        String combinedText = String.join(" ", board.getProductName(), board.getCategory());
         List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
         board.setEmbeddingVector(embeddingVector);
 
@@ -137,7 +137,7 @@ public class BoardService {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total =queryFactory
+        long total = queryFactory
                 .selectFrom(board)
                 .where(builder)
                 .fetch().size();
@@ -209,6 +209,8 @@ public class BoardService {
         List<Double> curVector = siteUser.getInterestVector();
 
         int count = interest.size();
+        System.out.println(interest.size());
+        System.out.println(curVector.size());
 
         if (siteUser.getInterest().contains(id)){
             interest.remove(Integer.valueOf(id));
@@ -224,9 +226,10 @@ public class BoardService {
             for (int i = 0; i < 1536; i++){
                 curVector.set(i, (curVector.get(i) * count + newVector.get(i)) / (count + 1));
             }
+            System.out.println(newVector.get(0));
+            System.out.println((curVector.get(0) * count + newVector.get(0)) / (count + 1));
         }
 
         userRepository.save(siteUser);
     }
-
 }
