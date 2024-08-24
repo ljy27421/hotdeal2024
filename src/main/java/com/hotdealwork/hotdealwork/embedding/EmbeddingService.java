@@ -1,17 +1,26 @@
 package com.hotdealwork.hotdealwork.embedding;
 
+import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.board.BoardRepository;
+import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.theokanning.openai.OpenAiService;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmbeddingService {
 
     private final OpenAiService openAiService;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     public EmbeddingService(@Value("${openai.api.key}") String apiKey) {
         this.openAiService = new OpenAiService(apiKey);
@@ -28,6 +37,43 @@ public class EmbeddingService {
         EmbeddingResult result = openAiService.createEmbeddings(embeddingRequest);
 //        System.out.println(result.getData().get(0).getEmbedding());
         return result.getData().get(0).getEmbedding();
+    }
+
+    public double calculatingCosineSimilarity(List<Double> vectorA, List<Double> vectorB) {
+        double dotProduct = 0.0;
+        double normA = 0.0;
+        double normB = 0.0;
+        for (int i = 0; i  < 1536; i++){
+            dotProduct += vectorA.get(i) * vectorB.get(i);
+            normA += Math.pow(vectorA.get(i), 2);
+            normB += Math.pow(vectorB.get(i), 2);
+        }
+
+        double denominator = Math.sqrt(normA) * Math.sqrt(normB);
+        if (denominator == 0) {
+            return 0.0;
+        }
+
+        return dotProduct / denominator;
+    }
+
+    public List<Board> recommandBoards(SiteUser siteUser){
+        List<Board> allBoards = boardRepository.findAll();
+
+        List<Board> validBoards = allBoards.stream()
+                .filter(board -> board.getExpired().equals(false))
+                .filter(board -> !siteUser.getInterest().contains(board.getId()))
+                .toList();
+
+        List<Board> recommandedBoards = validBoards.stream()
+                .sorted((board1, board2) -> {
+                    double similarity1 = calculatingCosineSimilarity(siteUser.getInterestVector(), board1.getEmbeddingVector());
+                    double similarity2 = calculatingCosineSimilarity(siteUser.getInterestVector(), board2.getEmbeddingVector());
+                    return Double.compare(similarity2, similarity1);
+                })
+                .limit(10)
+                .toList();
+        return recommandedBoards;
     }
 
 
