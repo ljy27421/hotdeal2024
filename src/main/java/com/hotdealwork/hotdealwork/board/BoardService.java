@@ -67,7 +67,7 @@ public class BoardService {
 
     // 글 작성 처리
     @Transactional
-    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author, int WorU) throws Exception{
+    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
@@ -90,11 +90,10 @@ public class BoardService {
                 }
             }
         }
-        if (WorU == 0){
-            String combinedText = String.join(" ", board.getProductName(), board.getCategory());
-            List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
-            board.setEmbeddingVector(embeddingVector);
-        }
+        String combinedText = String.join(" ", board.getProductName(), board.getCategory());
+        List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+        board.setEmbeddingVector(embeddingVector);
+
 
         board.setAuthor(author);
         boardRepository.save(board);
@@ -200,35 +199,35 @@ public class BoardService {
     public void boardInterest(Board board, SiteUser siteUser){
         if (siteUser.getInterest() == null){
             siteUser.setInterest(new ArrayList<>());
-            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
         }
 
         int id = board.getId();
-        List<Double> newVector = board.getEmbeddingVector();
+//        List<Double> newVector = board.getEmbeddingVector();
 
         List<Integer> interest = siteUser.getInterest();
-        List<Double> curVector = siteUser.getInterestVector();
+//        List<Double> curVector = siteUser.getInterestVector();
 
-        int count = interest.size();
-        System.out.println(interest.size());
-        System.out.println(curVector.size());
+//        int count = interest.size();
+//        System.out.println(interest.size());
+//        System.out.println(curVector.size());
 
         if (siteUser.getInterest().contains(id)){
             interest.remove(Integer.valueOf(id));
-            if (count - 1 == 0){
-                siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
-            } else {
-                for (int i = 0; i < 1536; i++) {
-                    curVector.set(i, (curVector.get(i) * count - newVector.get(i)) / (count - 1));
-                }
-            }
+//            if (count - 1 == 0){
+//                siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+//            } else {
+//                for (int i = 0; i < 1536; i++) {
+//                    curVector.set(i, (curVector.get(i) * count - newVector.get(i)) / (count - 1));
+//                }
+//            }
         } else {
             interest.add(id);
-            for (int i = 0; i < 1536; i++){
-                curVector.set(i, (curVector.get(i) * count + newVector.get(i)) / (count + 1));
-            }
-            System.out.println(newVector.get(0));
-            System.out.println((curVector.get(0) * count + newVector.get(0)) / (count + 1));
+//            for (int i = 0; i < 1536; i++){
+//                curVector.set(i, (curVector.get(i) * count + newVector.get(i)) / (count + 1));
+//            }
+//            System.out.println(newVector.get(0));
+//            System.out.println((curVector.get(0) * count + newVector.get(0)) / (count + 1));
         }
 
         userRepository.save(siteUser);
