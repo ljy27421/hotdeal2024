@@ -67,7 +67,7 @@ public class BoardService {
 
     // 글 작성 처리
     @Transactional
-    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
+    public void boardWrite(Board board, List<MultipartFile> files, SiteUser author, int WorU) throws Exception{
 
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
@@ -90,10 +90,11 @@ public class BoardService {
                 }
             }
         }
-
-        String combinedText = String.join(" ", board.getProductName(), board.getCategory());
-        List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
-        board.setEmbeddingVector(embeddingVector);
+        if (WorU == 0){
+            String combinedText = String.join(" ", board.getProductName(), board.getCategory());
+            List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+            board.setEmbeddingVector(embeddingVector);
+        }
 
         board.setAuthor(author);
         boardRepository.save(board);
