@@ -58,23 +58,23 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public void addInterest(Long userId, Integer boardId) {
-        SiteUser siteUser = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found"));
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("Board not found"));
+//    @Transactional
+//    public void addInterest(Long userId, Integer boardId) {
+//        SiteUser siteUser = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found"));
+//        Board board = boardRepository.findById(boardId).orElseThrow(() -> new RuntimeException("Board not found"));
 
-        List<Double> boardVector = board.getEmbeddingVector();
-        List<Double> userVector = siteUser.getInterestVector();
-
-        if (userVector == null || userVector.isEmpty()) {
-            userVector = new ArrayList<>(boardVector);
-        } else {
-            for (int i = 0; i < boardVector.size(); i++) {
-                userVector.set(i, (userVector.get(i) + boardVector.get(i)) / 2.0);
-            }
-        }
-
-        siteUser.setInterestVector(userVector);
-        userRepository.save(siteUser);
-    }
+//        List<Double> boardVector = board.getEmbeddingVector();
+//        List<Double> userVector = siteUser.getInterestVector();
+//
+//        if (userVector == null || userVector.isEmpty()) {
+//            userVector = new ArrayList<>(boardVector);
+//        } else {
+//            for (int i = 0; i < boardVector.size(); i++) {
+//                userVector.set(i, (userVector.get(i) + boardVector.get(i)) / 2.0);
+//            }
+//        }
+//
+//        siteUser.setInterestVector(userVector);
+//        userRepository.save(siteUser);
+//    }
 }
