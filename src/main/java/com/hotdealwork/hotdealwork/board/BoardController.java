@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
@@ -29,6 +30,9 @@ public class BoardController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmbeddingService embeddingService;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -131,6 +135,7 @@ public class BoardController {
         board.setView(boardTemp.getView());
         board.setLiked(boardTemp.getLiked());
         board.setDisliked(boardTemp.getDisliked());
+        board.setEmbeddingVector(boardTemp.getEmbeddingVector());
 
         if(deleteImageIds != null) {
             boardService.deleteImages(deleteImageIds);
@@ -164,13 +169,20 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest/{id}")
-    public String boardInterest(Model model,Principal principal, @PathVariable("id") Integer id) {
+    public String boardInterest(Model model, Principal principal, @PathVariable("id") Integer id) {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-
-        System.out.println(siteUser.getInterest());
         this.boardService.boardInterest(board,siteUser);
 
         return String.format("redirect:/board/view?id=%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/recommand")
+    public String boardRecommand(Model model, Principal principal) {
+        SiteUser siteUser = userService.getUser(principal.getName());
+        List<Board> recommandedBoards = embeddingService.recommandBoards(siteUser);
+        model.addAttribute("recommandedBoards", recommandedBoards);
+        return "boardrecommand";
     }
 }
