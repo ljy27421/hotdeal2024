@@ -26,8 +26,6 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final ListPath<Integer, NumberPath<Integer>> interest = this.<Integer, NumberPath<Integer>>createList("interest", Integer.class, NumberPath.class, PathInits.DIRECT2);
 
-    public final ListPath<Double, NumberPath<Double>> interestVector = this.<Double, NumberPath<Double>>createList("interestVector", Double.class, NumberPath.class, PathInits.DIRECT2);
-
     public final SetPath<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard> likes = this.<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard>createSet("likes", com.hotdealwork.hotdealwork.board.Board.class, com.hotdealwork.hotdealwork.board.QBoard.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
