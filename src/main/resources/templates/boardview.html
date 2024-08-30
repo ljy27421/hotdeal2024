@@ -67,8 +67,8 @@
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
 </div>
 
-<div class="vote-buttons">
-    <a class="vote-button" th:href="@{/board/interest/{id}(id=${board.id})}">관심</a>
+<div class="vote-buttons" th:if="${loggedUser != null}">
+    <a class="vote-button" th:href="@{/board/interest/{id}(id=${board.id})}" th:classappend="${loggedUser?.interest.contains(board.id)} ? 'interested' : ''">관심</a>
 </div>
 
 <div class="comment-section">
