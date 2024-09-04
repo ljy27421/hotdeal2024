@@ -166,6 +166,10 @@ p.content {
     color: var(--main-text-color);
 }
 
+.vote-button.interested {
+    background-color: #ff0000;
+}
+
 .comment-form button {
     align-self: flex-end;
     padding: 10px 20px;
