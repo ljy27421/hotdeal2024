@@ -95,10 +95,13 @@ public class CommuController {
     }
 
     @GetMapping("/delete")
-    public String commuDelete(@RequestParam(name="id") Integer id) {
+    public String commuDelete(@RequestParam(name="id") Integer id, Model model) {
 
         commuService.commuDelete(id);
-        return "redirect:/commu/list";
+        model.addAttribute("message", "글을 삭제했습니다.");
+        model.addAttribute("URL", "/commu/list");
+
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -114,7 +117,8 @@ public class CommuController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/{id}")
-    public String commuUpdate(@PathVariable("id") Integer id, Commu commu, Principal principal,
+    public String commuUpdate(Model model,
+                              @PathVariable("id") Integer id, Commu commu, Principal principal,
                               @RequestParam(name = "files", required = false) List<MultipartFile> files,
                               @RequestParam(name = "deleteImageIds", required = false) List<Long> deleteImageIds) throws Exception{
 
@@ -131,26 +135,45 @@ public class CommuController {
 
         commuService.commuWrite(commu, files, userService.getUser(principal.getName()));
 
-        return "redirect:/commu/list";
+        model.addAttribute("message", "글이 수정되었습니다.");
+        model.addAttribute("URL", "/commu/list");
+
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
-    public String commuLike(Principal principal, @PathVariable("id") Integer id) {
+    public String commuLike(Principal principal, @PathVariable("id") Integer id, Model model) {
         Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
+
+        if (commu.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+            model.addAttribute("message", "이미 추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 추천했습니다.");
+        }
+        model.addAttribute("URL", String.format("/commu/view?id=%s", id));
+
         this.commuService.commuLike(commu, siteUser);
 
-        return String.format("redirect:/commu/view?id=%s", id);
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/dislike/{id}")
-    public String commuDislike(Principal principal, @PathVariable("id") Integer id) {
+    public String commuDislike(Principal principal, @PathVariable("id") Integer id, Model model) {
         Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
+
+        if (commu.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+            model.addAttribute("message", "이미 비추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 비추천했습니다.");
+        }
+        model.addAttribute("URL", String.format("/commu/view?id=%s", id));
+
         this.commuService.commuDislike(commu, siteUser);
 
-        return String.format("redirect:/commu/view?id=%s", id);
+        return "message";
     }
 }
