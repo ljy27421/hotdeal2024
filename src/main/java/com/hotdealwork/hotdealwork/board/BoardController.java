@@ -107,10 +107,14 @@ public class BoardController {
     }
 
     @GetMapping("/delete")
-    public String boardDelete(@RequestParam(name="id") Integer id) {
+    public String boardDelete(@RequestParam(name="id") Integer id, Model model) {
 
         boardService.boardDelete(id);
-        return "redirect:/board/list";
+        model.addAttribute("message", "글을 삭제했습니다.");
+        model.addAttribute("URL", "/board/list");
+
+        return "message";
+
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -126,7 +130,8 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, Principal principal,
+    public String boardUpdate(Model model,
+                              @PathVariable("id") Integer id, Board board, Principal principal,
                               @RequestParam(name = "files", required = false) List<MultipartFile> files,
                               @RequestParam(name = "deleteImageIds", required = false) List<Long> deleteImageIds) throws Exception{
 
@@ -144,27 +149,45 @@ public class BoardController {
 
         boardService.boardWrite(board, files, userService.getUser(principal.getName()));
 
-        return "redirect:/board/list";
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("URL", "/board/list");
+
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/like/{id}")
-    public String boardLike(Principal principal, @PathVariable("id") Integer id) {
+    public String boardLike(Principal principal, @PathVariable("id") Integer id, Model model) {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
+
+        if (board.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+            model.addAttribute("message", "이미 추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 추천했습니다.");
+        }
+        model.addAttribute("URL", String.format("/board/view?id=%s", id));
+
         this.boardService.boardLike(board, siteUser);
 
-        return String.format("redirect:/board/view?id=%s", id);
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/dislike/{id}")
-    public String boardDislike(Principal principal, @PathVariable("id") Integer id) {
+    public String boardDislike(Principal principal, @PathVariable("id") Integer id, Model model) {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-        this.boardService.boardDislike(board, siteUser);
 
-        return String.format("redirect:/board/view?id=%s", id);
+        if (board.getDisliked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+            model.addAttribute("message", "이미 비추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 비추천했습니다.");
+        }
+        model.addAttribute("URL", String.format("/board/view?id=%s", id));
+
+        this.boardService.boardDislike(board, siteUser);
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -174,7 +197,14 @@ public class BoardController {
         SiteUser siteUser = userService.getUser(principal.getName());
         this.boardService.boardInterest(board,siteUser);
 
-        return String.format("redirect:/board/view?id=%s", id);
+        if (siteUser.getInterest().contains(id)){
+            model.addAttribute("message", "글을 관심 목록에 추가했습니다.");
+        } else {
+            model.addAttribute("message", "글을 관심 목록에서 제거했습니다.");
+        }
+        model.addAttribute("URL", String.format("/board/view?id=%s", id));
+
+        return "message";
     }
 
     @PreAuthorize("isAuthenticated()")
