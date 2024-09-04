@@ -1,4 +1,4 @@
-@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,700');
+import url('https://fonts.googleapis.com/css?family=Poppins:400,700|Open+Sans:400,700');
 * {
     padding: 0;
     margin: 0;
@@ -32,6 +32,13 @@ header span {
 footer {
     position: fixed;
     bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2d2a30;
+    color: #ffffff;
+    text-align: left;
+    font: bold 16px sans-serif;
+
 }
 
 @media (max-height:800px) {
@@ -44,24 +51,26 @@ footer {
 }
 
 .footer-distributed {
-    background-color: #2d2a30;
     box-sizing: border-box;
     width: 100%;
-    text-align: left;
-    font: bold 16px sans-serif;
-    padding: 50px 50px 60px 50px;
-    margin-top: 80px;
+    padding: 30px 20px;
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
 }
 
 .footer-distributed .footer-left, .footer-distributed .footer-center, .footer-distributed .footer-right {
-    display: inline-block;
-    vertical-align: top;
+    flex: 1;
+    padding: 10px;
+
 }
 
 /* Footer left */
 
 .footer-distributed .footer-left {
-    width: 30%;
+    max-width: 30%;
 }
 
 .footer-distributed h3 {
@@ -79,7 +88,7 @@ footer {
 
 .footer-distributed .footer-links {
     color: #ffffff;
-    margin: 20px 0 12px;
+    margin: 10px; 0;
 }
 
 .footer-distributed .footer-links a {
@@ -87,13 +96,11 @@ footer {
     line-height: 1.8;
     text-decoration: none;
     color: inherit;
+    margin-right:10px;
 }
 
 .footer-distributed .footer-company-name {
     color: #8f9296;
-    font-size: 14px;
-    font-weight: normal;
-    margin: 0;
 }
 
 
@@ -101,14 +108,12 @@ footer {
 
 .footer-distributed .footer-right {
     width: 30%;
-	float: right;
 }
 
 .footer-distributed .footer-company-about {
     line-height: 20px;
     color: #92999f;
     font-size: 13px;
-    font-weight: normal;
     margin: 0;
 }
 
@@ -121,22 +126,21 @@ footer {
 }
 
 .footer-distributed .footer-icons {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .footer-distributed .footer-icons a {
     display: inline-block;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     background-color: #33383b;
-    border-radius: 2px;
-    font-size: 20px;
+    border-radius: 50%;
+    font-size: 18px;
     color: #ffffff;
     text-align: center;
-    line-height: 35px;
-    margin-right: 3px;
-    margin-bottom: 5px;
+    line-height: 30px;
+    margin-right: 5px;
 }
 
 .footer-distributed .footer-icons a:hover {
@@ -157,7 +161,4 @@ footer {
     .footer-distributed .footer-center i {
         margin-left: 0;
     }
-}       
-        
-
-        
+}
