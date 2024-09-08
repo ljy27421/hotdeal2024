@@ -76,7 +76,7 @@ public class EmbeddingService {
         List<Board> allBoards = boardRepository.findAll();
 
         List<Board> validBoards = allBoards.stream()
-                .filter(board -> !board.getExpired())
+                .filter(board -> board.getEndDate() != null &&  board.getEndDate().isAfter(LocalDate.now()))
                 .filter(board -> !siteUser.getInterest().contains(board.getId()))
                 .toList();
 
