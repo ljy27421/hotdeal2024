@@ -150,7 +150,7 @@ public class CommuController {
             siteUser.setCommuLikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
         }
 
-        if (siteUser.getLikes().contains(commu.getId())){
+        if (siteUser.getCommuLikes().contains(commu.getId())){
             model.addAttribute("message", "이미 추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 추천했습니다.");
@@ -171,7 +171,7 @@ public class CommuController {
             siteUser.setCommuDislikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
         }
 
-        if (siteUser.getDislikes().contains(commu.getId())){
+        if (siteUser.getCommuDislikes().contains(commu.getId())){
             model.addAttribute("message", "이미 비추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 비추천했습니다.");
