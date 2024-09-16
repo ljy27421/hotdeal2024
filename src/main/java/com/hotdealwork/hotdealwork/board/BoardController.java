@@ -139,7 +139,6 @@ public class BoardController {
 
         board.setView(boardTemp.getView());
         board.setLiked(boardTemp.getLiked());
-        board.setDisliked(boardTemp.getDisliked());
         board.setEmbeddingVector(boardTemp.getEmbeddingVector());
 
         if(deleteImageIds != null) {
@@ -161,14 +160,17 @@ public class BoardController {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
 
-        if (board.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+        if (siteUser.getLikes() == null){
+            siteUser.setLikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+        }
+
+        if (siteUser.getLikes().contains(board.getId())){
             model.addAttribute("message", "이미 추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 추천했습니다.");
+            this.boardService.boardLike(board, siteUser);
         }
         model.addAttribute("URL", String.format("/board/view?id=%s", id));
-
-        this.boardService.boardLike(board, siteUser);
 
         return "message";
     }
@@ -179,14 +181,18 @@ public class BoardController {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
 
-        if (board.getDisliked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
+        if (siteUser.getDislikes() == null){
+            siteUser.setDislikes(new ArrayList<>());
+        }
+
+        if (siteUser.getDislikes().contains(board.getId())){
             model.addAttribute("message", "이미 비추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 비추천했습니다.");
+            this.boardService.boardDislike(board, siteUser);
         }
         model.addAttribute("URL", String.format("/board/view?id=%s", id));
 
-        this.boardService.boardDislike(board, siteUser);
         return "message";
     }
 

@@ -151,38 +151,20 @@
             <div class="section">
                 <h2>핫딜 게시판</h2>
                 <p>최신 핫딜을 확인하세요.</p>
-                <a href="#">더보기</a>
+                <a href="/board/list">더보기</a>
                 <div class="post-list">
-                    <div class="post-item">
-                        <h3>핫딜 1</h3>
-                        <p>핫딜의 간단한 설명...</p>
-                    </div>   
-                    <div class="post-item">
-                        <h3>핫딜 2</h3>
-                        <p>핫딜의 간단한 설명...</p>
-                    </div>
-                    <div class="post-item">
-                        <h3>핫딜 3</h3>
-                        <p>핫딜의 간단한 설명...</p>
+                    <div th:each="Board : ${board}" class="post-item">
+                        <a th:href="@{/board/view(id=${Board.id})}" th:text="${Board.title}"></a>
                     </div>
                 </div>
             </div>
             <div class="section">
                 <h2>자유 게시판</h2>
                 <p>자유롭게 이야기를 나누세요.</p>
-                <a href="#">더보기</a>
+                <a href="/commu/list">더보기</a>
                 <div class="post-list">
-                    <div class="post-item">
-                        <h3>자유 글 1</h3>
-                        <p>글의 간단한 설명...</p>
-                    </div>
-                    <div class="post-item">
-                        <h3>자유 글 2</h3>
-                        <p>글의 간단한 설명...</p>
-                    </div>
-                    <div class="post-item">
-                        <h3>자유 글 3</h3>
-                        <p>글의 간단한 설명...</p>
+                    <div th:each="Commu : ${commu}" class="post-item">
+                        <a th:href="@{/commu/view(id=${Commu.id})}" th:text="${Commu.title}"></a>
                     </div>
                 </div>
             </div>
