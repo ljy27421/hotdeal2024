@@ -30,7 +30,7 @@ public class Commu {
     private SiteUser author;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
-    private Integer liked;
+    private Integer liked = 0;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
