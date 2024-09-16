@@ -31,7 +31,7 @@
 
 <p th:text="${commu.content}">내용</p>
 <a th:href="@{/commu/like/{id}(id=${commu.id})}">추천</a>
-<span th:text="${#lists.size(commu.liked) - #lists.size(commu.disliked)}"></span>
+<span th:text="${commu.liked}"></span>
 <a th:href="@{/commu/dislike/{id}(id=${commu.id})}">비추천</a>
 <a th:href="@{/commu/list}">목록</a>
 <div th:if="${loggedUser != null}">
