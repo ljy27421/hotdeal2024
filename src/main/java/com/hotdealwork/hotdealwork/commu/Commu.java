@@ -29,11 +29,8 @@ public class Commu {
     @ManyToOne
     private SiteUser author;
 
-    @ManyToMany
-    Set<SiteUser> liked;
-
-    @ManyToMany
-    Set<SiteUser> disliked;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private Integer liked = 0;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;

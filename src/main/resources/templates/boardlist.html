@@ -51,15 +51,15 @@
         <tbody>
         <tr th:each="board : ${list}" th:classappend="${board.expired ? ' expired' : ''}">
             <td>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) >= 1}" style="color:red">●</span>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) <= -1}" style="color:blue">●</span>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) > -1 and #lists.size(board.liked) - #lists.size(board.disliked) < 1}">●</span>
+                <span th:if="${board.liked >= 1}" style="color:red">●</span>
+                <span th:if="${board.liked <= -1}" style="color:blue">●</span>
+                <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
             <td th:text="${board.id}">1</td>
             <td>
                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
             </td>
-            <td th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">1</td>
+            <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
             <td>
                         <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"

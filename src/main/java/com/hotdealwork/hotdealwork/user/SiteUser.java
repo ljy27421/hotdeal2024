@@ -2,6 +2,7 @@ package com.hotdealwork.hotdealwork.user;
 
 import com.hotdealwork.hotdealwork.board.Board;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 
 import java.util.List;
@@ -26,7 +27,11 @@ public class SiteUser {
 
     private List<Integer> interest;
 
+    private List<Integer> likes;
 
-    @ManyToMany
-    Set<Board> likes;
+    private List<Integer> dislikes;
+
+    private List<Integer> commuLikes;
+
+    private List<Integer> commuDislikes;
 }
