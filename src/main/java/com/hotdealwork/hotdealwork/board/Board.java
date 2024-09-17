@@ -18,7 +18,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private  String content;
+    private String content;
     private String category;
 
     private String mall;
@@ -39,11 +39,14 @@ public class Board {
     @ManyToOne
     private SiteUser author;
 
-    @ManyToMany
-    Set<SiteUser> liked;
+//    @ManyToMany
+//    Set<SiteUser> liked;
+//
+//    @ManyToMany
+//    Set<SiteUser> disliked;]
 
-    @ManyToMany
-    Set<SiteUser> disliked;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private Integer liked = 0;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
