@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -126,7 +127,7 @@ public class BoardService {
         }
 
         if (hot > 0) {
-            builder.and(board.liked.size().goe(hot));
+            builder.and(board.liked.goe(hot));
         }
 
         List<Board> result = queryFactory
@@ -150,6 +151,19 @@ public class BoardService {
         });
 
         return new PageImpl<>(result, pageable, total);
+    }
+
+    // 메인 페이지 인기글 처리
+    public List<Board> boardMainHot() {
+        QBoard board = QBoard.board;
+
+        return queryFactory
+                .selectFrom(board)
+                .where(board.endDate.after(LocalDate.now())
+                        .and(board.createdDate.after(LocalDateTime.now().minusWeeks(1))))
+                .orderBy(board.liked.desc())
+                .limit(5)
+                .fetch();
     }
 
     // 글 불러오기 처리
@@ -187,13 +201,17 @@ public class BoardService {
 
     // 게시글 추천
     public void boardLike(Board board, SiteUser siteUser) {
-        board.getLiked().add(siteUser);
+        board.setLiked(board.getLiked() + 1);
+        siteUser.getLikes().add(board.getId());
         boardRepository.save(board);
+        userRepository.save(siteUser);
     }
     // 게시글 비추천
     public void boardDislike(Board board, SiteUser siteUser) {
-        board.getDisliked().add(siteUser);
+        board.setLiked(board.getLiked() - 1);
+        siteUser.getDislikes().add(board.getId());
         boardRepository.save(board);
+        userRepository.save(siteUser);
     }
     // 관심 처리
     public void boardInterest(Board board, SiteUser siteUser){
