@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<div id="header"></div>
+<!--<div id="header"></div>-->
 
 <h1 th:text="${board.title}">제목</h1>
 
@@ -54,7 +54,7 @@
 
 <div class="vote-buttons">
     <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
-    <span class="vote-count" th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">0</span>
+    <span class="vote-count" th:text="${board.liked}">0</span>
     <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
 </div>
 
@@ -152,6 +152,6 @@
     }
 </script>
 
-<div id="footer"></div>
+<!--<div id="footer"></div>-->
 </body>
 </html>
