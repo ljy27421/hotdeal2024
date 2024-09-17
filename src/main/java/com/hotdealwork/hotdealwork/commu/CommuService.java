@@ -1,9 +1,12 @@
 package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
+import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.board.QBoard;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
+import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -23,6 +27,9 @@ public class CommuService {
 
     @Autowired
     private CommuRepository commuRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -109,7 +116,7 @@ public class CommuService {
         }
 
         if (hot > 0) {
-            builder.and(commu.liked.size().goe(hot));
+            builder.and(commu.liked.goe(hot));
         }
 
         List<Commu> result = queryFactory
@@ -128,6 +135,18 @@ public class CommuService {
 
         return new PageImpl<>(result, pageable, total);
     }
+    // 메인 페이지 인기글 처리
+    public List<Commu> commuMainHot() {
+        QCommu commu = QCommu.commu;
+
+        return queryFactory
+                .selectFrom(commu)
+                .where(commu.createdDate.after(LocalDateTime.now().minusWeeks(1)))
+                .orderBy(commu.liked.desc())
+                .limit(5)
+                .fetch();
+    }
+
 
     // 글 불러오기 처리
 //    public Commu commuView(Integer id) {
@@ -164,13 +183,17 @@ public class CommuService {
 
     // 게시글 추천
     public void commuLike(Commu commu, SiteUser siteUser) {
-        commu.getLiked().add(siteUser);
+        commu.setLiked(commu.getLiked() + 1);
+        siteUser.getCommuLikes().add(commu.getId());
         commuRepository.save(commu);
+        userRepository.save(siteUser);
     }
     // 게시글 비추천
     public void commuDislike(Commu commu, SiteUser siteUser) {
-        commu.getDisliked().add(siteUser);
+        commu.setLiked(commu.getLiked() - 1);
+        siteUser.getCommuDislikes().add(commu.getId());
         commuRepository.save(commu);
+        userRepository.save(siteUser);
     }
 
 }
