@@ -35,14 +35,14 @@ public class Commu {
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
-    }
-
-    @Override
-    public String toString() {
-        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
-    }
+//    @PrePersist
+//    protected void onCreate() {
+//        this.createdDate = LocalDateTime.now();
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
+//    }
 
 }
