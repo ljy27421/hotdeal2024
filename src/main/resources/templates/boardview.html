@@ -72,7 +72,7 @@
 </div>
 
 <div th:if="${loggedUser != null}">
-    <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/delete?(id=${board.id})}">삭제</a>
+    <a th:if="${board.author.id} == ${loggedUser.id}" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'">삭제</a>
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
 </div>
 
@@ -109,7 +109,7 @@
             <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
         </td>
         <td th:if="${reply.author.id} == ${loggedUser?.id}">
-            <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
+            <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
                 <button type="submit" class="table-button">삭제</button>
             </form>
         </td>
@@ -159,6 +159,19 @@
         document.getElementById('reply-row-' + replyId).style.display = 'table-row';
         document.getElementById('edit-row-' + replyId).style.display = 'none';
     }
+
+    function confirmDelete(boardId) {
+        if (confirm("글을 삭제하시겠습니까?")) {
+            window.location.href = '/board/delete?id=' + boardId;
+        } else {
+            return false;
+        }
+    }
+
+    function confirmReplyDelete() {
+        return confirm("댓글을 삭제하시겠습니까?");
+    }
+
 </script>
 
 <!--<div id="footer"></div>-->
