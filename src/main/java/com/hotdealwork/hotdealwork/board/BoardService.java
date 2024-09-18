@@ -8,11 +8,13 @@ import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -101,7 +103,7 @@ public class BoardService {
     }
 
     // 동적 쿼리 리스트 처리
-    public Page<Board> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+    public Page<BoardDTO> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
         QBoard board = QBoard.board;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -130,8 +132,19 @@ public class BoardService {
             builder.and(board.liked.goe(hot));
         }
 
-        List<Board> result = queryFactory
-                .selectFrom(board)
+        List<BoardDTO> result = queryFactory
+                .select(Projections.constructor(BoardDTO.class,
+                        board.id,
+                        board.title,
+                        board.category,
+                        board.createdDate,
+                        board.endDate,
+                        board.liked,
+                        board.expired,
+                        board.author,
+                        board.view
+                ))
+                .from(board)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .orderBy(board.id.desc())
@@ -146,7 +159,6 @@ public class BoardService {
         result.forEach(b -> {
             if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
                 b.setExpired(true);
-                boardRepository.save(b);
             }
         });
 
@@ -154,11 +166,15 @@ public class BoardService {
     }
 
     // 메인 페이지 인기글 처리
-    public List<Board> boardMainHot() {
+    public List<BoardMainDTO> boardMainHot() {
         QBoard board = QBoard.board;
 
         return queryFactory
-                .selectFrom(board)
+                .select(Projections.constructor(BoardMainDTO.class,
+                        board.id,
+                        board.title
+                ))
+                .from(board)
                 .where(board.endDate.after(LocalDate.now())
                         .and(board.createdDate.after(LocalDateTime.now().minusWeeks(1))))
                 .orderBy(board.liked.desc())
