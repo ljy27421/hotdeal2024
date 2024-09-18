@@ -7,32 +7,42 @@
     <title>게시글 리스트 페이지</title>
 </head>
 <body>
+<div id="header"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+    });
+</script>
 <div class="layout">
 
     <div class="header">
         <h1>게시글 리스트 페이지</h1>
-<!--        <button type="button" onclick="location.href='/board/write'">글쓰기</button>-->
+        <!--        <button type="button" onclick="location.href='/board/write'">글쓰기</button>-->
     </div>
 
-<!--    <div class="filter-buttons">-->
-<!--        <form th:action="@{/board/list}" method="get" id="hotForm">-->
-<!--            <input type="hidden" name="hot" value="1">-->
-<!--            <button type="submit">인기글</button>-->
-<!--        </form>-->
-<!--        <form th:action="@{/board/list}" method="get" id="fullForm">-->
-<!--            <button type="submit">전체글</button>-->
-<!--        </form>-->
-<!--    </div>-->
+    <!--    <div class="filter-buttons">-->
+    <!--        <form th:action="@{/board/list}" method="get" id="hotForm">-->
+    <!--            <input type="hidden" name="hot" value="1">-->
+    <!--            <button type="submit">인기글</button>-->
+    <!--        </form>-->
+    <!--        <form th:action="@{/board/list}" method="get" id="fullForm">-->
+    <!--            <button type="submit">전체글</button>-->
+    <!--        </form>-->
+    <!--    </div>-->
 
     <!-- 카테고리 링크 -->
-<!--    <div class="category-links">-->
-<!--        <a th:href="@{/board/list(category='식품', hot=${param.hot})}">식품</a>-->
-<!--        <a th:href="@{/board/list(category='의류', hot=${param.hot})}">의류</a>-->
-<!--        <a th:href="@{/board/list(category='생활용품', hot=${param.hot})}">생활용품</a>-->
-<!--        <a th:href="@{/board/list(category='전자제품', hot=${param.hot})}">전자제품</a>-->
-<!--        <a th:href="@{/board/list(category='상품권', hot=${param.hot})}">상품권</a>-->
-<!--        <a th:href="@{/board/list(category='기타', hot=${param.hot})}">기타</a>-->
-<!--    </div>-->
+    <!--    <div class="category-links">-->
+    <!--        <a th:href="@{/board/list(category='식품', hot=${param.hot})}">식품</a>-->
+    <!--        <a th:href="@{/board/list(category='의류', hot=${param.hot})}">의류</a>-->
+    <!--        <a th:href="@{/board/list(category='생활용품', hot=${param.hot})}">생활용품</a>-->
+    <!--        <a th:href="@{/board/list(category='전자제품', hot=${param.hot})}">전자제품</a>-->
+    <!--        <a th:href="@{/board/list(category='상품권', hot=${param.hot})}">상품권</a>-->
+    <!--        <a th:href="@{/board/list(category='기타', hot=${param.hot})}">기타</a>-->
+    <!--    </div>-->
 
     <table>
         <thead>
