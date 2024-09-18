@@ -74,7 +74,7 @@ public class BoardController {
                             @RequestParam(name = "searchType", required = false) String searchType,
                             @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
-        Page<Board> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
+        Page<BoardDTO> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
