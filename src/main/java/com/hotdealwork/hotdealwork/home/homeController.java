@@ -1,8 +1,10 @@
 package com.hotdealwork.hotdealwork.home;
 
 import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.board.BoardMainDTO;
 import com.hotdealwork.hotdealwork.board.BoardService;
 import com.hotdealwork.hotdealwork.commu.Commu;
+import com.hotdealwork.hotdealwork.commu.CommuMainDTO;
 import com.hotdealwork.hotdealwork.commu.CommuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +25,8 @@ public class homeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Board> board = boardService.boardMainHot();
-        List<Commu> commu = commuService.commuMainHot();
+        List<BoardMainDTO> board = boardService.boardMainHot();
+        List<CommuMainDTO> commu = commuService.commuMainHot();
 
         model.addAttribute("board", board);
         model.addAttribute("commu", commu);
