@@ -4,58 +4,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문서 제목</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
     <title>회원가입</title>
-	<link rel="stylesheet" type="text/css" href="/css/signup.css">
+    <link rel="stylesheet" type="text/css" href="/css/signup.css">
+    <style>
+        /* 비밀번호 찾기 질문 제목 스타일 */
+        .label-black {
+            color: black;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
-<!--<div id="header"></div>-->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-    });
-</script>
 <div class="box">
     <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
         <h2>회원가입</h2>
         <div th:replace="~{form_errors :: formErrorsFragment}" class="error-message"></div>
+
+        <!-- ID 입력 -->
         <div class="inputBox">
             <input type="text" id="username" th:field="*{username}" required>
             <span>ID</span>
         </div>
+
+        <!-- 비밀번호 입력 -->
         <div class="inputBox">
             <input type="password" id="password" th:field="*{password}" required>
             <span>비밀번호</span>
         </div>
+
+        <!-- 비밀번호 확인 -->
         <div class="inputBox">
             <input type="password" id="checkPassword" th:field="*{checkPassword}" required>
             <span>비밀번호 확인</span>
         </div>
+
+        <!-- 이메일 입력 -->
         <div class="inputBox">
             <input type="email" id="email" th:field="*{email}" required>
             <span>이메일</span>
         </div>
+
+        <!-- 닉네임 입력 -->
+        <div class="inputBox">
+            <input type="text" id="nickname" th:field="*{nickname}" required>
+            <span>닉네임</span>
+        </div>
+
+        <!-- 비밀번호 찾기 질문 선택 -->
+        <div class="inputBox">
+            <!-- 질문 레이블 추가 -->
+            <label for="selectedQuestion" class="label-black">비밀번호 찾기 질문</label>
+            <select id="selectedQuestion" th:field="*{selectedQuestion}" required>
+                <option value="">질문을 선택하세요</option>
+                <option value="기억에 남는 장소">기억에 남는 장소</option>
+                <option value="인생 좌우명">인생 좌우명</option>
+                <option value="좋아하는 캐릭터">좋아하는 캐릭터</option>
+            </select>
+        </div>
+
+        <!-- 비밀번호 찾기 답변 -->
+        <div class="inputBox">
+            <input type="text" id="securityAnswer" th:field="*{securityAnswer}" required>
+            <span>질문의 답</span>
+        </div>
+
+        <!-- 회원가입 버튼 -->
         <button type="submit">회원가입</button>
     </form>
 </div>
-<!--<div id="footer"></div>-->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-    });
-</script>
 
-<!--<script src="/signup.js"></script>-->
+<script src="/signup.js"></script>
 </body>
 </html>
