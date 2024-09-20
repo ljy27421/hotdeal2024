@@ -58,6 +58,17 @@ public class Board {
         return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
     }
 
-    private List<Double> embeddingVector;
+    // 신고된 게시물 여부를 나타내는 필드 추가 (기본값: false)
+    private boolean reported = false;
 
+    // 신고된 게시물 여부 설정 메서드
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
+
+    public boolean isReported() {
+        return reported;
+    }
+
+    private List<Double> embeddingVector;
 }
