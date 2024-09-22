@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/list.css">
+    <title>게시글 리스트 페이지</title>
+</head>
+<body>
+<div class="layout">
+
+    <div class="header">
+        <h1>게시글 리스트 페이지</h1>
+        <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
+        <button type="button" onclick="location.href='/board/write'">글쓰기</button>
+    </div>
+
+    <div class="filter-buttons">
+        <form th:action="@{/board/list}" method="get" id="hotForm">
+            <input type="hidden" name="hot" value="1">
+            <button type="submit">인기글</button>
+        </form>
+        <form th:action="@{/board/list}" method="get" id="fullForm">
+            <button type="submit">전체글</button>
+        </form>
+    </div>
+
+    <!-- 카테고리 링크 -->
+    <div class="category-links">
+        <a th:href="@{/board/list(category='식품', hot=${param.hot})}">식품</a>
+        <a th:href="@{/board/list(category='의류', hot=${param.hot})}">의류</a>
+        <a th:href="@{/board/list(category='생활용품', hot=${param.hot})}">생활용품</a>
+        <a th:href="@{/board/list(category='전자제품', hot=${param.hot})}">전자제품</a>
+        <a th:href="@{/board/list(category='상품권', hot=${param.hot})}">상품권</a>
+        <a th:href="@{/board/list(category='기타', hot=${param.hot})}">기타</a>
+    </div>
+
+    <table th:if="${list.totalPages > 0}">
+        <thead>
+        <tr>
+            <th>●</th>
+            <th>글번호</th>
+            <th>제목</th>
+            <th>추천수</th>
+            <th>카테고리</th>
+            <th>작성일</th>
+            <th>작성자</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${list}" th:classappend="${board.expired ? ' expired' : ''}">
+            <td>
+                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) >= 1}" style="color:red">●</span>
+                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) <= -1}" style="color:blue">●</span>
+                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) > -1 and #lists.size(board.liked) - #lists.size(board.disliked) < 1}">●</span>
+            </td>
+            <td th:text="${board.id}">1</td>
+            <td>
+                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
+            </td>
+            <td th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">1</td>
+            <td th:text="${board.category}">1</td>
+            <td>
+                        <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                              th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                      th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+            </td>
+            <td th:text="${board.author.username}"></td>
+            <td th:text="${board.view}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- 검색 결과 없을 시 안내문 -->
+    <div th:if="${list.totalPages == 0}" class="no-posts-message">글이 없습니다.</div>
+
+    <!-- 페이징 처리 -->
+    <div class="pagination" th:if="${list.totalPages > 0}">
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != curPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword}, searchType=${param.searchType}, category=${param.category}, hot=${param.hot})}" th:text="${page}"></a>
+            <strong th:if="${page == curPage}" th:text="${page}"></strong>
+        </th:block>
+    </div>
+
+    <!-- 검색 버튼 -->
+    <div class="search-form">
+        <form th:action="@{/board/list}" method="get" id="searchForm">
+            <input type="text" name="searchKeyword" placeholder="검색어를 입력하세요" th:value="${param.searchKeyword}">
+            <input type="hidden" name="category" th:value="${category}">
+            <input type="hidden" name="hot" th:value="${hot}">
+            <button type="submit">검색</button>
+            <select name="searchType" id="searchType">
+                <option value="title" th:selected="${searchType == 'title'}">제목</option>
+                <option value="content" th:selected="${searchType == 'content'}">내용</option>
+                <option value="torc" th:selected="${searchType == 'torc'}">제목+내용</option>
+                <option value="mall" th:selected="${searchType == 'mall'}">쇼핑몰</option>
+                <option value="productName" th:selected="${searchType == 'productName'}">상품명</option>
+                <option value="author" th:selected="${searchType == 'author'}">작성자</option>
+            </select>
+        </form>
+    </div>
+</div>
+</body>
+</html>

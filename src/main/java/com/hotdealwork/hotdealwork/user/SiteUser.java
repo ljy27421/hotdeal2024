@@ -26,7 +26,7 @@ public class SiteUser {
     private List<Integer> interest;
 
     // 계정 활성 상태 필드 추가 (기본값: true)
-    private boolean active = true;
+    private Boolean active = true;
 
     @ManyToMany
     Set<Board> likes;
