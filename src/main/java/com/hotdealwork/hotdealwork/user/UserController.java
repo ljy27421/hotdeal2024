@@ -17,6 +17,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
     private final UserService userService;
 
+    // 로그인 페이지 이동 (GET 요청)
+    @GetMapping("/login")
+    public String loginForm() {
+        return "login_form";  // login_form.html 파일로 이동
+    }
+
+    // 로그인 처리 (POST 요청)
+    @PostMapping("/login")
+    public String login(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        Model model) {
+        if (userService.authenticateUser(username, password)) {
+            // 인증 성공 후 회원정보 수정 페이지로 이동
+            return "redirect:/user/editProfile?username=" + username + "&password=" + password;
+        } else {
+            model.addAttribute("message", "로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.");
+            return "login_form";
+        }
+    }
+
     // 회원 정보 수정 페이지로 이동
     @GetMapping("/editProfile")
     public String editProfileForm(@RequestParam("username") String username,
@@ -33,18 +53,22 @@ public class UserController {
         }
     }
 
-    // 로그인 처리
-    @PostMapping("/login")
-    public String login(@RequestParam("username") String username,
-                        @RequestParam("password") String password,
-                        Model model) {
-        if (userService.authenticateUser(username, password)) {
-            // 인증 성공 후 회원정보 수정 페이지로 이동
-            return "redirect:/user/editProfile?username=" + username + "&password=" + password;
-        } else {
-            model.addAttribute("message", "로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.");
-            return "login_form";
+    // 아이디 찾기 페이지 이동
+    @GetMapping("/findId")
+    public String findIdForm() {
+        return "find_id";  // find_id.html 파일로 이동
+    }
+
+    // 아이디 찾기 처리
+    @PostMapping("/findId")
+    public String findId(@RequestParam String email, Model model) {
+        try {
+            String foundUsername = userService.findUsernameByEmail(email);
+            model.addAttribute("message", "해당 이메일로 등록된 ID는 " + foundUsername + "입니다.");
+        } catch (Exception e) {
+            model.addAttribute("message", "해당 이메일로 등록된 사용자를 찾을 수 없습니다.");
         }
+        return "find_id";  // 결과를 표시하기 위해 다시 find_id.html로 돌아감
     }
 
     // 회원가입 페이지 이동
