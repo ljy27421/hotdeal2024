@@ -59,7 +59,7 @@ public class Board {
     }
 
     // 신고된 게시물 여부를 나타내는 필드 추가 (기본값: false)
-    private boolean reported = false;
+    private Boolean reported = false;
 
     // 신고된 게시물 여부 설정 메서드
     public void setReported(boolean reported) {

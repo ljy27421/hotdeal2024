@@ -25,8 +25,8 @@ public class UserController {
 
     // 로그인 처리 (POST 요청)
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username,
-                        @RequestParam("password") String password,
+    public String login(@RequestParam(name="username") String username,
+                        @RequestParam(name="password") String password,
                         Model model) {
         if (userService.authenticateUser(username, password)) {
             // 인증 성공 후 회원정보 수정 페이지로 이동
@@ -39,8 +39,8 @@ public class UserController {
 
     // 회원 정보 수정 페이지로 이동
     @GetMapping("/editProfile")
-    public String editProfileForm(@RequestParam("username") String username,
-                                  @RequestParam("password") String password,
+    public String editProfileForm(@RequestParam(name="username") String username,
+                                  @RequestParam(name="password") String password,
                                   Model model) {
         // 유효한 사용자 인증
         if (userService.authenticateUser(username, password)) {
@@ -61,14 +61,16 @@ public class UserController {
 
     // 아이디 찾기 처리
     @PostMapping("/findId")
-    public String findId(@RequestParam String email, Model model) {
+    public String findId(@RequestParam(name = "email") String email, Model model) {
         try {
             String foundUsername = userService.findUsernameByEmail(email);
             model.addAttribute("message", "해당 이메일로 등록된 ID는 " + foundUsername + "입니다.");
+            model.addAttribute("URL","/#");
         } catch (Exception e) {
             model.addAttribute("message", "해당 이메일로 등록된 사용자를 찾을 수 없습니다.");
+            model.addAttribute("URL","/find_id");
         }
-        return "find_id";  // 결과를 표시하기 위해 다시 find_id.html로 돌아감
+        return "message";  // 결과를 표시하기 위해 다시 find_id.html로 돌아감
     }
 
     // 회원가입 페이지 이동
