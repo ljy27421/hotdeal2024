@@ -289,10 +289,13 @@
       <td th:text="${commu.liked}">1</td>
       <td th:text="${commu.category}">1</td>
       <td>
+        <span th:if="${commu.createdDate != null}">
                         <span th:if="${#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
                               th:text="${#temporals.format(commu.createdDate, 'HH:mm')}"></span>
         <span th:if="${!#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
               th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd')}"></span>
+        </span>
+        <span th:if="${commu.createdDate == null}">날짜 정보 없음</span>
       </td>
       <td th:text="${commu.author.username}"></td>
       <td th:text="${commu.view}"></td>
