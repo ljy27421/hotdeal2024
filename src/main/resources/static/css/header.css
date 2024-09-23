@@ -81,7 +81,9 @@ nav {
 
 .nav-menu {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -185,7 +187,7 @@ nav {
 /* Mobile Menu */
 @media (max-width: 576px) {
   .header-container {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
   }
 

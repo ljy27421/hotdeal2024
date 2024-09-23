@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="/css/header.css"> <!-- CSS 파일 경로 -->
 </head>
 <body>
-<header>
+<header th:fragment="commonHeader">
     <div class="header-container">
         <div class="logo">
             <a href="/">
-                <img src="/images/logo.jpg" alt="사이트 로고">
+                <img src="/images/logo.jpg" alt="사이트 로고"> <!-- 경로 확인 -->
             </a>
         </div>
         <div class="mobile-menu-toggle">
@@ -24,15 +24,10 @@
             <ul class="nav-menu">
                 <li><a href="/" th:text="#{menu.main}">메인</a></li>
                 <li><a href="/hotdeals" th:text="#{menu.hotdeals}">핫딜</a></li>
-                <li><a href="/categories" th:text="#{menu.categories}">카테고리</a></li>
                 <li><a href="/free" th:text="#{menu.free}">자유</a></li>
-                <li><a href="/contact" th:text="#{menu.contact}">문의하기</a></li>
+                <li><a href="/contact" th:text="#{menu.contact}">Contact</a></li>
             </ul>
         </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="검색...">
-            <button>검색</button>
-        </div>
         <div class="auth-buttons">
             <a href="/user/login" th:text="#{auth.login}">로그인</a>
             <a href="/user/logout" th:text="#{auth.logout}">로그아웃</a>
