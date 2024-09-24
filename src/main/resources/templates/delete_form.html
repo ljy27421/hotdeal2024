@@ -5,6 +5,7 @@
     <title>회원 탈퇴</title>
 </head>
 <body>
+<div id="header"></div>
 <div>
     <form th:action="@{/user/delete}" method="post">
         <div>
@@ -19,5 +20,22 @@
         <p th:text="${message}"></p>
     </form>
 </div>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/board/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('/board/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
+
 </body>
 </html>
