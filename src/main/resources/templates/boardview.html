@@ -12,6 +12,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            color: var(--main-text-color);
         }
 
         .info-table td {
@@ -68,7 +69,9 @@
 </div>
 
 <div class="vote-buttons" th:if="${loggedUser != null}">
-    <a class="vote-button" th:href="@{/board/interest/{id}(id=${board.id})}" th:classappend="${loggedUser?.interest.contains(board.id)} ? 'interested' : ''">관심</a>
+    <a class="vote-button"
+       th:href="@{/board/interest/{id}(id=${board.id})}"
+       th:classappend="${loggedUser.interest != null && loggedUser.interest.contains(board.id)} ? 'interested' : ''">관심</a>
 </div>
 
 <div class="comment-section">
