@@ -1,21 +1,19 @@
-<!-- src/main/resources/templates/admin/reportedBoards.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>신고된 게시물</title>
+  <title>신고된 게시물 목록</title>
   <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-<h1>관리자 - 신고된 게시물</h1>
+<h1>관리자 - 신고된 게시물 목록</h1>
 <table border="1">
   <thead>
   <tr>
     <th>게시물 ID</th>
-    <th>제목</th>
+    <th>게시물 제목</th>
     <th>작성자</th>
-    <th>신고 사유</th>
     <th>삭제</th>
   </tr>
   </thead>
@@ -23,8 +21,7 @@
   <tr th:each="board : ${boards}">
     <td th:text="${board.id}"></td>
     <td th:text="${board.title}"></td>
-    <td th:text="${board.author.username}"></td>
-    <td th:text="${board.reportReason}"></td>
+    <td th:text="${board.username}"></td>
     <td>
       <form th:action="@{/admin/deleteBoard}" method="post">
         <input type="hidden" name="boardId" th:value="${board.id}" />
