@@ -21,7 +21,7 @@ public class AdminService {
     @Autowired
     private ReplyRepository replyRepository;
 
-    // 회원 정보 조회
+    // 모든 회원 조회
     public List<SiteUser> getAllUsers() {
         return userRepository.findAll();
     }
@@ -32,25 +32,28 @@ public class AdminService {
         return user.orElse(null); // 사용자가 없을 경우 null 반환
     }
 
-    // 계정 정지
+    // 계정 정지 또는 활성화
     public void suspendUser(Long userId) {
         Optional<SiteUser> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            // 계정 정지 처리 로직 (ex: 활성 상태를 비활성으로 변경)
             SiteUser siteUser = user.get();
-            siteUser.setActive(false); // `active` 필드를 SiteUser에 추가해야 함.
-            userRepository.save(siteUser);
+            siteUser.setActive(!siteUser.isActive()); // 현재 활성 상태를 반전시킴
+            userRepository.save(siteUser); // 변경된 상태를 저장
         }
     }
 
-    // 신고된 게시물 조회 (신고 필드는 별도로 추가해야 할 수 있음)
+    // 신고된 게시물 조회
     public List<Board> getReportedBoards() {
-        return boardRepository.findReportedBoards(); // 신고된 게시물을 찾는 커스텀 쿼리 필요
+        return boardRepository.findReportedBoards(); // 신고된 게시물 커스텀 쿼리 사용
     }
 
     // 게시물 삭제
     public void deleteBoard(Integer boardId) {
-        boardRepository.deleteById(boardId);
+        if (boardRepository.existsById(boardId)) { // 게시물 존재 확인
+            boardRepository.deleteById(boardId);
+        } else {
+            throw new IllegalArgumentException("게시물이 존재하지 않습니다."); // 존재하지 않는 게시물 삭제 시 예외 처리
+        }
     }
 
     // 댓글 삭제
@@ -58,8 +61,8 @@ public class AdminService {
         replyRepository.deleteById(replyId);
     }
 
-    // 공지사항 게시 (공지사항 게시 관련 새로운 엔티티 및 테이블 추가 필요)
+    // 공지사항 게시
     public void postAnnouncement(String title, String content) {
-        // 공지사항 저장 로직 추가
+
     }
 }

@@ -21,8 +21,6 @@ public class SiteUser {
 
     private String password;
 
-//    private List<Double> interestVector;
-
     private List<Integer> interest;
 
     // 계정 활성 상태 필드 추가 (기본값: true)
@@ -37,7 +35,6 @@ public class SiteUser {
     // 비밀번호 찾기 질문 필드 추가 (선택된 질문과 답변)
     private String selectedQuestion;  // 선택된 질문
     private String securityAnswer;    // 질문에 대한 답변
-
 
     // 계정 활성 상태 설정 메서드
     public void setActive(boolean active) {
