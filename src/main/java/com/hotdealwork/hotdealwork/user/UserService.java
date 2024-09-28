@@ -135,6 +135,14 @@ public class UserService {
 
         return false;
     }
+
+    // 개인 정보 수정 메서드
+    public void userEditProfile(SiteUser user){
+        user.setNickname(user.getNickname());
+        user.setEmail(user.getEmail());
+
+        this.userRepository.save(user);
+    }
 }
 //    @Transactional
 //    public void addInterest(Long userId, Integer boardId) {

@@ -3,6 +3,7 @@ package com.hotdealwork.hotdealwork.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     // 로그인 페이지 이동 (GET 요청)
     @GetMapping("/login")
@@ -57,16 +61,32 @@ public class UserController {
     }
 
     // 회원 정보 수정 페이지로 이동
+    @PreAuthorize("isAuthenticated()") //로그인 여부 체크
     @GetMapping("/editProfile")
-    public String editProfileForm(@RequestParam(required = false) String username, Model model) {
-        if (username == null) {
-            return "redirect:/user/login"; // username이 없으면 로그인 페이지로 리다이렉트
-        }
-
+    public String editProfile(Principal principal, Model model, UserUpdateForm userUpdateForm) {
         // 사용자 정보 조회
-        SiteUser user = userService.getUser(username);
+        SiteUser user = userService.getUser(principal.getName());
         model.addAttribute("user", user);
+
         return "edit_profile";  // 회원정보 수정 페이지로 이동
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/updateProfile")
+    public String updateProfile(Principal principal, Model model, UserUpdateForm form){
+
+        SiteUser user = userService.getUser(principal.getName());
+
+        System.out.println(form.getNickname());
+
+        user.setEmail(form.getEmail());
+        user.setNickname(form.getNickname());
+
+        this.userRepository.save(user);
+
+        model.addAttribute("message","수정이 완료되었습니다.");
+        model.addAttribute("URL","/");
+        return "message";
     }
 
     // 아이디 찾기 페이지 이동
