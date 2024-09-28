@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 메뉴</title>
+</head>
+<body>
+<h1>관리자 메뉴</h1>
+
+<ul>
+    <li><a th:href="@{/admin/users}">회원 정보 조회</a></li>
+    <li><a th:href="@{/admin/reportedBoards}">신고된 게시물 조회</a></li>
+    <li><a th:href="@{/admin/postAnnouncement}">공지사항 게시</a></li>
+    <li><a th:href="@{/admin/suspendUsers}">계정 정지</a></li>
+</ul>
+
+<p>현재 사용자: <span th:text="${currentUser.username}"></span></p>
+</body>
+</html>
