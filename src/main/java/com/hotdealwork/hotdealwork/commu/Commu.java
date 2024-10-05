@@ -29,23 +29,20 @@ public class Commu {
     @ManyToOne
     private SiteUser author;
 
-    @ManyToMany
-    Set<SiteUser> liked;
-
-    @ManyToMany
-    Set<SiteUser> disliked;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private Integer liked = 0;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
-    }
-
-    @Override
-    public String toString() {
-        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
-    }
+//    @PrePersist
+//    protected void onCreate() {
+//        this.createdDate = LocalDateTime.now();
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
+//    }
 
 }
