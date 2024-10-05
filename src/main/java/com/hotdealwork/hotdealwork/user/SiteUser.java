@@ -40,13 +40,13 @@ public class SiteUser {
     private String securityAnswer;    // 질문에 대한 답변
 
     private List<Integer> commuDislikes;
-}
-    // 계정 활성 상태 설정 메서드
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
-    public boolean isActive() {
-        return active;
-    }
+// 계정 활성 상태 설정 메서드
+public void setActive(boolean active) {
+    this.active = active;
+}
+
+public boolean isActive() {
+    return active;
+}
 }
