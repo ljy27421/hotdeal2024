@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세 페이지</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="/css/view.css">
 </head>
 <body>
-
+<div id="header"></div>
 <h1 th:text="${commu.title}">제목</h1>
 
 <table>
@@ -31,11 +33,11 @@
 
 <p th:text="${commu.content}">내용</p>
 <a th:href="@{/commu/like/{id}(id=${commu.id})}">추천</a>
-<span th:text="${#lists.size(commu.liked) - #lists.size(commu.disliked)}"></span>
+<span th:text="${commu.liked}"></span>
 <a th:href="@{/commu/dislike/{id}(id=${commu.id})}">비추천</a>
 <a th:href="@{/commu/list}">목록</a>
 <div th:if="${loggedUser != null}">
-    <a th:if="${commu.author.id} == ${loggedUser.id}" th:href="@{/commu/delete?(id=${commu.id})}">삭제</a>
+    <a th:if="${commu.author.id} == ${loggedUser.id}" href="#" th:onclick="'return confirmDelete(' + ${commu.id} + ');'">삭제</a>
     <a th:if="${commu.author.id} == ${loggedUser.id}" th:href="@{/commu/modify/{id}(id=${commu.id})}">수정</a>
 </div>
 
@@ -63,16 +65,14 @@
         <td th:text="${reply.author.username}">작성자</td>
         <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
         <td th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
-        <div th:if="${loggedUser != null}">
-            <td>
-                <button th:if="${reply.author.id} == ${loggedUser?.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
-            </td>
-            <td>
-                <form th:if="${reply.author.id} == ${loggedUser?.id}" th:action="@{/replys/deletec/{replyId}(replyId=${reply.id})}" method="post">
-                    <button type="submit">삭제</button>
-                </form>
-            </td>
-        </div>
+        <td th:if="${reply.author.id} == ${loggedUser?.id}">
+            <button th:if="${reply.author.id} == ${loggedUser?.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
+        </td>
+        <td th:if="${reply.author.id} == ${loggedUser?.id}">
+            <form th:action="@{/replys/deletec/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
     </tr>
     <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" style="display:none;">
         <td colspan="5">
@@ -96,6 +96,35 @@
         document.getElementById('reply-row-' + replyId).style.display = 'table-row';
         document.getElementById('edit-row-' + replyId).style.display = 'none';
     }
+
+    function confirmDelete(commuId) {
+        if (confirm("글을 삭제하시겠습니까?")) {
+            window.location.href = '/commu/delete?id=' + commuId;
+        } else {
+            return false;
+        }
+    }
+
+    function confirmReplyDelete() {
+        return confirm("댓글을 삭제하시겠습니까?");
+    }
+
+</script>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/board/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('/board/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
 </script>
 
 </body>
