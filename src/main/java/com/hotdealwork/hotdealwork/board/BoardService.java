@@ -159,7 +159,6 @@ public class BoardService {
         result.forEach(b -> {
             if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
                 b.setExpired(true);
-                boardRepository.save(b);
             }
         });
 
