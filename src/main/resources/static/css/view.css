@@ -6,7 +6,7 @@
 
 :root {
     --main-bg-color: #f8f9fa;
-    --main-text-color: #343a40;
+    --main-text-color: #000;
     --header-bg-color: #343a40;
     --header-text-color: #fff;
     --highlight-bg-color: #e9ecef;
@@ -24,13 +24,15 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    padding: 20px;
+    padding: 80px 20px 20px;
+    padding-top: 88px;
     background-color: var(--main-bg-color);
     color: var(--main-text-color);
 }
 
 h1 {
-    font-size: 2.5em;
+    margin-top: 30px;
+    font-size: 2.2em;
     margin-bottom: 20px;
     color: #212529;
 }
@@ -105,6 +107,7 @@ p.content {
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 0 10px var(--shadow-color);
+    color: var(--main-text-color);
 }
 
 .comment-section {
@@ -275,4 +278,5 @@ p.content {
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 0 5px var(--shadow-color);
+    color: var(--main-text-color);
 }

@@ -12,12 +12,6 @@ html {
     background-color: #eaf0f2;
 }
 
-header {
-    text-align: center;
-    padding-top: 100px;
-    margin-bottom: 300px;
-    font-size: 35px;
-}
 
 header h2 {
     color: #f0525f;
@@ -41,9 +35,9 @@ footer {
 
 }
 
-@media (max-height:800px) {
+@media (max-height: 800px) {
     footer {
-        position: static;
+        position: static; /* static으로 변경하여 footer가 자연스럽게 흐르도록 함 */
     }
     header {
         padding-top: 40px;
@@ -58,7 +52,6 @@ footer {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-
 }
 
 .footer-distributed .footer-left, .footer-distributed .footer-center, .footer-distributed .footer-right {
