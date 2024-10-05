@@ -4,36 +4,58 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle}">Hotdeal 2024</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- CSS 파일 경로 -->
+    <title>Hotdeal 2024</title> <!-- Removed Thymeleaf 'th:text' if not using -->
+    <link rel="stylesheet" href="/static/css/header.css"> <!-- Ensure correct CSS file path -->
 </head>
 <body>
 <header>
     <div class="header">
-        <h1 th:text="${siteTitle}">Hotdeal 2024</h1>
         <nav>
-            <a href="#" class="logo">
-                <img src="/images/logo.jpg" alt="사이트 로고">
-            </a>
-            <div class="mobile-menu-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+            <img src="images/logo.jpg" class="logo" alt="Logo"> <!-- Added alt attribute -->
             <ul>
-                <li><a href="/" th:text="#{menu.main}">메인</a></li>
-                <li><a href="/hotdeals" th:text="#{menu.hotdeals}">핫딜</a></li>
-                <li><a href="/free" th:text="#{menu.free}">자유</a></li>
-                <li><a href="/contact" th:text="#{menu.contact}">Contact</a></li>
+                <li><a href="#">메인</a></li> <!-- Corrected case for consistent styling -->
+                <li><a href="/board/list">핫딜</a></li>
+                <li><a href="/commu/list">커뮤니티</a></li>
             </ul>
-            <div class="auth-buttons">
-                <a href="/user/login" th:text="#{auth.login}">로그인</a>
-                <a href="/user/logout" th:text="#{auth.logout}">로그아웃</a>
-                <a href="/user/signup" th:text="#{auth.signup}">회원가입</a>
-                <a href="/user/delete" th:text="#{auth.delete}">회원탈퇴</a>
+            <img src="images/user.png" class="user-pic" onclick="toggleMenu()"> <!-- Added alt attribute -->
+
+            <div class="sub-menu-wrap" id="subMenu"> <!-- Wrapped sub-menu with an id for JavaScript toggling -->
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="images/user.png" alt="User picture"> <!-- Added alt attribute -->
+                        <h2>닉네임</h2> <!-- 닉네임 api 적용 -->
+                    </div>
+                    <hr>
+
+                    <a href="mypage" class="sub-menu-link">
+                        <img src="images/profile.png" alt="Profile icon"> <!-- Added alt attribute -->
+                        <p>프로필</p>
+                        <span></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="images/help.png" alt="Help icon"> <!-- Added alt attribute -->
+                        <p>도움말</p> <!-- Changed text -->
+                        <span></span>
+                    </a>
+                    <a sec:authorize="isAuthenticated()" href="/user/logout" class="sub-menu-link">
+                        <img src="images/logout.png" alt="Logout icon">
+                        <p>로그아웃</p>
+                        <span></span>
+                    </a>
+                    </a>
+                </div>
             </div>
         </nav>
     </div>
 </header>
+
+<script>
+    let subMenu = document.getElementById("subMenu");
+
+    function toggleMenu(){
+        subMenu.classList.toggle("open-menu");
+    }
+</script>
+
 </body>
 </html>

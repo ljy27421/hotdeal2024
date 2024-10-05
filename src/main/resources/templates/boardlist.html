@@ -7,12 +7,14 @@
     <title>게시글 리스트 페이지</title>
 </head>
 <body>
+<div id="header"></div>
 <div class="layout">
 
+
     <div class="header">
-        <h1>게시글 리스트 페이지</h1>
-        <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
-        <button type="button" onclick="location.href='/board/write'">글쓰기</button>
+    <h1>게시글 리스트 페이지</h1>
+    <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
+    <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
 
     <div class="filter-buttons">
@@ -51,37 +53,49 @@
         <tbody>
         <tr th:each="board : ${list}" th:classappend="${board.expired ? ' expired' : ''}">
             <td>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) >= 1}" style="color:red">●</span>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) <= -1}" style="color:blue">●</span>
-                <span th:if="${#lists.size(board.liked) - #lists.size(board.disliked) > -1 and #lists.size(board.liked) - #lists.size(board.disliked) < 1}">●</span>
+                <span th:if="${board.liked >= 1}" style="color:red">●</span>
+                <span th:if="${board.liked <= -1}" style="color:blue">●</span>
+                <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
             <td th:text="${board.id}">1</td>
             <td>
                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
             </td>
-            <td th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">1</td>
+            <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
             <td>
-                        <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                              th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                    <span th:if="${board.createdDate != null}">
+                <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                      th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
                 <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
                       th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+            </span>
+                <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
             <td th:text="${board.author.username}"></td>
             <td th:text="${board.view}"></td>
         </tr>
         </tbody>
     </table>
-    <!-- 검색 결과 없을 시 안내문 -->
+     <!-- 검색 결과 없을 시 안내문-->
     <div th:if="${list.totalPages == 0}" class="no-posts-message">글이 없습니다.</div>
 
-    <!-- 페이징 처리 -->
+    <!--페이징 처리 -->
     <div class="pagination" th:if="${list.totalPages > 0}">
         <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
             <a th:if="${page != curPage}" th:href="@{/board/list(page=${page - 1}, searchKeyword=${param.searchKeyword}, searchType=${param.searchType}, category=${param.category}, hot=${param.hot})}" th:text="${page}"></a>
             <strong th:if="${page == curPage}" th:text="${page}"></strong>
         </th:block>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                });
+        });
+    </script>
 
     <!-- 검색 버튼 -->
     <div class="search-form">
@@ -101,5 +115,21 @@
         </form>
     </div>
 </div>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById('footer').innerHTML = data;
+             });
+    });
+</script>
 </body>
 </html>

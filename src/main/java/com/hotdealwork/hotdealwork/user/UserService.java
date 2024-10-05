@@ -1,13 +1,18 @@
 package com.hotdealwork.hotdealwork.user;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
+import com.hotdealwork.hotdealwork.board.Board;
 import com.hotdealwork.hotdealwork.board.BoardRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PasswordEncoder passwordEncoder;
+    private final HttpServletRequest request;
 
     // 사용자 인증 메서드 (아이디와 비밀번호 확인)
     public boolean authenticateUser(String username, String password) {
@@ -129,6 +135,7 @@ public class UserService {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 userRepository.deleteByUsername(username);
                 SecurityContextHolder.clearContext();
+                request.getSession().invalidate();
                 return true;
             }
         }
@@ -163,4 +170,3 @@ public class UserService {
 //        siteUser.setInterestVector(userVector);
 //        userRepository.save(siteUser);
 //    }
-

@@ -27,6 +27,7 @@
 </style>
 
 <body>
+<div id="header"></div>
 <div class="layout">
     <form th:action="@{/commu/update/{id}(id=${commu.id})}" method="post" enctype="multipart/form-data">
         <input name="title" type="text" th:value="${commu.title}">
@@ -67,5 +68,22 @@
         return true;
     }
 </script>
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/board/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('/board/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
+
 </body>
 </html>
