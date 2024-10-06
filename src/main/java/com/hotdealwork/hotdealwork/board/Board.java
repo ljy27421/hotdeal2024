@@ -18,7 +18,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private String content;
+    private  String content;
     private String category;
 
     private String mall;
@@ -45,6 +45,18 @@ public class Board {
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
+
+    // 신고된 게시물 여부를 나타내는 필드 추가 (기본값: false)
+    private Boolean reported = false;
+
+    // 신고된 게시물 여부 설정 메서드
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
+
+    public boolean isReported() {
+        return reported;
+    }
 //    @PrePersist
 //    protected void onCreate() {
 //        this.createdDate = LocalDateTime.now();
