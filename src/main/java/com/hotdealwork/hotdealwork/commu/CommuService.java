@@ -131,7 +131,7 @@ public class CommuService {
                         commu.liked,
                         commu.author,
                         commu.view
-                    
+
                         ))
                 .from(commu)
                 .where(builder)

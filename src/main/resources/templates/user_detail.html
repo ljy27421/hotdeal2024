@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 정보</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<h1>사용자 정보</h1>
+<p>사용자 ID: <span th:text="${user.id}"></span></p>
+<p>사용자 이름: <span th:text="${user.username}"></span></p>
+<p>이메일: <span th:text="${user.email}"></span></p>
+<p>활성 상태: <span th:text="${user.active} ? '활성' : '비활성'"></span></p>
+</body>
+</html>
