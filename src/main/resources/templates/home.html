@@ -12,31 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="#" class="logo">
-                <img src="image/logo.jpg" alt="사이트 로고">
-            </a>
-            <div class="mobile-menu-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#">메인</a></li>
-				<li><a href="/board/list">핫딜</a></li>
-				<li><a href="/commu/list">커뮤니티</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-
-                <div class="auth-buttons">
-                    <a sec:authorize="isAnonymous" href="/user/login">로그인</a>
-                    <a sec:authorize="isAuthenticated" href="/user/logout">로그아웃</a>
-                    <a href="/user/signup">회원가입</a>
-                    <a sec:authorize="isAuthenticated" href="/user/delete">회원 탈퇴</a>
-                </div>
-        </nav>
-    </header>
+<div th:replace="~{header.html}"></div>
 <div class="carousel">
         <!-- list item -->
         <div class="list">
@@ -173,6 +149,7 @@
 
     <script src="/js/header.js"></script>
 	<script src="/js/app.js"></script>
+<div th:replace="~{footer.html}"></div>
 
 </body>
 </html>

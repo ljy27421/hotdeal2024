@@ -7,7 +7,7 @@
 
 .header{
     width: 100%;
-    min-height: 100vh;
+    height: 130px;
     background: #eceaff;
     color: #252525; /* Fixed hex color */
 }
@@ -35,7 +35,7 @@ nav{
 
 nav ul{
     width: 100%;
-    text-align: right;
+    text-align: center;
 }
 
 nav ul li{
@@ -45,22 +45,23 @@ nav ul li{
 }
 
 nav ul li a{
-    color: #fff;
+    color: #252525;
     text-decoration: none;
+    font-size: 1.5em;
 }
 
 .sub-menu-wrap{
     position: absolute;
     top: 100%;
-    right: 10%;
+    right: 0;
     width: 320px;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 0.5s;
+    transition: max-height 0.5s ease-in-out;
 }
 .sub-menu-wrap.open-menu {
     max-height: 400px;
-
+    overflow:visible;
 }
 .sub-menu{
     background: #fff;

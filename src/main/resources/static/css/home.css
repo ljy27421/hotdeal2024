@@ -441,3 +441,9 @@ h1 {
         font-size: 30px;
     }
 }
+header {
+    color: #ffffff;/* 헤더 텍스트 색을 흰색으로 */
+}
+nav ul li a {
+    color: #ffffff;  /* 내비게이션 링크 색을 흰색으로 */
+}

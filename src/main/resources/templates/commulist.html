@@ -239,7 +239,7 @@
   </style>
 </head>
 <body>
-<div id="header"></div>
+<div th:replace="~{header.html}"></div>
 <div class="layout">
 
   <div class="header">
@@ -332,21 +332,6 @@
     </form>
   </div>
 </div>
-<div id="footer"></div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      fetch('/board/header.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('header').innerHTML = data;
-          });
-
-      fetch('/board/footer.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('footer').innerHTML = data;
-          });
-  });
-</script>
+<div th:replace="~{footer.html}"></div>
 </body>
 </html>
