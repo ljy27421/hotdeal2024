@@ -1,119 +1,48 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프로필 템플릿</title>
-    <link rel="stylesheet" href="/css/mypage.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="href="/static/css/mypage.css"> <!-- Ensure correct CSS file path -->
+
 </head>
-
 <body>
-    <div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4">
-            계정 설정
-        </h4>
-        <div class="card overflow-hidden">
-            <div class="row no-gutters row-bordered row-border-light">
-                <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">
-                        <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">일반</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">비밀번호 변경</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">정보</a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
-                            <div class="card-body media align-items-center">
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">사용자 이름</label>
-                                    <input type="text" class="form-control mb-1" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">이름</label>
-                                    <input type="text" class="form-control" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">이메일</label>
-                                    <input type="text" class="form-control mb-1" value="">
-                                    <div class="alert alert-warning mt-3">
-                                        이메일이 확인되지 않았습니다. 받은 편지함을 확인해 주세요.<br>
-                                        <a href="javascript:void(0)">확인 메일 다시 보내기</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="account-change-password">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">현재 비밀번호</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">새 비밀번호</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">새 비밀번호 확인</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="account-info">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">소개</label>
-                                    <textarea class="form-control" rows="5">자기소개</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">생일</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">국가</label>
-                                    <select class="custom-select">
-                                        <option>미국</option>
-                                        <option selected>한국</option>
-                                        <option>영국</option>
-                                        <option>독일</option>
-                                        <option>프랑스</option>
-										<option>캐나다</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-                                    <label class="form-label">전화번호</label>
-                                    <input type="text" class="form-control" value="+08 123 1234 1234">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-right mt-3">
-            <button type="button" class="btn btn-primary">변경 사항 저장</button>&nbsp;
-			<button type="button" class="btn btn-danger" id="delete-account-btn">회원탈퇴</button>
-			<button type="button" class="btn btn-default">취소</button>
-        </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-    document.getElementById("delete-account-btn").addEventListener("click", function() {
-        if (confirm("정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-            // 회원탈퇴 처리를 위한 AJAX 요청 또는 페이지 이동
-            alert("회원탈퇴가 처리되었습니다.");
-        }
-    });
-</script>
-</body>
+<div class="container">
+    <h1>마이페이지</h1>
 
+    <!-- 프로필 섹션 -->
+    <div class="profile-section">
+        <img src="profile.jpg" alt="프로필 사진">
+        <h2>사용자 이름</h2>
+        <p>user@example.com</p>
+        <!-- 프로필 사진 변경 버튼 -->
+        <form action="/upload_profile_photo" method="POST" enctype="multipart/form-data">
+            <label for="profile-photo">프로필 사진 변경</label>
+            <input type="file" id="profile-photo" name="profile-photo">
+            <input type="submit" class="btn change-photo-btn" value="사진 변경">
+        </form>
+    </div>
+
+    <!-- 사용자 정보 수정 섹션 -->
+    <div class="form-section">
+        <form action="/update_profile" method="POST">
+            <label for="username">이름</label>
+            <input type="text" id="username" name="username" value="사용자 이름">
+
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" value="user@example.com">
+
+            <label for="password">비밀번호 변경</label>
+            <input type="password" id="password" name="password" placeholder="새로운 비밀번호">
+
+            <input type="submit" class="btn" value="정보 수정">
+        </form>
+
+        <form action="/delete" method="POST">
+            <input type="submit" class="btn logout-btn" value="회원탈퇴">
+        </form>
+    </div>
+</div>
+</body>
 </html>
