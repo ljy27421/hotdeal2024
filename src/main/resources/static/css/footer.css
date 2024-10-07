@@ -1,66 +1,56 @@
-import url('https://fonts.googleapis.com/css?family=Poppins:400,700|Open+Sans:400,700');
-* {
-    padding: 0;
+html, body {
+    height: 100%;
     margin: 0;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-}
-
-html {
+    padding: 0;
+    font-family: 'Poppins', sans-serif; /* 푸터 스타일에 영향을 주지 않도록 전역 폰트 설정 */
     background-color: #eaf0f2;
 }
 
 
-header h2 {
-    color: #f0525f;
+body {
+    padding-bottom: 180px;
 }
 
-header span {
-    color: #eaa03f;
-}
-
-/* The footer is fixed to the bottom of the page */
 
 footer {
-    position: fixed;
+    position: fixed;   /* 페이지 하단에 고정 */
     bottom: 0;
     left: 0;
     width: 100%;
+    height: 150px;
     background-color: #2d2a30;
     color: #ffffff;
     text-align: left;
     font: bold 16px sans-serif;
-
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
-@media (max-height: 800px) {
-    footer {
-        position: static; /* static으로 변경하여 footer가 자연스럽게 흐르도록 함 */
-    }
-    header {
-        padding-top: 40px;
-    }
-}
 
 .footer-distributed {
-    box-sizing: border-box;
+    position: relative;
+    bottom: 0;
     width: 100%;
-    padding: 30px 20px;
-    margin-top: 0;
+    padding: 20px 0;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    text-align: center;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /
 }
 
-.footer-distributed .footer-left, .footer-distributed .footer-center, .footer-distributed .footer-right {
+
+.footer-distributed .footer-left,
+.footer-distributed .footer-center,
+.footer-distributed .footer-right {
     flex: 1;
     padding: 10px;
-
 }
 
-/* Footer left */
 
 .footer-distributed .footer-left {
     max-width: 30%;
@@ -72,16 +62,14 @@ footer {
     margin: 0;
 }
 
-
 .footer-distributed h3 span {
     color: #e0ac1c;
 }
 
-/* Footer links */
 
 .footer-distributed .footer-links {
     color: #ffffff;
-    margin: 10px; 0;
+    margin: 10px 0;
 }
 
 .footer-distributed .footer-links a {
@@ -89,15 +77,9 @@ footer {
     line-height: 1.8;
     text-decoration: none;
     color: inherit;
-    margin-right:10px;
+    margin-right: 10px;
 }
 
-.footer-distributed .footer-company-name {
-    color: #8f9296;
-}
-
-
-/* Footer Right */
 
 .footer-distributed .footer-right {
     width: 30%;
@@ -144,8 +126,11 @@ footer {
     color: #3F71EA;
 }
 
+
 @media (max-width: 880px) {
-    .footer-distributed .footer-left, .footer-distributed .footer-center, .footer-distributed .footer-right {
+    .footer-distributed .footer-left,
+    .footer-distributed .footer-center,
+    .footer-distributed .footer-right {
         display: block;
         width: 100%;
         margin-bottom: 40px;

@@ -73,8 +73,8 @@ h1 {
 
 div > p {
     padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #333;
+    border: 1px solid #333;
     border-radius: 8px;
     margin-bottom: 10px;
     box-shadow: 0 0 5px var(--shadow-color);
@@ -280,3 +280,45 @@ p.content {
     box-shadow: 0 0 5px var(--shadow-color);
     color: var(--main-text-color);
 }
+#footer {
+    background-color: #333;  /* 푸터 배경색 */
+    color: #fff;             /* 푸터 글씨 색 */
+    text-align: center;      /* 텍스트 중앙 정렬 */
+    box-sizing: border-box;
+    width: 100%;             /* 화면 너비를 다 채움 */
+    padding: 20px 0;         /* 상하 여백을 설정하여 푸터 크기 조정 */
+    margin-top: auto;        /* 내용이 적으면 푸터가 페이지 아래에 달리도록 */
+}
+
+#footer p {
+    margin: 5px 0;           /* 상하 간격을 좁게 설정 */
+    padding: 0;              /* 추가적인 내부 여백 제거 */
+    line-height: 1.4;        /* 줄 간격을 적당하게 설정 */
+}
+
+/* footer-content가 있을 경우, 세로 정렬 */
+#footer .footer-content {
+    display: flex;
+    flex-direction: column;  /* 세로 방향으로 텍스트 배치 */
+    justify-content: center; /* 세로 정렬 */
+    align-items: center;     /* 수평 정렬 */
+    gap: 10px;               /* 요소들 사이의 간격을 적절히 설정 */
+}
+
+/* HTML 및 body에서 전체 레이아웃을 flex로 설정하여 푸터가 항상 맨 아래에 위치하도록 */
+html, body {
+    height: 100%;            /* 전체 높이를 100%로 설정 */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;  /* 수직으로 쌓이도록 설정 */
+}
+
+body {
+    flex: 1;                 /* 페이지 내용이 푸터를 밀어내지 않도록 */
+    padding: 80px 20px 20px;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+}
+
+
