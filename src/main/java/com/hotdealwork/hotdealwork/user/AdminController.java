@@ -57,22 +57,8 @@ public class AdminController {
         return "edit_profile";  // src/main/resources/templates/edit_profile.html 사용
     }
 
-    // 공지사항 게시 페이지로 이동
-    @GetMapping("/postAnnouncement")
-    public String postAnnouncementPage() {
-        return "postAnnouncement";  // 공지사항을 게시하는 페이지로 이동
-    }
-
-    // 공지사항 게시
-    @PostMapping("/postAnnouncement")
-    public String postAnnouncement(@RequestParam("title") String title,
-                                   @RequestParam("content") String content) {
-        adminService.postAnnouncement(title, content);  // 공지사항 게시 처리
-        return "redirect:/admin/adminMenu";  // 처리 후 관리자 메뉴로 리다이렉트
-    }
-
     // 관리자 메뉴 페이지로 이동 (로그인 없이 접근 가능)
-    @GetMapping("/adminMenu")
+    @GetMapping("/adminMenu")  // 경로 변경
     public String adminMenu(Model model) {
         model.addAttribute("currentUser", new SiteUser()); // 기본 사용자 정보 추가 (null 처리)
         return "adminMenu";  // adminMenu.html 반환
