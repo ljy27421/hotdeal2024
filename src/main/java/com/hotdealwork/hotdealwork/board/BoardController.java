@@ -222,3 +222,5 @@ public class BoardController {
         return "boardrecommand";
     }
 }
+
+
