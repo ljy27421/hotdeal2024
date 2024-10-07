@@ -123,7 +123,7 @@ public class UserController {
         }
 
         if (!userCreateForm.getPassword().equals(userCreateForm.getCheckPassword())) {
-            bindingResult.rejectValue("checkPassword", "passwordIncorrect", "비밀번호가 일치하지 않습니다.");
+            bindingResult.rejectValue("checkPassword","passwordIncorrect","비밀번호가 일치하지 않습니다.");
             return "signup_form";
         }
 
@@ -138,9 +138,9 @@ public class UserController {
             );
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
-            bindingResult.reject("duplicated ID", "이미 등록된 ID 혹은 이메일입니다.");
+            bindingResult.reject("duplicated ID", "이미 등록된 ID 혹은 이메일 입니다.");
             return "signup_form";
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             bindingResult.reject("duplicated ID", e.getMessage());
             return "signup_form";
