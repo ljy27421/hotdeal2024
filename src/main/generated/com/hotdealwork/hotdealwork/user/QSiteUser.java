@@ -20,11 +20,7 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public static final QSiteUser siteUser = new QSiteUser("siteUser");
 
-    public final ListPath<Integer, NumberPath<Integer>> commuDislikes = this.<Integer, NumberPath<Integer>>createList("commuDislikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
-
-    public final ListPath<Integer, NumberPath<Integer>> commuLikes = this.<Integer, NumberPath<Integer>>createList("commuLikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
-
-    public final ListPath<Integer, NumberPath<Integer>> dislikes = this.<Integer, NumberPath<Integer>>createList("dislikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
+    public final BooleanPath active = createBoolean("active");
 
     public final StringPath email = createString("email");
 
@@ -32,9 +28,15 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final ListPath<Integer, NumberPath<Integer>> interest = this.<Integer, NumberPath<Integer>>createList("interest", Integer.class, NumberPath.class, PathInits.DIRECT2);
 
-    public final ListPath<Integer, NumberPath<Integer>> likes = this.<Integer, NumberPath<Integer>>createList("likes", Integer.class, NumberPath.class, PathInits.DIRECT2);
+    public final SetPath<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard> likes = this.<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard>createSet("likes", com.hotdealwork.hotdealwork.board.Board.class, com.hotdealwork.hotdealwork.board.QBoard.class, PathInits.DIRECT2);
+
+    public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
+
+    public final StringPath securityAnswer = createString("securityAnswer");
+
+    public final StringPath selectedQuestion = createString("selectedQuestion");
 
     public final StringPath username = createString("username");
 

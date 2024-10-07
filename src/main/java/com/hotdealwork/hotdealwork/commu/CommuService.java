@@ -1,28 +1,21 @@
 package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
-import com.hotdealwork.hotdealwork.board.Board;
-import com.hotdealwork.hotdealwork.board.BoardMainDTO;
-import com.hotdealwork.hotdealwork.board.QBoard;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
-import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -30,9 +23,6 @@ public class CommuService {
 
     @Autowired
     private CommuRepository commuRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -97,7 +87,7 @@ public class CommuService {
     }
 
     // 동적 쿼리 리스트 처리
-    public Page<CommuDTO> commuList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+    public Page<Commu> commuList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
         QCommu commu = QCommu.commu;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -119,21 +109,11 @@ public class CommuService {
         }
 
         if (hot > 0) {
-            builder.and(commu.liked.goe(hot));
+            builder.and(commu.liked.size().goe(hot));
         }
 
-        List<CommuDTO> result = queryFactory
-                .select(Projections.constructor(CommuDTO.class,
-                        commu.id,
-                        commu.title,
-                        commu.category,
-                        commu.createdDate,
-                        commu.liked,
-                        commu.author,
-                        commu.view
-                    
-                        ))
-                .from(commu)
+        List<Commu> result = queryFactory
+                .selectFrom(commu)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .orderBy(commu.id.desc())
@@ -148,23 +128,6 @@ public class CommuService {
 
         return new PageImpl<>(result, pageable, total);
     }
-
-    // 메인 페이지 인기글 처리
-    public List<CommuMainDTO> commuMainHot() {
-        QCommu commu = QCommu.commu;
-
-        return queryFactory
-                .select(Projections.constructor(CommuMainDTO.class,
-                        commu.id,
-                        commu.title
-                ))
-                .from(commu)
-                .where(commu.createdDate.after(LocalDateTime.now().minusWeeks(1)))
-                .orderBy(commu.liked.desc())
-                .limit(5)
-                .fetch();
-    }
-
 
     // 글 불러오기 처리
 //    public Commu commuView(Integer id) {
@@ -201,17 +164,13 @@ public class CommuService {
 
     // 게시글 추천
     public void commuLike(Commu commu, SiteUser siteUser) {
-        commu.setLiked(commu.getLiked() + 1);
-        siteUser.getCommuLikes().add(commu.getId());
+        commu.getLiked().add(siteUser);
         commuRepository.save(commu);
-        userRepository.save(siteUser);
     }
     // 게시글 비추천
     public void commuDislike(Commu commu, SiteUser siteUser) {
-        commu.setLiked(commu.getLiked() - 1);
-        siteUser.getCommuDislikes().add(commu.getId());
+        commu.getDisliked().add(siteUser);
         commuRepository.save(commu);
-        userRepository.save(siteUser);
     }
 
 }

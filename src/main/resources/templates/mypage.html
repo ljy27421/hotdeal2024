@@ -10,8 +10,6 @@
 </head>
 
 <body>
-<div id="header"></div>
-
     <div class="container light-style flex-grow-1 container-p-y">
         <h4 class="font-weight-bold py-3 mb-4">
             계정 설정
@@ -116,23 +114,6 @@
         }
     });
 </script>
-<div id="footer"></div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/board/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('/board/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-    });
-</script>
-
 </body>
 
 </html>

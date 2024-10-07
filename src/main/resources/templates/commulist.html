@@ -238,7 +238,6 @@
   </style>
 </head>
 <body>
-<div id="header"></div>
 <div class="layout">
 
   <div class="header">
@@ -279,24 +278,21 @@
     <tbody>
     <tr th:each="commu : ${list}">
       <td>
-        <span th:if="${commu.liked >= 1}" style="color:red">●</span>
-        <span th:if="${commu.liked <= -1}" style="color:blue">●</span>
-        <span th:if="${commu.liked > -1 and commu.liked < 1}">●</span>
+        <span th:if="${#lists.size(commu.liked) - #lists.size(commu.disliked) >= 1}" style="color:red">●</span>
+        <span th:if="${#lists.size(commu.liked) - #lists.size(commu.disliked) <= -1}" style="color:blue">●</span>
+        <span th:if="${#lists.size(commu.liked) - #lists.size(commu.disliked) > -1 and #lists.size(commu.liked) - #lists.size(commu.disliked) < 1}">●</span>
       </td>
       <td th:text="${commu.id}">1</td>
       <td>
         <a th:text="${commu.title}" th:href="@{/commu/view(id=${commu.id})}">제목제목제목제목제목제목제목제목</a>
       </td>
-      <td th:text="${commu.liked}">1</td>
+      <td th:text="${#lists.size(commu.liked) - #lists.size(commu.disliked)}">1</td>
       <td th:text="${commu.category}">1</td>
       <td>
-        <span th:if="${commu.createdDate != null}">
                         <span th:if="${#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
                               th:text="${#temporals.format(commu.createdDate, 'HH:mm')}"></span>
         <span th:if="${!#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
               th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd')}"></span>
-        </span>
-        <span th:if="${commu.createdDate == null}">날짜 정보 없음</span>
       </td>
       <td th:text="${commu.author.username}"></td>
       <td th:text="${commu.view}"></td>
@@ -331,21 +327,5 @@
     </form>
   </div>
 </div>
-<div id="footer"></div>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      fetch('/board/header.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('header').innerHTML = data;
-          });
-
-      fetch('/board/footer.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('footer').innerHTML = data;
-          });
-  });
-</script>
 </body>
 </html>
