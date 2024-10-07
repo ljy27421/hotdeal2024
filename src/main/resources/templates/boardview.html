@@ -12,6 +12,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            color: var(--main-text-color);
         }
 
         .info-table td {
@@ -27,7 +28,7 @@
     </style>
 </head>
 <body>
-<!--<div id="header"></div>-->
+<div id="header"></div>
 
 <h1 th:text="${board.title}">제목</h1>
 
@@ -42,6 +43,7 @@
 <div class="info-container">
     <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
     <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
+    <p th:text="'판매 링크 : ' + ${board.saleUrl}">판매 링크</p>
     <p th:text="'시작 날짜: ' + ${#temporals.format(board.startDate, 'yyyy-MM-dd')}">시작 날짜</p>
     <p th:text="'종료 날짜: ' + ${#temporals.format(board.endDate, 'yyyy-MM-dd')}">종료 날짜</p>
 </div>
@@ -54,7 +56,7 @@
 
 <div class="vote-buttons">
     <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
-    <span class="vote-count" th:text="${#lists.size(board.liked) - #lists.size(board.disliked)}">0</span>
+    <span class="vote-count" th:text="${board.liked}">0</span>
     <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
 </div>
 
@@ -63,12 +65,14 @@
 </div>
 
 <div th:if="${loggedUser != null}">
-    <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/delete?(id=${board.id})}">삭제</a>
+    <a th:if="${board.author.id} == ${loggedUser.id}" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'">삭제</a>
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
 </div>
 
 <div class="vote-buttons" th:if="${loggedUser != null}">
-    <a class="vote-button" th:href="@{/board/interest/{id}(id=${board.id})}" th:classappend="${loggedUser?.interest.contains(board.id)} ? 'interested' : ''">관심</a>
+    <a class="vote-button"
+       th:href="@{/board/interest/{id}(id=${board.id})}"
+       th:classappend="${loggedUser.interest != null && loggedUser.interest.contains(board.id)} ? 'interested' : ''">관심</a>
 </div>
 
 <div class="comment-section">
@@ -100,7 +104,7 @@
             <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
         </td>
         <td th:if="${reply.author.id} == ${loggedUser?.id}">
-            <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post">
+            <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
                 <button type="submit" class="table-button">삭제</button>
             </form>
         </td>
@@ -150,8 +154,37 @@
         document.getElementById('reply-row-' + replyId).style.display = 'table-row';
         document.getElementById('edit-row-' + replyId).style.display = 'none';
     }
+
+    function confirmDelete(boardId) {
+        if (confirm("글을 삭제하시겠습니까?")) {
+            window.location.href = '/board/delete?id=' + boardId;
+        } else {
+            return false;
+        }
+    }
+
+    function confirmReplyDelete() {
+        return confirm("댓글을 삭제하시겠습니까?");
+    }
+
 </script>
 
-<!--<div id="footer"></div>-->
+<div id="footer"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/board/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('/board/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
+
 </body>
 </html>

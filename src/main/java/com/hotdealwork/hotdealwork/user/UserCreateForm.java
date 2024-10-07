@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class UserCreateForm {
-
     @Size(min = 3, max = 25)
     @NotEmpty(message = "ID를 입력하세요.")
     private String username;
