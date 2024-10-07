@@ -3,7 +3,7 @@
 
 
  body {
-            display: block;
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -12,7 +12,6 @@
             font-family: 'Arial', sans-serif;
         }
         .box {
-            margin: auto;
             background: #272727;
             color: #fff;
             padding: 40px;
@@ -86,5 +85,3 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        footer {
-            margin-top: auto;

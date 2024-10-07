@@ -8,13 +8,11 @@ import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -103,7 +100,7 @@ public class BoardService {
     }
 
     // 동적 쿼리 리스트 처리
-    public Page<BoardDTO> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+    public Page<Board> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
         QBoard board = QBoard.board;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -129,22 +126,11 @@ public class BoardService {
         }
 
         if (hot > 0) {
-            builder.and(board.liked.goe(hot));
+            builder.and(board.liked.size().goe(hot));
         }
 
-        List<BoardDTO> result = queryFactory
-                .select(Projections.constructor(BoardDTO.class,
-                        board.id,
-                        board.title,
-                        board.category,
-                        board.createdDate,
-                        board.endDate,
-                        board.liked,
-                        board.expired,
-                        board.author,
-                        board.view
-                ))
-                .from(board)
+        List<Board> result = queryFactory
+                .selectFrom(board)
                 .where(builder)
                 .offset(pageable.getOffset())
                 .orderBy(board.id.desc())
@@ -159,27 +145,11 @@ public class BoardService {
         result.forEach(b -> {
             if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
                 b.setExpired(true);
+                boardRepository.save(b);
             }
         });
 
         return new PageImpl<>(result, pageable, total);
-    }
-
-    // 메인 페이지 인기글 처리
-    public List<BoardMainDTO> boardMainHot() {
-        QBoard board = QBoard.board;
-
-        return queryFactory
-                .select(Projections.constructor(BoardMainDTO.class,
-                        board.id,
-                        board.title
-                ))
-                .from(board)
-                .where(board.endDate.after(LocalDate.now())
-                        .and(board.createdDate.after(LocalDateTime.now().minusWeeks(1))))
-                .orderBy(board.liked.desc())
-                .limit(5)
-                .fetch();
     }
 
     // 글 불러오기 처리
@@ -217,17 +187,13 @@ public class BoardService {
 
     // 게시글 추천
     public void boardLike(Board board, SiteUser siteUser) {
-        board.setLiked(board.getLiked() + 1);
-        siteUser.getLikes().add(board.getId());
+        board.getLiked().add(siteUser);
         boardRepository.save(board);
-        userRepository.save(siteUser);
     }
     // 게시글 비추천
     public void boardDislike(Board board, SiteUser siteUser) {
-        board.setLiked(board.getLiked() - 1);
-        siteUser.getDislikes().add(board.getId());
+        board.getDisliked().add(siteUser);
         boardRepository.save(board);
-        userRepository.save(siteUser);
     }
     // 관심 처리
     public void boardInterest(Board board, SiteUser siteUser){

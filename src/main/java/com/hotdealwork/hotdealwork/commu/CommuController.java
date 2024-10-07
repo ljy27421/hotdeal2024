@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -63,7 +62,7 @@ public class CommuController {
                             @RequestParam(name = "searchType", required = false) String searchType,
                             @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
-        Page<CommuDTO> list = commuService.commuList(searchKeyword, category, searchType, hot, pageable);
+        Page<Commu> list = commuService.commuList(searchKeyword, category, searchType, hot, pageable);
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
@@ -127,6 +126,8 @@ public class CommuController {
 
         commu.setView(commuTemp.getView());
         commu.setLiked(commuTemp.getLiked());
+        commu.setDisliked(commuTemp.getDisliked());
+
         if(deleteImageIds != null) {
             commuService.deleteImages(deleteImageIds);
         }
@@ -146,17 +147,14 @@ public class CommuController {
         Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
 
-        if (siteUser.getCommuLikes() == null){
-            siteUser.setCommuLikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
-        }
-
-        if (siteUser.getCommuLikes().contains(commu.getId())){
+        if (commu.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
             model.addAttribute("message", "이미 추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 추천했습니다.");
-            this.commuService.commuLike(commu, siteUser);
         }
         model.addAttribute("URL", String.format("/commu/view?id=%s", id));
+
+        this.commuService.commuLike(commu, siteUser);
 
         return "message";
     }
@@ -167,17 +165,14 @@ public class CommuController {
         Commu commu = commuService.getCommu(id);
         SiteUser siteUser = userService.getUser(principal.getName());
 
-        if (siteUser.getCommuDislikes() == null){
-            siteUser.setCommuDislikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
-        }
-
-        if (siteUser.getCommuDislikes().contains(commu.getId())){
+        if (commu.getLiked().stream().anyMatch(user -> user.getId().equals(siteUser.getId()))){
             model.addAttribute("message", "이미 비추천한 글입니다.");
         } else {
             model.addAttribute("message", "글을 비추천했습니다.");
-            this.commuService.commuDislike(commu, siteUser);
         }
         model.addAttribute("URL", String.format("/commu/view?id=%s", id));
+
+        this.commuService.commuDislike(commu, siteUser);
 
         return "message";
     }

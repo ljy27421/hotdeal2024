@@ -30,11 +30,13 @@ public class QCommu extends EntityPathBase<Commu> {
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
+    public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> disliked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("disliked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final ListPath<com.hotdealwork.hotdealwork.image.Image, com.hotdealwork.hotdealwork.image.QImage> images = this.<com.hotdealwork.hotdealwork.image.Image, com.hotdealwork.hotdealwork.image.QImage>createList("images", com.hotdealwork.hotdealwork.image.Image.class, com.hotdealwork.hotdealwork.image.QImage.class, PathInits.DIRECT2);
 
-    public final NumberPath<Integer> liked = createNumber("liked", Integer.class);
+    public final SetPath<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser> liked = this.<com.hotdealwork.hotdealwork.user.SiteUser, com.hotdealwork.hotdealwork.user.QSiteUser>createSet("liked", com.hotdealwork.hotdealwork.user.SiteUser.class, com.hotdealwork.hotdealwork.user.QSiteUser.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
