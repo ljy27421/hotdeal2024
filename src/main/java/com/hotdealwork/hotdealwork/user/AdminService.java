@@ -44,17 +44,15 @@ public class AdminService {
 
     // 신고된 게시물 조회
     public List<Board> getReportedBoards() {
-        List<Board> reportedBoards = boardRepository.findReportedBoards();
-        System.out.println("Reported Boards: " + reportedBoards); // 로그 출력 추가
-        return reportedBoards;
+        return boardRepository.findReportedBoards(); // 신고된 게시물 커스텀 쿼리 사용
     }
 
     // 게시물 삭제
     public void deleteBoard(Integer boardId) {
-        if (boardRepository.existsById(boardId)) {
+        if (boardRepository.existsById(boardId)) { // 게시물 존재 확인
             boardRepository.deleteById(boardId);
         } else {
-            throw new IllegalArgumentException("게시물이 존재하지 않습니다.");
+            throw new IllegalArgumentException("게시물이 존재하지 않습니다."); // 존재하지 않는 게시물 삭제 시 예외 처리
         }
     }
 
@@ -65,6 +63,6 @@ public class AdminService {
 
     // 공지사항 게시
     public void postAnnouncement(String title, String content) {
-        // 공지사항 게시 로직
+
     }
 }
