@@ -17,17 +17,16 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String title;
-    private  String content;
-    private String category;
 
+    private String title;
+    private String content;
+    private String category;
     private String mall;
     private String productName;
     private Long price;
     private String saleUrl;
     private LocalDate startDate;
     private LocalDate endDate;
-
     private Boolean expired = false;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
@@ -40,10 +39,10 @@ public class Board {
     private SiteUser author;
 
     @ManyToMany
-    Set<SiteUser> liked;
+    private Set<SiteUser> liked;
 
     @ManyToMany
-    Set<SiteUser> disliked;
+    private Set<SiteUser> disliked;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
@@ -53,22 +52,68 @@ public class Board {
         this.createdDate = LocalDateTime.now();
     }
 
-    @Override
-    public String toString() {
-        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
-    }
-
     // 신고된 게시물 여부를 나타내는 필드 추가 (기본값: false)
     private Boolean reported = false;
 
-    // 신고된 게시물 여부 설정 메서드
-    public void setReported(boolean reported) {
-        this.reported = reported;
+    // 임베딩 벡터 추가 (사용자 선호도 분석 관련)
+    @ElementCollection
+    private List<Double> embeddingVector;
+
+    // Getter 및 Setter 메서드 추가
+    public List<Double> getEmbeddingVector() {
+        return embeddingVector;
+    }
+
+    public void setEmbeddingVector(List<Double> embeddingVector) {
+        this.embeddingVector = embeddingVector;
     }
 
     public boolean isReported() {
         return reported;
     }
 
-    private List<Double> embeddingVector;
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
+
+    // 좋아요와 싫어요 필드 접근자
+    public Set<SiteUser> getLiked() {
+        return liked;
+    }
+
+    public Set<SiteUser> getDisliked() {
+        return disliked;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public String getMall() {
+        return mall;
+    }
+
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setExpired(Boolean expired) {
+        this.expired = expired;
+    }
 }
