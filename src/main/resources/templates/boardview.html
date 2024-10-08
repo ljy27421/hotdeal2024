@@ -65,7 +65,7 @@
 </div>
 
 <div th:if="${loggedUser != null}">
-    <a th:if="${board.author.id} == ${loggedUser.id}" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'">삭제</a>
+    <a th:if="${board.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'">삭제</a>
     <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
 </div>
 
@@ -103,7 +103,7 @@
         <td th:if="${reply.author.id} == ${loggedUser?.id}">
             <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
         </td>
-        <td th:if="${reply.author.id} == ${loggedUser?.id}">
+        <td th:if="${reply.author.id} == ${loggedUser?.id} or ${loggedUser?.username} == 'admin'">
             <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
                 <button type="submit" class="table-button">삭제</button>
             </form>
