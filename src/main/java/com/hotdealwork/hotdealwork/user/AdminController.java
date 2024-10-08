@@ -2,6 +2,7 @@ package com.hotdealwork.hotdealwork.user;
 
 import com.hotdealwork.hotdealwork.board.Board;  // Board 클래스 임포트
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal; // 사용자 인증 정보를 가져오기 위해 추가
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@PreAuthorize("principal.username == 'admin'")
 @RequestMapping("/admin")
 public class AdminController {
 
