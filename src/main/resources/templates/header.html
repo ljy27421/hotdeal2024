@@ -11,34 +11,34 @@
 <header>
     <div class="header">
         <nav>
-            <img src="images/logo.jpg" class="logo" alt="Logo"> <!-- Added alt attribute -->
+            <img src="image/logo.jpg" class="logo" alt="Logo"> <!-- Added alt attribute -->
             <ul>
                 <li><a href="#">메인</a></li> <!-- Corrected case for consistent styling -->
                 <li><a href="/board/list">핫딜</a></li>
                 <li><a href="/commu/list">커뮤니티</a></li>
             </ul>
-            <img src="images/user.png" class="user-pic" onclick="toggleMenu()"> <!-- Added alt attribute -->
+            <img src="image/user.png" class="user-pic" onclick="toggleMenu()"> <!-- Added alt attribute -->
 
             <div class="sub-menu-wrap" id="subMenu"> <!-- Wrapped sub-menu with an id for JavaScript toggling -->
                 <div class="sub-menu">
                     <div class="user-info">
-                        <img src="images/user.png" alt="User picture"> <!-- Added alt attribute -->
+                        <img src="image/user.png" alt="User picture"> <!-- Added alt attribute -->
                         <h2>닉네임</h2> <!-- 닉네임 api 적용 -->
                     </div>
                     <hr>
 
                     <a href="mypage" class="sub-menu-link">
-                        <img src="images/profile.png" alt="Profile icon"> <!-- Added alt attribute -->
+                        <img src="image/profile.png" alt="Profile icon"> <!-- Added alt attribute -->
                         <p>프로필</p>
                         <span></span>
                     </a>
                     <a href="#" class="sub-menu-link">
-                        <img src="images/help.png" alt="Help icon"> <!-- Added alt attribute -->
+                        <img src="image/help.png" alt="Help icon"> <!-- Added alt attribute -->
                         <p>도움말</p> <!-- Changed text -->
                         <span></span>
                     </a>
                     <a sec:authorize="isAuthenticated()" href="/user/logout" class="sub-menu-link">
-                        <img src="images/logout.png" alt="Logout icon">
+                        <img src="image/logout.png" alt="Logout icon">
                         <p>로그아웃</p>
                         <span></span>
                     </a>
