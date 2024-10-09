@@ -8,10 +8,11 @@
     <meta charset="UTF-8">
     <title>로그인</title>
     <link rel="stylesheet" type="text/css" href="/css/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
 </head>
 
 <body>
-<div id="header"></div>
+<div th:replace="~{header.html}"></div>
 <div class="box">
     <form th:action="@{/user/login}" method="post">
         <h2>로그인</h2>
@@ -35,23 +36,7 @@
         <button type="submit">로그인</button>
     </form>
 </div>
-<div id="footer"></div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/board/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('/board/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-    });
-</script>
+<div th:replace="~{footer.html}"></div>
 
 <!--<script src="/login.js"></script>-->
 </body>

@@ -2,21 +2,22 @@
 * 
 
 body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
+            display: block; /* 변경 */
+                height: 100%; /* body의 높이를 100%로 설정 */
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f0;
+                font-family: 'Arial', sans-serif;
         }
         .box {
+            position: relative;
             background: #272727;
             color: #fff;
             padding: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             width: 300px;
+            margin: 80px auto;
         }
         .inputBox {
             position: relative;

@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/write.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
     <title>게시물 작성 폼</title>
 </head>
 
 <body>
-<div id="header"></div>
+<div th:replace="~{header.html}"></div>
 <div class="layout">
     <h1>게시물 작성</h1>
     <form action="/board/writePro" method="post" enctype="multipart/form-data">
@@ -39,15 +40,6 @@
         <button type="submit">작성</button>
     </form>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-    });
-</script>
 
 <!--이미지 형식 체크-->
 <script type="text/javascript">

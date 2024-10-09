@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/list.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
     <title>게시글 리스트 페이지</title>
 </head>
 <body>
-<div id="header"></div>
+<div th:replace="~{header.html}"></div>
 <div class="layout">
 
 
@@ -87,15 +88,6 @@
             <strong th:if="${page == curPage}" th:text="${page}"></strong>
         </th:block>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                });
-        });
-    </script>
 
     <!-- 검색 버튼 -->
     <div class="search-form">
