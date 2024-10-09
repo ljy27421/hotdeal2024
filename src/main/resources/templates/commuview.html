@@ -5,88 +5,95 @@
     <title>게시글 상세 페이지</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" type="text/css" href="/css/view.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
 </head>
 <body>
-<div id="header"></div>
+<div th:replace="~{header.html}"></div>
+
 <h1 th:text="${commu.title}">제목</h1>
 
-<table>
-    <thead>
+<table class="info-table">
     <tr>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>조회수</th>
+        <td><strong>작성자:</strong> <span th:text="${commu.author.username}">작성자</span></td>
+        <td><strong>작성일:</strong> <span th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span></td>
+        <td><strong>조회수:</strong> <span th:text="${commu.view}">조회수</span></td>
     </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${commu.author.username}"></td>
-        <td th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-        <td th:text="${commu.view}"></td>
-    </tr>
-    </tbody>
 </table>
 
-<div th:each="image : ${commu.images}">
-    <img th:src="@{${image.filepath}}" alt="${image.filename}" th:width="500px">
+<div class="image-gallery" th:each="image : ${commu.images}">
+    <img th:src="@{${image.filepath}}" th:alt="${image.filename}" alt="image">
 </div>
 
-<p th:text="${commu.content}">내용</p>
-<a th:href="@{/commu/like/{id}(id=${commu.id})}">추천</a>
-<span th:text="${commu.liked}"></span>
-<a th:href="@{/commu/dislike/{id}(id=${commu.id})}">비추천</a>
-<a th:href="@{/commu/list}">목록</a>
+<p class="content" th:text="${commu.content}">내용</p>
+
+<div class="vote-buttons">
+    <a class="vote-button" th:href="@{/commu/like/{id}(id=${commu.id})}">추천</a>
+    <span class="vote-count" th:text="${commu.liked}">0</span>
+    <a class="vote-button" th:href="@{/commu/dislike/{id}(id=${commu.id})}">비추천</a>
+</div>
+
+<div class="vote-buttons">
+    <a class="vote-button" th:href="@{/commu/list}">목록</a>
+</div>
+
 <div th:if="${loggedUser != null}">
     <a th:if="${commu.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${commu.id} + ');'">삭제</a>
     <a th:if="${commu.author.id} == ${loggedUser.id}" th:href="@{/commu/modify/{id}(id=${commu.id})}">수정</a>
 </div>
 
-
-<!--댓글-->
-<div>
+<div class="comment-section">
     <h2>댓글</h2>
-    <form th:action="@{/replys/writec/{commuId}(commuId=${commu.id})}" method="post">
-        <textarea name="content"></textarea>
+    <form th:action="@{/replys/writec/{commuId}(commuId=${commu.id})}" method="post" class="comment-form">
+        <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea>
         <button type="submit">댓글 작성</button>
     </form>
 </div>
 
 <div th:if="${replys.isEmpty()}">댓글이 없습니다.</div>
-<table th:unless="${replys.isEmpty()}">
+
+<table class="comment-table" th:unless="${replys.isEmpty()}">
     <thead>
     <tr>
         <th>작성자</th>
         <th>내용</th>
         <th>작성 시간</th>
+        <th>수정</th>
+        <th>삭제</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="reply : ${replys}" th:id="'reply-row-' + ${reply.id}">
         <td th:text="${reply.author.username}">작성자</td>
         <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
-        <td th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
+        <td th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
         <td th:if="${reply.author.id} == ${loggedUser?.id}">
-            <button th:if="${reply.author.id} == ${loggedUser?.id}" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
+            <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
         </td>
         <td th:if="${reply.author.id} == ${loggedUser?.id} or ${loggedUser?.username} == 'admin'">
             <form th:action="@{/replys/deletec/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
-                <button type="submit">삭제</button>
+                <button type="submit" class="table-button">삭제</button>
             </form>
         </td>
     </tr>
-    <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" style="display:none;">
+    <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" class="edit-form">
         <td colspan="5">
             <form th:action="@{/replys/updatec/{replyId}(replyId=${reply.id})}" method="post">
-                <textarea name="content" th:text="${reply.content}"></textarea>
-                <button type="submit">수정</button>
+                <textarea name="content" th:text="${reply.content}" required></textarea>
+                <button type="submit" class="table-button">수정</button>
+                <button type="button" class="table-button" th:onclick="'hideEditForm(' + ${reply.id} + ')'">취소</button>
             </form>
-            <button th:onclick="'hideEditForm(' + ${reply.id} + ')'">취소</button>
         </td>
     </tr>
     </tbody>
 </table>
 
 <script>
+
+
+    const editForms = document.querySelectorAll('.edit-form');
+    editForms.forEach(form => form.style.display = 'none');
+    });
+
     function showEditForm(replyId) {
         document.getElementById('reply-row-' + replyId).style.display = 'none';
         document.getElementById('edit-row-' + replyId).style.display = 'table-row';
@@ -108,8 +115,8 @@
     function confirmReplyDelete() {
         return confirm("댓글을 삭제하시겠습니까?");
     }
-
 </script>
+
 <div id="footer"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -128,4 +135,3 @@
 </script>
 
 </body>
-</html>

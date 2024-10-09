@@ -1,25 +1,40 @@
  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Noto+Serif+KR:wght@200..900&display=swap');
-* 
+*
+html, body {
+    height: 100%; /* 전체 높이를 100%로 설정 */
+    margin: 0; /* 기본 여백 제거 */
+    font-family: 'Arial', sans-serif;
+}
 
+body {
+    display: flex;
+    flex-direction: column;  /* 세로로 배치 */
+    min-height: 100vh; /* 화면 높이를 100vh로 설정 */
+    background-color: #f0f0f0;
+    justify-content: space-between;  /* 내용 상단에, 푸터 하단에 정렬 */
+}
 
- body {
-            display: block;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
-        }
-        .box {
-            margin: auto;
-            background: #272727;
-            color: #fff;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            width: 300px;
-        }
+/* 로그인 박스 스타일 */
+.box {
+    margin: 0 auto; /* 중앙 정렬 */
+    background: #272727;
+    color: #fff;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 300px;
+    margin-bottom: 20px; /* 박스 아래 여백 */
+}
+
+/* footer 스타일 */
+footer {
+    background-color: #272727;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* 푸터를 화면 하단으로 고정 */
+}
         .inputBox {
             position: relative;
             margin-bottom: 30px;
@@ -88,3 +103,4 @@
         }
         footer {
             margin-top: auto;
+            }
