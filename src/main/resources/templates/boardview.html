@@ -55,6 +55,18 @@
 
 <p class="content" th:text="${board.content}">내용</p>
 
+<div class="report-button" th:if="${loggedUser != null}">
+    <form th:action="@{/board/report/{id}(id=${board.id})}" method="post">
+        <button type="submit">신고하기</button>
+    </form>
+</div>
+
+<div class="vote-buttons">
+    <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
+    <span class="vote-count" th:text="${board.liked}">0</span>
+    <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
+</div>
+
 <div class="vote-buttons">
     <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
     <span class="vote-count" th:text="${board.liked}">0</span>
