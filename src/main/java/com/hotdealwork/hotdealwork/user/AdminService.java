@@ -32,12 +32,24 @@ public class AdminService {
         return user.orElse(null); // 사용자가 없을 경우 null 반환
     }
 
-    // 계정 정지 또는 활성화
-    public void suspendUser(Long userId) {
+    // 계정 정지 (정지 사유 추가)
+    public void suspendUser(Long userId, String reason) {
         Optional<SiteUser> user = userRepository.findById(userId);
         if (user.isPresent()) {
             SiteUser siteUser = user.get();
-            siteUser.setActive(!siteUser.isActive()); // 현재 활성 상태를 반전시킴
+            siteUser.setActive(false); // 계정을 비활성화
+            siteUser.setSuspensionReason(reason); // 정지 사유를 저장
+            userRepository.save(siteUser); // 변경된 상태를 저장
+        }
+    }
+
+    // 계정 정지 해제
+    public void unsuspendUser(Long userId) {
+        Optional<SiteUser> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            SiteUser siteUser = user.get();
+            siteUser.setActive(true); // 계정을 활성화
+            siteUser.setSuspensionReason(null); // 정지 사유를 초기화
             userRepository.save(siteUser); // 변경된 상태를 저장
         }
     }
@@ -63,6 +75,6 @@ public class AdminService {
 
     // 공지사항 게시
     public void postAnnouncement(String title, String content) {
-
+        // 공지사항 게시 로직 (아직 구현되지 않음)
     }
 }
