@@ -44,6 +44,10 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final StringPath selectedQuestion = createString("selectedQuestion");
 
+    public final BooleanPath suspended = createBoolean("suspended");
+
+    public final StringPath suspensionReason = createString("suspensionReason");
+
     public final StringPath username = createString("username");
 
     public QSiteUser(String variable) {
