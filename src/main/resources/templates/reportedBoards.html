@@ -21,7 +21,7 @@
   <tr th:each="board : ${boards}">
     <td th:text="${board.id}"></td>
     <td th:text="${board.title}"></td>
-    <td th:text="${board.username}"></td>
+    <td th:text="${board.author.username}"></td> <!-- 작성자의 이름을 표시 -->
     <td>
       <form th:action="@{/admin/deleteBoard}" method="post">
         <input type="hidden" name="boardId" th:value="${board.id}" />
@@ -31,5 +31,6 @@
   </tr>
   </tbody>
 </table>
+<a href="/admin/adminMenu">관리자 메뉴로 돌아가기</a>
 </body>
 </html>
