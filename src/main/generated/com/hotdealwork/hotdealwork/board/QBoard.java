@@ -48,6 +48,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final StringPath productName = createString("productName");
 
+    public final ListPath<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply> replies = this.<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply>createList("replies", com.hotdealwork.hotdealwork.reply.Reply.class, com.hotdealwork.hotdealwork.reply.QReply.class, PathInits.DIRECT2);
+
     public final BooleanPath reported = createBoolean("reported");
 
     public final StringPath saleUrl = createString("saleUrl");

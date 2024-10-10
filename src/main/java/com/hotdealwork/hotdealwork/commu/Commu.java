@@ -1,6 +1,7 @@
 package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.image.Image;
+import com.hotdealwork.hotdealwork.reply.Reply;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class Commu {
 
     @OneToMany(mappedBy = "commu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
+
+    @OneToMany(mappedBy = "commu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies;
 
     @ManyToOne
     private SiteUser author;
