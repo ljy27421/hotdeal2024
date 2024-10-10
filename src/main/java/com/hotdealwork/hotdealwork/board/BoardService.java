@@ -142,7 +142,6 @@ public class BoardService {
                         board.createdDate,
                         board.endDate,
                         board.liked,
-                        board.expired,
                         board.author,
                         board.view
                 ))
@@ -157,12 +156,6 @@ public class BoardService {
                 .selectFrom(board)
                 .where(builder)
                 .fetch().size();
-
-        result.forEach(b -> {
-            if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
-                b.setExpired(true);
-            }
-        });
 
         return new PageImpl<>(result, pageable, total);
     }
