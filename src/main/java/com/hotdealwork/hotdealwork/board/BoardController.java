@@ -39,11 +39,6 @@ public class BoardController {
     @Autowired
     private ReplyService replyService;
 
-//    @GetMapping("/")
-//    public String boardHome() {
-//        return "boardhome";
-//    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String boardWriteForm() {
@@ -85,7 +80,7 @@ public class BoardController {
     }
 
     @GetMapping("/view")
-    public String boardView(Model model, Principal principal, @RequestParam(name="id") Integer id) {
+    public String boardView(Model model, Principal principal, @RequestParam(name = "id") Integer id) {
         model.addAttribute("board", boardService.getBoard(id));
         model.addAttribute("replys", replyService.getReplyByBoard(boardService.getBoard(id)));
         boardService.boardIncreaseViewCount(boardService.getBoard(id));
@@ -99,7 +94,7 @@ public class BoardController {
     }
 
     @GetMapping("/delete")
-    public String boardDelete(@RequestParam(name="id") Integer id, Model model) {
+    public String boardDelete(@RequestParam(name = "id") Integer id, Model model) {
         boardService.boardDelete(id);
         model.addAttribute("message", "글을 삭제했습니다.");
         model.addAttribute("URL", "/board/list");
@@ -149,16 +144,15 @@ public class BoardController {
         model.addAttribute("boards", boardService.getReportedBoards());
         return "reportedBoards";
     }
-<<<<<<< HEAD
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest/{id}")
     public String boardInterest(Model model, Principal principal, @PathVariable("id") Integer id) {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-        this.boardService.boardInterest(board,siteUser);
+        this.boardService.boardInterest(board, siteUser);
 
-        if (siteUser.getInterest().contains(id)){
+        if (siteUser.getInterest().contains(id)) {
             model.addAttribute("message", "글을 관심 목록에 추가했습니다.");
         } else {
             model.addAttribute("message", "글을 관심 목록에서 제거했습니다.");
@@ -178,8 +172,3 @@ public class BoardController {
     }
 }
 
-
-
-=======
-}
->>>>>>> 40e9323 (Add post reporting feature and related UI updates)
