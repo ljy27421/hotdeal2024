@@ -5,6 +5,7 @@ import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
+import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,6 +35,9 @@ public class BoardService {
     private UserRepository userRepository;
 
     @Autowired
+    private ReplyRepository replyRepository;
+
+    @Autowired
     private ImageRepository imageRepository;
 
     private final JPAQueryFactory queryFactory;
@@ -47,7 +50,7 @@ public class BoardService {
     @Autowired
     private EmbeddingService embeddingService;
 
-//    public Board getBoard(Integer id) {
+    //    public Board getBoard(Integer id) {
 //        Optional<Board> board = this.boardRepository.findById(id);
 //        if (board.isPresent()) {
 //            Board board1 = board.get();
@@ -62,7 +65,7 @@ public class BoardService {
         return boardRepository.findById(id).orElseThrow(() -> new DataNotFoundException("board not found"));
     }
 
-// 조회수 증가
+    // 조회수 증가
     public void boardIncreaseViewCount(Board board) {
         board.setView(board.getView() + 1);
         boardRepository.save(board);
@@ -96,7 +99,6 @@ public class BoardService {
         String combinedText = String.join(" ", board.getProductName(), board.getCategory());
         List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
         board.setEmbeddingVector(embeddingVector);
-
 
         board.setAuthor(author);
         boardRepository.save(board);
@@ -140,7 +142,6 @@ public class BoardService {
                         board.createdDate,
                         board.endDate,
                         board.liked,
-                        board.expired,
                         board.author,
                         board.view
                 ))
@@ -155,12 +156,6 @@ public class BoardService {
                 .selectFrom(board)
                 .where(builder)
                 .fetch().size();
-
-        result.forEach(b -> {
-            if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
-                b.setExpired(true);
-            }
-        });
 
         return new PageImpl<>(result, pageable, total);
     }
@@ -190,7 +185,6 @@ public class BoardService {
 
     // 특정 글 삭제
     public void boardDelete(Integer id) {
-
         Board board = boardRepository.findById(id).orElseThrow();
         for (Image image : board.getImages()) {
             File file = new File(System.getProperty("user.dir") + "/src/main/resources/static/files/" + image.getFilename());
@@ -199,7 +193,6 @@ public class BoardService {
             }
             imageRepository.delete(image);
         }
-
         boardRepository.delete(board);
     }
 
@@ -222,6 +215,7 @@ public class BoardService {
         boardRepository.save(board);
         userRepository.save(siteUser);
     }
+
     // 게시글 비추천
     public void boardDislike(Board board, SiteUser siteUser) {
         board.setLiked(board.getLiked() - 1);
@@ -229,41 +223,34 @@ public class BoardService {
         boardRepository.save(board);
         userRepository.save(siteUser);
     }
+
     // 관심 처리
     public void boardInterest(Board board, SiteUser siteUser){
         if (siteUser.getInterest() == null){
             siteUser.setInterest(new ArrayList<>());
-//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
         }
 
         int id = board.getId();
-//        List<Double> newVector = board.getEmbeddingVector();
-
         List<Integer> interest = siteUser.getInterest();
-//        List<Double> curVector = siteUser.getInterestVector();
-
-//        int count = interest.size();
-//        System.out.println(interest.size());
-//        System.out.println(curVector.size());
 
         if (siteUser.getInterest().contains(id)){
             interest.remove(Integer.valueOf(id));
-//            if (count - 1 == 0){
-//                siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
-//            } else {
-//                for (int i = 0; i < 1536; i++) {
-//                    curVector.set(i, (curVector.get(i) * count - newVector.get(i)) / (count - 1));
-//                }
-//            }
         } else {
             interest.add(id);
-//            for (int i = 0; i < 1536; i++){
-//                curVector.set(i, (curVector.get(i) * count + newVector.get(i)) / (count + 1));
-//            }
-//            System.out.println(newVector.get(0));
-//            System.out.println((curVector.get(0) * count + newVector.get(0)) / (count + 1));
         }
 
         userRepository.save(siteUser);
+    }
+
+    // 게시글 신고 처리 메서드 추가
+    public void reportPost(Integer id) {
+        Board board = getBoard(id);
+        board.setReported(true);
+        boardRepository.save(board);
+    }
+
+    // 신고된 게시글 목록 조회
+    public List<Board> getReportedBoards() {
+        return boardRepository.findReportedBoards();
     }
 }

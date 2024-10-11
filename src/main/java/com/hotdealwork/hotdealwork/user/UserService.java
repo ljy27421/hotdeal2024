@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +21,26 @@ public class UserService {
     private final BoardRepository boardRepository;
     private final PasswordEncoder passwordEncoder;
     private final HttpServletRequest request;
+
+    // 사용자 계정 정지 처리 메서드
+    @Transactional
+    public void suspendUser(Long userId, String reason) {
+        SiteUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setSuspended(true);
+        user.setSuspensionReason(reason);
+        userRepository.save(user);
+    }
+
+    // 사용자 계정 정지 해제 메서드
+    @Transactional
+    public void unsuspendUser(Long userId) {
+        SiteUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setSuspended(false);
+        user.setSuspensionReason(null); // 정지 사유 초기화
+        userRepository.save(user);
+    }
 
     // 사용자 인증 메서드 (아이디와 비밀번호 확인)
     public boolean authenticateUser(String username, String password) {

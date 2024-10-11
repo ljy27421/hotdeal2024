@@ -16,7 +16,6 @@ public class BoardDTO {
     private String title;
     private String category;
     private LocalDate endDate;
-    private Boolean expired;
     private Integer view;
     private SiteUser author;
     private Integer liked;
@@ -24,14 +23,13 @@ public class BoardDTO {
 
     @Builder
     public BoardDTO(Integer id, String title, String category, LocalDateTime createdDate,
-                    LocalDate endDate, Integer liked, Boolean expired, SiteUser author, Integer view) {
+                    LocalDate endDate, Integer liked, SiteUser author, Integer view) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.createdDate = createdDate;
         this.endDate = endDate;
         this.liked = liked;
-        this.expired = expired;
         this.author = author;
         this.view = view;
     }
