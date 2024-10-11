@@ -30,6 +30,8 @@
 </head>
 <body>
 <div th:replace="~{header.html}"></div>
+<div class="container">
+
 
 <h1 th:text="${board.title}">제목</h1>
 
@@ -45,8 +47,8 @@
     <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
     <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
     <p th:text="'판매 링크 : ' + ${board.saleUrl}">판매 링크</p>
-    <p th:text="'시작 날짜: ' + ${#temporals.format(board.startDate, 'yyyy-MM-dd')}">시작 날짜</p>
-    <p th:text="'종료 날짜: ' + ${#temporals.format(board.endDate, 'yyyy-MM-dd')}">종료 날짜</p>
+    <p th:text="'시작 날짜: ' + (${board.startDate != null ? #temporals.format(board.startDate, 'yyyy-MM-dd') : ''})">시작 날짜</p>
+    <p th:text="'종료 날짜: ' + (${board.endDate != null ? #temporals.format(board.endDate, 'yyyy-MM-dd') : ''})">종료 날짜</p>
 </div>
 
 <div class="image-gallery" th:each="image : ${board.images}">
@@ -121,7 +123,7 @@
     </tr>
     </tbody>
 </table>
-
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const header = document.getElementById('header');

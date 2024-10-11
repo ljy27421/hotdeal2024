@@ -81,7 +81,6 @@ div > p {
 }
 
 div > p:first-child {
-    margin-top: 20px;
     font-weight: bold;
     color: #495057;
 }
@@ -338,4 +337,10 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+}
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
