@@ -1,6 +1,7 @@
 package com.hotdealwork.hotdealwork.board;
 
 import com.hotdealwork.hotdealwork.image.Image;
+import com.hotdealwork.hotdealwork.reply.Reply;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -18,7 +18,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private  String content;
+    private String content;
     private String category;
 
     private String mall;
@@ -36,6 +36,9 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies;
+
     @ManyToOne
     private SiteUser author;
 
@@ -44,7 +47,6 @@ public class Board {
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
-
 
     // 신고된 게시물 여부를 나타내는 필드 추가 (기본값: false)
     private Boolean reported = false;
@@ -57,6 +59,10 @@ public class Board {
     public boolean isReported() {
         return reported;
     }
+
+    // 게시글의 임베딩 벡터 (예시: NLP 또는 AI 모델에 사용)
+    private List<Double> embeddingVector;
+
 //    @PrePersist
 //    protected void onCreate() {
 //        this.createdDate = LocalDateTime.now();
@@ -66,7 +72,5 @@ public class Board {
 //    public String toString() {
 //        return "Board{id=" + id + ", title='" + title + "', content='" + content + "', category='" + category + "', images=" + images + '}';
 //    }
-
-    private List<Double> embeddingVector;
 
 }

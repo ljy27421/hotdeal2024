@@ -16,6 +16,7 @@
         <th>이메일</th>
         <th>활성 상태</th>
         <th>정지 상태</th>
+        <th>액션</th>
     </tr>
     </thead>
     <tbody>
@@ -24,15 +25,21 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.active} ? '활성' : '비활성'"></td>
+        <td th:text="${user.suspended} ? '정지됨' : '정지 안됨'"></td>
         <td>
-            <form th:action="@{/admin/suspendUser}" method="post">
+            <form th:action="@{/admin/suspendUser}" method="post" th:if="${!user.suspended}">
                 <input type="hidden" name="userId" th:value="${user.id}" />
-                <button type="submit" th:text="${user.active} ? '정지 안됨' : '정지 됨'"></button>
+                <input type="text" name="reason" placeholder="정지 사유 입력" required />
+                <button type="submit">정지</button>
+            </form>
+            <form th:action="@{/admin/unsuspendUser}" method="post" th:if="${user.suspended}">
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <button type="submit">정지 해제</button>
             </form>
         </td>
     </tr>
     <tr th:if="${#lists.isEmpty(users)}">
-        <td colspan="5">등록된 사용자가 없습니다.</td>
+        <td colspan="6">등록된 사용자가 없습니다.</td>
     </tr>
     </tbody>
 </table>
