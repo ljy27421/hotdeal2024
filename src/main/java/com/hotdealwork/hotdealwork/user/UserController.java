@@ -34,7 +34,7 @@ public class UserController {
         SiteUser user = userService.getUser(principal.getName());
 
         if (user != null && user.isSuspended()){
-            model.addAttribute("message","정지된 사용자입니다.");
+            model.addAttribute("message","정지된 사용자입니다. \n정지 사유: "+user.getSuspensionReason());
             model.addAttribute("URL","/user/login");
             return "message";
         }

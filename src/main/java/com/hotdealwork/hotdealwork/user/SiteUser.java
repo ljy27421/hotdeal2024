@@ -39,15 +39,6 @@ public class SiteUser {
     @Column(length = 255)
     private String suspensionReason;
 
-    // 계정 활성 상태 설정 메서드
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
     // 계정 정지 상태 설정 메서드
     public void setSuspended(boolean suspended) {
         this.suspended = suspended;
