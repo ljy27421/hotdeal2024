@@ -11,7 +11,6 @@
   <tr>
     <th>제목</th>
     <th>작성자</th>
-    <th>신고 횟수</th>
     <th>상세보기</th>
   </tr>
   </thead>
@@ -19,8 +18,7 @@
   <tr th:each="board : ${boards}">
     <td th:text="${board.title}"></td>
     <td th:text="${board.author.username}"></td>
-    <td th:text="${board.reportCount}"></td>
-    <td><a th:href="@{/admin/reportedBoard/{id}(id=${board.id})}">상세보기</a></td>
+    <td><a th:href="@{/board/view?id={id}(id=${board.id})}">상세보기</a></td>
   </tr>
   </tbody>
 </table>
