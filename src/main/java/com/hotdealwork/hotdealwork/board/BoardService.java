@@ -5,6 +5,7 @@ import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
+import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
@@ -32,6 +33,9 @@ public class BoardService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -138,7 +142,6 @@ public class BoardService {
                         board.createdDate,
                         board.endDate,
                         board.liked,
-                        board.expired,
                         board.author,
                         board.view
                 ))
@@ -153,12 +156,6 @@ public class BoardService {
                 .selectFrom(board)
                 .where(builder)
                 .fetch().size();
-
-        result.forEach(b -> {
-            if (b.getEndDate() != null && b.getEndDate().isBefore(LocalDate.now())) {
-                b.setExpired(true);
-            }
-        });
 
         return new PageImpl<>(result, pageable, total);
     }
@@ -196,7 +193,6 @@ public class BoardService {
             }
             imageRepository.delete(image);
         }
-
         boardRepository.delete(board);
     }
 

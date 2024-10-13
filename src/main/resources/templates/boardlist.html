@@ -52,7 +52,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="board : ${list}" th:classappend="${board.expired ? ' expired' : ''}">
+        <tr th:each="board : ${list}"
+            th:classappend="${board.endDate != null && board.endDate.isAfter(#temporals.createNow().toLocalDate()) ? '' : 'expired'}">
             <td>
                 <span th:if="${board.liked >= 1}" style="color:red">●</span>
                 <span th:if="${board.liked <= -1}" style="color:blue">●</span>
