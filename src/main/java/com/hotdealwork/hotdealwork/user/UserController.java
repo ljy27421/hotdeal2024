@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.user;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -76,9 +77,6 @@ public class UserController {
     public String updateProfile(Principal principal, Model model, UserUpdateForm form){
 
         SiteUser user = userService.getUser(principal.getName());
-
-        System.out.println(form.getNickname());
-
         user.setEmail(form.getEmail());
         user.setNickname(form.getNickname());
 
@@ -157,22 +155,26 @@ public class UserController {
 
     // 비밀번호 찾기 처리
     @PostMapping("/findPassword")
-    public String findPassword(@RequestParam String username,
-                               @RequestParam String selectedQuestion,
-                               @RequestParam String securityAnswer,
+    public String findPassword(@RequestParam(name="username") String username,
+                               @RequestParam(name="selectedQuestion") String selectedQuestion,
+                               @RequestParam(name="securityAnswer") String securityAnswer,
+                               HttpSession session,
                                Model model) {
         try {
             boolean isCorrectAnswer = userService.verifySecurityAnswer(username, selectedQuestion, securityAnswer);
             if (isCorrectAnswer) {
                 model.addAttribute("message", "질문과 답변이 일치합니다. 비밀번호를 재설정하세요.");
-                return "redirect:/user/resetPassword";  // 비밀번호 재설정 페이지로 이동
+                model.addAttribute("URL","/user/resetPassword");
+                session.setAttribute("username", username); // 비밀번호 재설정 페이지로 이동
             } else {
                 model.addAttribute("message", "질문 또는 답변이 일치하지 않습니다.");
+                model.addAttribute("URL","/user/findPassword"); // 비밀번호 찾기 페이지로 다시 이동
             }
         } catch (Exception e) {
             model.addAttribute("message", "사용자를 찾을 수 없습니다.");
+            model.addAttribute("URL","/user/findPassword"); // 비밀번호 찾기 페이지로 다시 이동
         }
-        return "find_password";  // 비밀번호 찾기 페이지로 다시 이동
+        return "message";
     }
 
     // 비밀번호 재설정 페이지 이동
@@ -183,22 +185,32 @@ public class UserController {
 
     // 비밀번호 재설정 처리
     @PostMapping("/resetPassword")
-    public String resetPassword(@RequestParam String username,
-                                @RequestParam String newPassword,
-                                @RequestParam String confirmNewPassword,
+    public String resetPassword(HttpSession session,
+                                @RequestParam(name="newPassword") String newPassword,
+                                @RequestParam(name="confirmNewPassword") String confirmNewPassword,
                                 Model model) {
+        String username = (String) session.getAttribute("username");
+
+        if (username == null) {
+            model.addAttribute("message", "사용자 정보가 유효하지 않습니다.");  // username이 null인 경우 처리
+            model.addAttribute("URL","/user/findPassword"); // 비밀번호 찾기 페이지로 다시 이동
+        }
         if (!newPassword.equals(confirmNewPassword)) {
             model.addAttribute("message", "비밀번호가 일치하지 않습니다.");
-            return "reset_password";  // 비밀번호 재설정 페이지로 다시 이동
+            model.addAttribute("URL","/user/resetPassword"); // 비밀번호 재설정 페이지로 다시 이동
+            return "message";
         }
 
         try {
             userService.updatePassword(username, newPassword);  // 비밀번호 업데이트
             model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+            model.addAttribute("URL","/user/login"); // 로그인 페이지로 이동
+            session.removeAttribute("username");
         } catch (Exception e) {
             model.addAttribute("message", "비밀번호 변경에 실패했습니다.");
+            model.addAttribute("URL","/user/resetPassword"); // 비밀번호 재설정 페이지로 다시 이동
         }
-        return "reset_password";  // 비밀번호 재설정 페이지로 다시 이동
+        return "message";  // 비밀번호 재설정 페이지로 다시 이동
     }
 
     // 회원 탈퇴 페이지 이동
