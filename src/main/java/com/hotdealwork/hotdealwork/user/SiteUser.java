@@ -1,9 +1,7 @@
 package com.hotdealwork.hotdealwork.user;
 
-import com.hotdealwork.hotdealwork.board.Board;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.List;
 
 @Entity
