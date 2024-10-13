@@ -18,6 +18,13 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    // 관리자 메뉴 페이지로 이동
+    @GetMapping("/")
+    public String adminMenu(Model model) {
+        model.addAttribute("currentUser", new SiteUser()); // 기본 사용자 정보 추가 (null 처리)
+        return "adminMenu";  // adminMenu.html 반환
+    }
+
     // 모든 회원 조회
     @GetMapping("/users")
     public String getAllUsers(Model model, @AuthenticationPrincipal SiteUser currentUser) {
@@ -32,7 +39,7 @@ public class AdminController {
     public String getReportedBoards(Model model) {
         List<Board> reportedBoards = adminService.getReportedBoards();
         model.addAttribute("boards", reportedBoards);
-        return "admin/reportedBoards";  // 이동 경로 변경
+        return "reportedBoards";  // 이동 경로 변경
     }
 
     // 사용자 계정 정지
@@ -64,13 +71,6 @@ public class AdminController {
         SiteUser user = adminService.getUserById(userId);
         model.addAttribute("user", user);
         return "edit_profile";  // src/main/resources/templates/edit_profile.html 사용
-    }
-
-    // 관리자 메뉴 페이지로 이동 (로그인 없이 접근 가능)
-    @GetMapping("/adminMenu")
-    public String adminMenu(Model model) {
-        model.addAttribute("currentUser", new SiteUser()); // 기본 사용자 정보 추가 (null 처리)
-        return "adminMenu";  // adminMenu.html 반환
     }
 
     // 계정 정지 페이지로 이동
