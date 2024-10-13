@@ -36,6 +36,8 @@ public class QCommu extends EntityPathBase<Commu> {
 
     public final NumberPath<Integer> liked = createNumber("liked", Integer.class);
 
+    public final ListPath<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply> replies = this.<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply>createList("replies", com.hotdealwork.hotdealwork.reply.Reply.class, com.hotdealwork.hotdealwork.reply.QReply.class, PathInits.DIRECT2);
+
     public final StringPath title = createString("title");
 
     public final NumberPath<Integer> view = createNumber("view", Integer.class);
