@@ -11,35 +11,53 @@
 <header>
     <div class="header">
         <nav style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 20px;">
-            <img src="/image/logo.jpg" class="logo" alt="Logo">
+            <a href="/">
+                <img src="/image/logo.jpg" class="logo" alt="Logo" th:href="@{/}">
+            </a>
             <ul style="display: flex; margin: 0; padding: 0; list-style: none;">
                 <li><a href="/">메인</a></li>
                 <li><a href="/board/list">핫딜</a></li>
                 <li><a href="/commu/list">커뮤니티</a></li>
             </ul>
-            <img src="/image/user.png" class="user-pic" onclick="toggleMenu()" alt="User Menu Icon">
-            <div class="sub-menu-wrap" id="subMenu">
-                <div class="sub-menu">
-                    <div class="user-info">
-                        <img src="/image/user.png" alt="User picture">
-                        <h2>닉네임</h2> <!-- 동적 닉네임 처리 필요 -->
+            <div onclick="toggleMenu()">
+                <img src="/image/user.png" class="user-pic" alt="User Menu Icon">
+                <div class="sub-menu-wrap" id="subMenu">
+                    <div class="sub-menu">
+                        <div class="user-info" sec:authorize="isAuthenticated()">
+                            <img src="/image/user.png" alt="User picture">
+                            <h2 th:text="${#authentication.principal.username}"></h2>
+                        </div>
+                        <div class="user-info" sec:authorize="isAnonymous()">
+                            <img src="/image/user.png" alt="User picture">
+                            <h2>로그인해주세요</h2>
+                        </div>
+                        <hr>
+                        <a sec:authorize="isAuthenticated()" href="mypage" class="sub-menu-link">
+                            <img src="/image/profile.png" alt="Profile icon">
+                            <p>프로필</p>
+                            <span></span>
+                        </a>
+                        <a sec:authorize="isAuthenticated()" href="/user/logout" class="sub-menu-link">
+                            <img src="/image/logout.png" alt="Logout icon">
+                            <p>로그아웃</p>
+                            <span></span>
+                        </a>
+                        <a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin/adminMenu" class="sub-menu-link">
+                            <img src="/image/logout.png" alt="Logout icon">
+                            <p>관리자 메뉴</p>
+                            <span></span>
+                        </a>
+                        <a sec:authorize="isAnonymous()" href="/user/login" class="sub-menu-link">
+                            <img src="/image/logout.png" alt="Logout icon">
+                            <p>로그인</p>
+                            <span></span>
+                        </a>
+                        <a sec:authorize="isAnonymous()" href="/user/signup" class="sub-menu-link">
+                            <img src="/image/logout.png" alt="Logout icon">
+                            <p>회원가입</p>
+                            <span></span>
+                        </a>
                     </div>
-                    <hr>
-                    <a href="mypage" class="sub-menu-link">
-                        <img src="/image/profile.png" alt="Profile icon">
-                        <p>프로필</p>
-                        <span></span>
-                    </a>
-                    <a href="#" class="sub-menu-link">
-                        <img src="/image/help.png" alt="Help icon">
-                        <p>도움말</p>
-                        <span></span>
-                    </a>
-                    <a sec:authorize="isAuthenticated()" href="/user/logout" class="sub-menu-link">
-                        <img src="/image/logout.png" alt="Logout icon">
-                        <p>로그아웃</p>
-                        <span></span>
-                    </a>
                 </div>
             </div>
         </nav>
