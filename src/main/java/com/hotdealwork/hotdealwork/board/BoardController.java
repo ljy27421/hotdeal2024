@@ -137,7 +137,16 @@ public class BoardController {
     public String reportPost(@PathVariable("id") Integer id, Model model) {
         boardService.reportPost(id);
         model.addAttribute("message", "신고가 완료되었습니다.");
-        model.addAttribute("URL", "/board/list");
+        model.addAttribute("URL", "/board/view?id="+id);
+        return "message";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/unreport/{id}")
+    public String unreportPost(@PathVariable("id") Integer id, Model model) {
+        boardService.unreportPost(id);
+        model.addAttribute("message", "신고가 해제되었습니다.");
+        model.addAttribute("URL", "/board/view?id="+id);
         return "message";
     }
 

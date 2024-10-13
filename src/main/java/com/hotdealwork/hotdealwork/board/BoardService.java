@@ -248,6 +248,12 @@ public class BoardService {
         board.setReported(true);
         boardRepository.save(board);
     }
+    // 게시글 신고 해제
+    public void unreportPost(Integer id) {
+        Board board = getBoard(id);
+        board.setReported(false);
+        boardRepository.save(board);
+    }
 
     // 신고된 게시글 목록 조회
     public List<Board> getReportedBoards() {
