@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -132,17 +131,21 @@ public class BoardController {
         return "message";
     }
 
+    // 1. 신고 버튼 클릭 시 완료 메시지 출력
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/report/{id}")
-    public String reportPost(@PathVariable("id") Integer id) {
+    public String reportPost(@PathVariable("id") Integer id, Model model) {
         boardService.reportPost(id);
-        return "redirect:/board/reported";
+        model.addAttribute("message", "신고가 완료되었습니다.");
+        model.addAttribute("URL", "/board/list");
+        return "message";
     }
 
+    // 2. 신고된 게시글 목록 페이지를 /admin/reportedBoards로 이동
     @GetMapping("/reported")
     public String reportedPosts(Model model) {
         model.addAttribute("boards", boardService.getReportedBoards());
-        return "reportedBoards";
+        return "admin/reportedBoards";  // 이동 경로 변경
     }
 
     @PreAuthorize("isAuthenticated()")

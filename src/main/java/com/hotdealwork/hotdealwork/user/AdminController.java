@@ -27,12 +27,12 @@ public class AdminController {
         return "users";  // src/main/resources/templates/users.html 사용
     }
 
-    // 신고된 게시물 조회
+    // 신고된 게시물 조회 경로를 admin으로 이동
     @GetMapping("/reportedBoards")
     public String getReportedBoards(Model model) {
         List<Board> reportedBoards = adminService.getReportedBoards();
         model.addAttribute("boards", reportedBoards);
-        return "reportedBoards";  // src/main/resources/templates/reportedBoards.html 사용
+        return "admin/reportedBoards";  // 이동 경로 변경
     }
 
     // 사용자 계정 정지

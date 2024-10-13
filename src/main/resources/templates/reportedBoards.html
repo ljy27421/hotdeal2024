@@ -2,35 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>신고된 게시물 목록</title>
-  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-<h1>관리자 - 신고된 게시물 목록</h1>
-<table border="1">
+<h1>신고된 게시물 목록</h1>
+<table>
   <thead>
   <tr>
-    <th>게시물 ID</th>
-    <th>게시물 제목</th>
+    <th>제목</th>
     <th>작성자</th>
-    <th>삭제</th>
+    <th>신고 횟수</th>
+    <th>상세보기</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="board : ${boards}">
-    <td th:text="${board.id}"></td>
     <td th:text="${board.title}"></td>
-    <td th:text="${board.author.username}"></td> <!-- 작성자의 이름을 표시 -->
-    <td>
-      <form th:action="@{/admin/deleteBoard}" method="post">
-        <input type="hidden" name="boardId" th:value="${board.id}" />
-        <button type="submit">삭제</button>
-      </form>
-    </td>
+    <td th:text="${board.author.username}"></td>
+    <td th:text="${board.reportCount}"></td>
+    <td><a th:href="@{/admin/reportedBoard/{id}(id=${board.id})}">상세보기</a></td>
   </tr>
   </tbody>
 </table>
-<a href="/admin/adminMenu">관리자 메뉴로 돌아가기</a>
 </body>
 </html>
