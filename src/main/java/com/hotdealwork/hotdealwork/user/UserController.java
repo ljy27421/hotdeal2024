@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,19 +28,19 @@ public class UserController {
         return "login_form";  // login_form.html 파일로 이동
     }
 
-    // 로그인 처리 (POST 요청)
-    @PostMapping("/login")
-    public String login(@RequestParam(name="username") String username,
-                        @RequestParam(name="password") String password,
-                        Model model) {
-        if (userService.authenticateUser(username, password)) {
-            // 인증 성공 후 메인 페이지로 이동
-            return "redirect:/";
-        } else {
-            model.addAttribute("message", "로그인에 실패했습니다. 아이디나 비밀번호를 확인하세요.");
-            return "login_form";
+    // 정지확인
+    @GetMapping("/isSuspended")
+    public String isSuspended(Principal principal, Model model) {
+        SiteUser user = userService.getUser(principal.getName());
+
+        if (user != null && user.isSuspended()){
+            model.addAttribute("message","정지된 사용자입니다.");
+            model.addAttribute("URL","/user/login");
+            return "message";
         }
+        return "redirect:/";
     }
+
 
     // 비밀번호 확인 페이지로 이동
     @GetMapping("/verifyPassword")
