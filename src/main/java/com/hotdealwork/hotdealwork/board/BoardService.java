@@ -171,7 +171,7 @@ public class BoardService {
                 ))
                 .from(board)
                 .where(board.endDate.after(LocalDate.now())
-                        .and(board.createdDate.after(LocalDateTime.now().minusWeeks(1))))
+                        .and(board.createdDate.after(LocalDateTime.now().minusWeeks(10))))
                 .orderBy(board.liked.desc())
                 .limit(5)
                 .fetch();

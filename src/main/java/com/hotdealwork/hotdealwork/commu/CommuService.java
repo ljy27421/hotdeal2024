@@ -159,7 +159,7 @@ public class CommuService {
                         commu.title
                 ))
                 .from(commu)
-                .where(commu.createdDate.after(LocalDateTime.now().minusWeeks(1)))
+                .where(commu.createdDate.after(LocalDateTime.now().minusWeeks(10)))
                 .orderBy(commu.liked.desc())
                 .limit(5)
                 .fetch();
