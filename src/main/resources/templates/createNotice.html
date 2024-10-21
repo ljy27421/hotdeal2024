@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 작성</title>
+</head>
+<body>
+<h1>공지사항 작성</h1>
+<form action="/admin/createNotice" method="post">
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="content">내용</label>
+    <textarea id="content" name="content" required></textarea>
+
+    <button type="submit">공지사항 등록</button>
+</form>
+</body>
+</html>

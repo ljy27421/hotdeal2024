@@ -38,12 +38,14 @@ public class BoardController {
     @Autowired
     private ReplyService replyService;
 
+    // 글쓰기 폼으로 이동
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String boardWriteForm() {
         return "boardwrite";
     }
 
+    // 글 작성 처리
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/writePro")
     public String boardWritePro(Board board, Model model, Principal principal,
@@ -54,6 +56,7 @@ public class BoardController {
         return "message";
     }
 
+    // 게시글 목록 조회
     @GetMapping("/list")
     public String boardList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -78,6 +81,7 @@ public class BoardController {
         return "boardlist";
     }
 
+    // 게시글 상세 조회
     @GetMapping("/view")
     public String boardView(Model model, Principal principal, @RequestParam(name = "id") Integer id) {
         model.addAttribute("board", boardService.getBoard(id));
@@ -92,6 +96,7 @@ public class BoardController {
         return "boardview";
     }
 
+    // 게시글 삭제
     @GetMapping("/delete")
     public String boardDelete(@RequestParam(name = "id") Integer id, Model model) {
         boardService.boardDelete(id);
@@ -100,6 +105,7 @@ public class BoardController {
         return "message";
     }
 
+    // 게시글 수정 폼으로 이동
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model) {
@@ -108,6 +114,7 @@ public class BoardController {
         return "boardmodify";
     }
 
+    // 게시글 수정 처리
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/update/{id}")
     public String boardUpdate(Model model,
@@ -125,13 +132,13 @@ public class BoardController {
         board.setImages(boardTemp.getImages());
 
         boardService.boardWrite(board, files, userService.getUser(principal.getName()));
-        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
         model.addAttribute("URL", "/board/list");
 
         return "message";
     }
 
-    // 1. 신고 버튼 클릭 시 완료 메시지 출력
+    // 1. 신고 버튼 클릭 시 신고 완료 메시지 출력
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/report/{id}")
     public String reportPost(@PathVariable("id") Integer id, Model model) {
@@ -148,6 +155,7 @@ public class BoardController {
         return "admin/reportedBoards";  // 이동 경로 변경
     }
 
+    // 게시글 관심 등록/해제
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/interest/{id}")
     public String boardInterest(Model model, Principal principal, @PathVariable("id") Integer id) {
@@ -165,6 +173,7 @@ public class BoardController {
         return "message";
     }
 
+    // AI 추천 게시글 목록 조회
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/recommand")
     public String boardRecommand(Model model, Principal principal) {
@@ -174,4 +183,3 @@ public class BoardController {
         return "boardrecommand";
     }
 }
-

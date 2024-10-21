@@ -1,9 +1,6 @@
 package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
-import com.hotdealwork.hotdealwork.board.Board;
-import com.hotdealwork.hotdealwork.board.BoardMainDTO;
-import com.hotdealwork.hotdealwork.board.QBoard;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
@@ -15,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CommuService {
@@ -44,17 +41,6 @@ public class CommuService {
         this.queryFactory = queryFactory;
     }
 
-    //    public Commu getCommu(Integer id) {
-//        Optional<Commu> commu = this.commuRepository.findById(id);
-//        if (commu.isPresent()) {
-//            Commu commu1 = commu.get();
-//            commu1.setView(commu1.getView()+1);
-//            this.commuRepository.save(commu1);
-//            return commu1;
-//        } else {
-//            throw new DataNotFoundException("commu not found");
-//        }
-//    }
     public Commu getCommu(Integer id) {
         return commuRepository.findById(id).orElseThrow(() -> new DataNotFoundException("commu not found"));
     }
@@ -66,13 +52,12 @@ public class CommuService {
     }
 
     // 글 작성 처리
-    public void commuWrite(Commu commu, List<MultipartFile> files, SiteUser author) throws Exception{
-
+    public void commuWrite(Commu commu, List<MultipartFile> files, SiteUser author) throws Exception {
         if (commu.getImages() == null) {
             commu.setImages(new ArrayList<>());
         }
 
-        if(files != null && !files.isEmpty()){
+        if (files != null && !files.isEmpty()) {
             String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
@@ -91,8 +76,6 @@ public class CommuService {
         }
 
         commu.setAuthor(author);
-        System.out.println(commu.getView());
-
         commuRepository.save(commu);
     }
 
@@ -106,7 +89,7 @@ public class CommuService {
                 builder.and(commu.title.containsIgnoreCase(searchKeyword));
             } else if ("content".equals(searchType)) {
                 builder.and(commu.content.containsIgnoreCase(searchKeyword));
-            } else if ("torc".equals(searchType)){
+            } else if ("torc".equals(searchType)) {
                 builder.and(commu.title.containsIgnoreCase(searchKeyword)
                         .or(commu.content.containsIgnoreCase(searchKeyword)));
             } else {
@@ -131,20 +114,17 @@ public class CommuService {
                         commu.liked,
                         commu.author,
                         commu.view
-
-                        ))
+                ))
                 .from(commu)
                 .where(builder)
                 .offset(pageable.getOffset())
-                .orderBy(commu.id.desc())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total =queryFactory
+        long total = queryFactory
                 .selectFrom(commu)
                 .where(builder)
                 .fetch().size();
-        ;
 
         return new PageImpl<>(result, pageable, total);
     }
@@ -165,16 +145,8 @@ public class CommuService {
                 .fetch();
     }
 
-
-    // 글 불러오기 처리
-//    public Commu commuView(Integer id) {
-//
-//        return commuRepository.findById(id).get();
-//    }
-
     // 특정 글 삭제
     public void commuDelete(Integer id) {
-
         Commu commu = commuRepository.findById(id).orElseThrow();
         for (Image image : commu.getImages()) {
             File file = new File(System.getProperty("user.dir") + "/src/main/resources/static/files/" + image.getFilename());
@@ -183,7 +155,6 @@ public class CommuService {
             }
             imageRepository.delete(image);
         }
-
         commuRepository.delete(commu);
     }
 
@@ -206,6 +177,7 @@ public class CommuService {
         commuRepository.save(commu);
         userRepository.save(siteUser);
     }
+
     // 게시글 비추천
     public void commuDislike(Commu commu, SiteUser siteUser) {
         commu.setLiked(commu.getLiked() - 1);
@@ -214,4 +186,23 @@ public class CommuService {
         userRepository.save(siteUser);
     }
 
+    // 신고된 게시글 목록 조회
+    public List<Commu> getReportedPosts() {
+        QCommu commu = QCommu.commu;
+        return queryFactory.selectFrom(commu)
+                .where(commu.category.eq("reported"))
+                .fetch();
+    }
+
+    // 게시글 신고 처리
+    public void reportPost(Integer id) {
+        Commu commu = getCommu(id);
+        commu.setCategory("reported");
+        commuRepository.save(commu);
+    }
+
+    // 신고된 게시글 삭제
+    public void deleteReportedPost(Integer id) {
+        commuDelete(id);
+    }
 }

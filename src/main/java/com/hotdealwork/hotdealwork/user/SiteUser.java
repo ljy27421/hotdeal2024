@@ -16,6 +16,8 @@ public class SiteUser {
     private String username;
     private String password;
 
+    private String role = "ROLE_USER"; // 기본값으로 일반 사용자
+
     private List<Integer> interest;
     private List<Integer> likes;
 
@@ -62,7 +64,16 @@ public class SiteUser {
         this.suspensionReason = suspensionReason;
     }
 
+
     public String getSuspensionReason() {
         return suspensionReason;
+    }
+    // 역할 설정 및 조회 메서드
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

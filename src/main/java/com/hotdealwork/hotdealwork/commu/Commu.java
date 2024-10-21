@@ -8,7 +8,6 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -18,7 +17,7 @@ public class Commu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private  String content;
+    private String content;
     private String category;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
@@ -38,6 +37,10 @@ public class Commu {
 
     @Column(updatable = false)
     private LocalDateTime createdDate;
+
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private boolean reported = false; // 신고 여부 추가
+
 
 //    @PrePersist
 //    protected void onCreate() {
