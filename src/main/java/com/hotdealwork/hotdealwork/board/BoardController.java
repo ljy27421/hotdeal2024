@@ -60,9 +60,12 @@ public class BoardController {
                             @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
                             @RequestParam(name = "category", required = false) String category,
                             @RequestParam(name = "searchType", required = false) String searchType,
-                            @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
+                            @RequestParam(name = "hot", required = false, defaultValue = "0") int hot,
+                            @RequestParam(name = "filterByEndDate", required = false, defaultValue = "false") boolean filterByEndDate,
+                            @RequestParam(name = "sortByEndDate", required = false, defaultValue = "false") boolean sortByEndDate) {
 
-        Page<BoardDTO> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
+        Page<BoardDTO> list = boardService.boardList(searchKeyword, category, searchType, hot, filterByEndDate, sortByEndDate, pageable);
+
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
         int endPage = Math.min(curPage + 5, list.getTotalPages());
@@ -74,6 +77,8 @@ public class BoardController {
         model.addAttribute("category", category);
         model.addAttribute("searchType", searchType);
         model.addAttribute("hot", hot);
+        model.addAttribute("filterByEndDate", filterByEndDate);
+        model.addAttribute("sortByEndDate", sortByEndDate);
 
         return "boardlist";
     }

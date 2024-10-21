@@ -9,6 +9,7 @@ import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.hotdealwork.hotdealwork.user.UserRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +106,7 @@ public class BoardService {
     }
 
     // 동적 쿼리 리스트 처리
-    public Page<BoardDTO> boardList(String searchKeyword, String category, String searchType, int hot, Pageable pageable) {
+    public Page<BoardDTO> boardList(String searchKeyword, String category, String searchType, int hot,boolean filterByEndDate, boolean sortByEndDate, Pageable pageable) {
         QBoard board = QBoard.board;
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -134,6 +135,13 @@ public class BoardService {
             builder.and(board.liked.goe(hot));
         }
 
+        if (filterByEndDate || sortByEndDate) {
+            builder.and(board.endDate.isNotNull().and(board.endDate.goe(LocalDate.now())));
+        }
+
+        OrderSpecifier<?> orderSpecifier = sortByEndDate ? board.endDate.asc() : board.id.desc();
+
+
         List<BoardDTO> result = queryFactory
                 .select(Projections.constructor(BoardDTO.class,
                         board.id,
@@ -148,7 +156,7 @@ public class BoardService {
                 .from(board)
                 .where(builder)
                 .offset(pageable.getOffset())
-                .orderBy(board.id.desc())
+                .orderBy(orderSpecifier)
                 .limit(pageable.getPageSize())
                 .fetch();
 
