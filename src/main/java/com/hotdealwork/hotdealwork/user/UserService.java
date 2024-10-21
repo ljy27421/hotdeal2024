@@ -29,6 +29,7 @@ public class UserService {
                 .orElseThrow(() -> new DataNotFoundException("사용자를 찾을 수 없습니다."));
         user.setSuspended(true);
         user.setSuspensionReason(reason);
+        user.setActive(false); // 계정 비활성화
         userRepository.save(user);
     }
 
@@ -39,18 +40,25 @@ public class UserService {
                 .orElseThrow(() -> new DataNotFoundException("사용자를 찾을 수 없습니다."));
         user.setSuspended(false);
         user.setSuspensionReason(null); // 정지 사유 초기화
+        user.setActive(true); // 계정 활성화
         userRepository.save(user);
     }
 
-    // 사용자 인증 메서드 (아이디와 비밀번호 확인)
+    // 사용자 인증 메서드 (로그인 단계에서 active 상태 확인)
     public boolean authenticateUser(String username, String password) {
         Optional<SiteUser> optionalUser = userRepository.findByusername(username);
         if (optionalUser.isPresent()) {
             SiteUser user = optionalUser.get();
+            if (user.isSuspended()) {
+                // 정지된 계정은 로그인 불가
+                SecurityContextHolder.clearContext();
+                return false;
+            }
             return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
     }
+
 
     // 특정 유저 조회 메서드
     public SiteUser getUser(String username) {

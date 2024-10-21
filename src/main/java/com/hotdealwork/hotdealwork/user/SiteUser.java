@@ -1,9 +1,7 @@
 package com.hotdealwork.hotdealwork.user;
 
-import com.hotdealwork.hotdealwork.board.Board;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.List;
 
 @Entity
@@ -40,15 +38,6 @@ public class SiteUser {
     // 계정 정지 사유 필드 추가
     @Column(length = 255)
     private String suspensionReason;
-
-    // 계정 활성 상태 설정 메서드
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
 
     // 계정 정지 상태 설정 메서드
     public void setSuspended(boolean suspended) {

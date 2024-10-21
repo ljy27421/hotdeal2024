@@ -32,12 +32,13 @@ public class AdminService {
         return user.orElse(null); // 사용자가 없을 경우 null 반환
     }
 
-    // 계정 정지 (정지 사유 추가)
+    // 계정 정지 또는 활성화 (정지 사유 추가)
     public void suspendUser(Long userId, String reason) {
         Optional<SiteUser> user = userRepository.findById(userId);
         if (user.isPresent()) {
             SiteUser siteUser = user.get();
             siteUser.setActive(false); // 계정을 비활성화
+            siteUser.setSuspended(true); // 계정을 정지 상태로 변경
             siteUser.setSuspensionReason(reason); // 정지 사유를 저장
             userRepository.save(siteUser); // 변경된 상태를 저장
         }
@@ -49,6 +50,7 @@ public class AdminService {
         if (user.isPresent()) {
             SiteUser siteUser = user.get();
             siteUser.setActive(true); // 계정을 활성화
+            siteUser.setSuspended(false); // 정지 상태 해제
             siteUser.setSuspensionReason(null); // 정지 사유를 초기화
             userRepository.save(siteUser); // 변경된 상태를 저장
         }

@@ -53,6 +53,9 @@
         <input type="hidden" name="userId" th:value="${board.author.id}" />
         <button type="submit">정지 해제</button>
     </form>
+    <form th:if="${board.reported}" th:action="@{/board/unreport/{id}(id=${board.id})}" method="post">
+        <button type="submit">신고 해제</button>
+    </form>
 </div>
 
 <div class="info-container">
@@ -73,12 +76,6 @@
     <form th:action="@{/board/report/{id}(id=${board.id})}" method="post">
         <button type="submit">신고하기</button>
     </form>
-</div>
-
-<div class="vote-buttons">
-    <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
-    <span class="vote-count" th:text="${board.liked}">0</span>
-    <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
 </div>
 
 <div class="vote-buttons">

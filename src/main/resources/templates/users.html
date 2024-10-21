@@ -14,9 +14,8 @@
         <th>사용자 ID</th>
         <th>사용자 이름</th>
         <th>이메일</th>
-        <th>활성 상태</th>
         <th>정지 상태</th>
-        <th>액션</th>
+        <th>정지</th>
     </tr>
     </thead>
     <tbody>
@@ -24,8 +23,7 @@
         <td th:text="${user.id}"></td>
         <td th:text="${user.username}"></td>
         <td th:text="${user.email}"></td>
-        <td th:text="${user.active} ? '활성' : '비활성'"></td>
-        <td th:text="${user.suspended} ? '정지됨' : '정지 안됨'"></td>
+        <td th:text="${user.suspended} ? 'O' : 'X'"></td>
         <td>
             <form th:action="@{/admin/suspendUser}" method="post" th:if="${!user.suspended}">
                 <input type="hidden" name="userId" th:value="${user.id}" />
