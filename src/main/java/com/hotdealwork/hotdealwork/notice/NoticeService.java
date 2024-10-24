@@ -21,4 +21,8 @@ public class NoticeService {
     public List<Notice> getAllNotices() {
         return noticeRepository.findAll();
     }
+
+    public Notice getLatestNotice() {
+        return noticeRepository.findTopByOrderByIdDesc().orElse(null);
+    }
 }

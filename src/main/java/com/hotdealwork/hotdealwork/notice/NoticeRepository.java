@@ -1,7 +1,11 @@
 package com.hotdealwork.hotdealwork.notice;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
+@Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
-    // 필요한 추가 쿼리 메서드 작성 가능
+    Optional<Notice> findTopByOrderByIdDesc();
 }

@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.commu;
 
+import com.hotdealwork.hotdealwork.notice.NoticeService; // 공지사항 서비스 추가
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
@@ -7,7 +8,6 @@ import com.hotdealwork.hotdealwork.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,25 @@ public class CommuController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NoticeService noticeService; // 공지사항 서비스 주입
+
+    // 게시글 목록 조회 + 공지사항 상단 출력
+    @GetMapping("/list")
+    public String commuList(Model model,
+                            @PageableDefault(page = 0, size = 10) Pageable pageable,
+                            @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
+                            @RequestParam(name = "category", required = false) String category) {
+
+        Page<CommuDTO> list = commuService.commuList(searchKeyword, category, null, 0, pageable);
+        model.addAttribute("list", list);
+
+        // 공지사항 추가
+        model.addAttribute("notices", noticeService.getAllNotices());
+
+        return "commulist"; // 자유 게시판 템플릿으로 이동
+    }
 
     // 게시글 신고 처리
     @PreAuthorize("isAuthenticated()")
@@ -69,16 +88,6 @@ public class CommuController {
         model.addAttribute("message", "글 작성이 완료되었습니다.");
         model.addAttribute("URL", "/commu/list");
         return "message";
-    }
-
-    @GetMapping("/list")
-    public String commuList(Model model,
-                            @PageableDefault(page = 0, size = 10) Pageable pageable,
-                            @RequestParam(name = "searchKeyword", required = false) String searchKeyword,
-                            @RequestParam(name = "category", required = false) String category) {
-        Page<CommuDTO> list = commuService.commuList(searchKeyword, category, null, 0, pageable);
-        model.addAttribute("list", list);
-        return "commulist";
     }
 
     @GetMapping("/view")

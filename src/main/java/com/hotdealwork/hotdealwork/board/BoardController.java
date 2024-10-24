@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.notice.NoticeService;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
@@ -38,7 +39,10 @@ public class BoardController {
     @Autowired
     private ReplyService replyService;
 
-    // 글쓰기 폼으로 이동
+    @Autowired
+    private NoticeService noticeService; // 공지사항 서비스 추가
+
+    // 글쓰기 폼 이동
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String boardWriteForm() {
@@ -56,7 +60,7 @@ public class BoardController {
         return "message";
     }
 
-    // 게시글 목록 조회
+    // 게시글 목록 조회 (공지사항 상단에 표시)
     @GetMapping("/list")
     public String boardList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -66,11 +70,13 @@ public class BoardController {
                             @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
         Page<BoardDTO> list = boardService.boardList(searchKeyword, category, searchType, hot, pageable);
+        model.addAttribute("notice", noticeService.getLatestNotice()); // 공지사항 추가
+        model.addAttribute("list", list);
+
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
         int endPage = Math.min(curPage + 5, list.getTotalPages());
 
-        model.addAttribute("list", list);
         model.addAttribute("curPage", curPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -105,7 +111,7 @@ public class BoardController {
         return "message";
     }
 
-    // 게시글 수정 폼으로 이동
+    // 게시글 수정 폼 이동
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id, Model model) {
@@ -138,7 +144,7 @@ public class BoardController {
         return "message";
     }
 
-    // 1. 신고 버튼 클릭 시 신고 완료 메시지 출력
+    // 게시글 신고 처리
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/report/{id}")
     public String reportPost(@PathVariable("id") Integer id, Model model) {
@@ -148,11 +154,11 @@ public class BoardController {
         return "message";
     }
 
-    // 2. 신고된 게시글 목록 페이지를 /admin/reportedBoards로 이동
+    // 신고된 게시글 목록 이동
     @GetMapping("/reported")
     public String reportedPosts(Model model) {
         model.addAttribute("boards", boardService.getReportedBoards());
-        return "admin/reportedBoards";  // 이동 경로 변경
+        return "admin/reportedBoards";
     }
 
     // 게시글 관심 등록/해제
@@ -161,7 +167,7 @@ public class BoardController {
     public String boardInterest(Model model, Principal principal, @PathVariable("id") Integer id) {
         Board board = boardService.getBoard(id);
         SiteUser siteUser = userService.getUser(principal.getName());
-        this.boardService.boardInterest(board, siteUser);
+        boardService.boardInterest(board, siteUser);
 
         if (siteUser.getInterest().contains(id)) {
             model.addAttribute("message", "글을 관심 목록에 추가했습니다.");
