@@ -2,6 +2,7 @@ package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.board.BoardDTO;
 import com.hotdealwork.hotdealwork.board.BoardMainDTO;
 import com.hotdealwork.hotdealwork.board.QBoard;
 import com.hotdealwork.hotdealwork.image.Image;
@@ -91,7 +92,6 @@ public class CommuService {
         }
 
         commu.setAuthor(author);
-        System.out.println(commu.getView());
 
         commuRepository.save(commu);
     }
@@ -122,6 +122,10 @@ public class CommuService {
             builder.and(commu.liked.goe(hot));
         }
 
+        if (!"공지사항".equals(category)) {
+            builder.and(commu.category.ne("공지사항"));
+        }
+
         List<CommuDTO> result = queryFactory
                 .select(Projections.constructor(CommuDTO.class,
                         commu.id,
@@ -145,6 +149,37 @@ public class CommuService {
                 .where(builder)
                 .fetch().size();
         ;
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    public Page<CommuDTO> commuNotice(Pageable pageable) {
+        QCommu commu = QCommu.commu;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // 공지사항만 필터링
+        builder.and(commu.category.eq("공지사항"));
+
+        List<CommuDTO> result = queryFactory
+                .select(Projections.constructor(CommuDTO.class,
+                        commu.id,
+                        commu.title,
+                        commu.category,
+                        commu.createdDate,
+                        commu.liked,
+                        commu.author,
+                        commu.view
+                ))
+                .from(commu)
+                .where(builder)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .selectFrom(commu)
+                .where(builder)
+                .fetch().size();
 
         return new PageImpl<>(result, pageable, total);
     }
@@ -214,4 +249,28 @@ public class CommuService {
         userRepository.save(siteUser);
     }
 
+    // 신고된 게시글 목록 조회
+    public List<Commu> getReportedPosts() {
+        QCommu commu = QCommu.commu;
+        return queryFactory.selectFrom(commu)
+                .where(commu.category.eq("reported"))
+                .fetch();
+    }
+    // 게시글 신고 처리
+    public void reportPost(Integer id) {
+        Commu commu = getCommu(id);
+        commu.setReported(true);
+        commuRepository.save(commu);
+    }
+
+    // 게시글 신고 해제
+    public void unreportPost(Integer id) {
+        Commu commu = getCommu(id);
+        commu.setReported(false);
+        commuRepository.save(commu);
+    }
+    // 신고된 게시글 삭제
+    public void deleteReportedPost(Integer id) {
+        commuDelete(id);
+    }
 }

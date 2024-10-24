@@ -43,7 +43,7 @@
     </tr>
 </table>
 
-<div class="admin-actions" th:if="${loggedUser != null && loggedUser.username == 'admin'}">
+<div class="admin-actions" th:if="${loggedUser != null && loggedUser.username == 'admin'} and ${board.category != '공지사항'}">
     <form th:if="${board.author.active}" th:action="@{/admin/suspendUser}" method="post">
         <input type="hidden" name="userId" th:value="${board.author.id}" />
         <input type="text" name="reason" placeholder="정지 사유 입력" required />
@@ -58,7 +58,7 @@
     </form>
 </div>
 
-<div class="info-container">
+<div th:if="${board.category != '공지사항'}" class="info-container">
     <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
     <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
     <p th:text="'판매 링크 : ' + ${board.saleUrl}">판매 링크</p>
@@ -72,13 +72,13 @@
 
 <p class="content" th:text="${board.content}">내용</p>
 
-<div class="report-button" th:if="${loggedUser != null}">
+<div class="report-button" th:if="${loggedUser != null} and ${board.category != '공지사항'}">
     <form th:action="@{/board/report/{id}(id=${board.id})}" method="post">
         <button type="submit">신고하기</button>
     </form>
 </div>
 
-<div class="vote-buttons">
+<div class="vote-buttons" th:if="${board.category != '공지사항'}">
     <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
     <span class="vote-count" th:text="${board.liked}">0</span>
     <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
@@ -95,6 +95,7 @@
 
 <div class="vote-buttons" th:if="${loggedUser != null}">
     <a class="vote-button"
+       th:if="${board.category != '공지사항'}"
        th:href="@{/board/interest/{id}(id=${board.id})}"
        th:classappend="${loggedUser.interest != null && loggedUser.interest.contains(board.id)} ? 'interested' : ''">관심</a>
 </div>

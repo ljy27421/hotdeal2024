@@ -264,7 +264,6 @@
     <thead>
     <tr>
       <th>●</th>
-      <th>글번호</th>
       <th>제목</th>
       <th>추천수</th>
       <th>카테고리</th>
@@ -274,13 +273,33 @@
     </tr>
     </thead>
     <tbody>
+    <tr th:each="commu : ${notice}">
+      <td>
+        <span style="color:red">공지</span>
+      </td>
+      <td>
+        <a th:text="${commu.title}" th:href="@{/commu/view(id=${commu.id})}">제목제목제목제목제목제목제목제목</a>
+      </td>
+      <td th:text="${commu.liked}">1</td>
+      <td th:text="${commu.category}">1</td>
+      <td>
+        <span th:if="${commu.createdDate != null}">
+                        <span th:if="${#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
+                              th:text="${#temporals.format(commu.createdDate, 'HH:mm')}"></span>
+        <span th:if="${!#temporals.createNow().toLocalDate().isEqual(commu.createdDate.toLocalDate())}"
+              th:text="${#temporals.format(commu.createdDate, 'yyyy-MM-dd')}"></span>
+        </span>
+        <span th:if="${commu.createdDate == null}">날짜 정보 없음</span>
+      </td>
+      <td th:text="${commu.author.username}"></td>
+      <td th:text="${commu.view}"></td>
+    </tr>
     <tr th:each="commu : ${list}">
       <td>
         <span th:if="${commu.liked >= 1}" style="color:red">●</span>
         <span th:if="${commu.liked <= -1}" style="color:blue">●</span>
         <span th:if="${commu.liked > -1 and commu.liked < 1}">●</span>
       </td>
-      <td th:text="${commu.id}">1</td>
       <td>
         <a th:text="${commu.title}" th:href="@{/commu/view(id=${commu.id})}">제목제목제목제목제목제목제목제목</a>
       </td>

@@ -2,6 +2,8 @@ package com.hotdealwork.hotdealwork.user;
 
 import com.hotdealwork.hotdealwork.board.Board;
 import com.hotdealwork.hotdealwork.board.BoardRepository;
+import com.hotdealwork.hotdealwork.commu.Commu;
+import com.hotdealwork.hotdealwork.commu.CommuRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class AdminService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private CommuRepository commuRepository;
 
     @Autowired
     private ReplyRepository replyRepository;
@@ -59,6 +64,9 @@ public class AdminService {
     // 신고된 게시물 조회
     public List<Board> getReportedBoards() {
         return boardRepository.findReportedBoards(); // 신고된 게시물 커스텀 쿼리 사용
+    }
+    public List<Commu> getReportedCommus() {
+        return commuRepository.findReportedCommus(); // 신고된 게시물 커스텀 쿼리 사용
     }
 
     // 게시물 삭제

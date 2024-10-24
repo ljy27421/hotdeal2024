@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문서 제목</title>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="/css/write.css">
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <title>게시물 작성 폼</title>
@@ -28,6 +25,7 @@
             <option value="생활용품">생활용품</option>
             <option value="전자제품">전자제품</option>
             <option value="상품권">상품권</option>
+            <option value="공지사항" th:if="${loggedUser.username} == 'admin'">공지사항</option>
         </select>
 
         <input name="mall" type="text" placeholder="쇼핑몰">

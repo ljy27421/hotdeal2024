@@ -1,6 +1,7 @@
 package com.hotdealwork.hotdealwork.user;
 
 import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.commu.Commu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,10 +36,12 @@ public class AdminController {
     }
 
     // 신고된 게시물 조회 경로를 admin으로 이동
-    @GetMapping("/reportedBoards")
+    @GetMapping("/reported")
     public String getReportedBoards(Model model) {
         List<Board> reportedBoards = adminService.getReportedBoards();
+        List<Commu> reportedCommus = adminService.getReportedCommus();
         model.addAttribute("boards", reportedBoards);
+        model.addAttribute("commus", reportedCommus);
         return "reportedBoards";  // 이동 경로 변경
     }
 

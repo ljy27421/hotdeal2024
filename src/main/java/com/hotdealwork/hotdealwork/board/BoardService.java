@@ -139,6 +139,11 @@ public class BoardService {
             builder.and(board.endDate.isNotNull().and(board.endDate.goe(LocalDate.now())));
         }
 
+        if (!"공지사항".equals(category)) {
+            builder.and(board.category.ne("공지사항"));
+        }
+
+
         OrderSpecifier<?> orderSpecifier = sortByEndDate ? board.endDate.asc() : board.id.desc();
 
 
@@ -157,6 +162,38 @@ public class BoardService {
                 .where(builder)
                 .offset(pageable.getOffset())
                 .orderBy(orderSpecifier)
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .selectFrom(board)
+                .where(builder)
+                .fetch().size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    public Page<BoardDTO> boardNotice(Pageable pageable) {
+        QBoard board = QBoard.board;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // 공지사항만 필터링
+        builder.and(board.category.eq("공지사항"));
+
+        List<BoardDTO> result = queryFactory
+                .select(Projections.constructor(BoardDTO.class,
+                        board.id,
+                        board.title,
+                        board.category,
+                        board.createdDate,
+                        board.endDate,
+                        board.liked,
+                        board.author,
+                        board.view
+                ))
+                .from(board)
+                .where(builder)
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 

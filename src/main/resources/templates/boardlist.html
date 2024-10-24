@@ -10,12 +10,10 @@
 <body>
 <div th:replace="~{header.html}"></div>
 <div class="layout">
-
-
     <div class="header">
-    <h1>게시글 리스트 페이지</h1>
-    <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
-    <button type="button" onclick="location.href='/board/write'">글쓰기</button>
+        <h1>게시글 리스트 페이지</h1>
+        <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
+        <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
 
     <div class="filter-buttons">
@@ -60,7 +58,6 @@
         <thead>
         <tr>
             <th>●</th>
-            <th>글번호</th>
             <th>제목</th>
             <th>추천수</th>
             <th>카테고리</th>
@@ -70,6 +67,27 @@
         </tr>
         </thead>
         <tbody>
+        <tr th:each="board : ${notice}">
+            <td>
+                <span style="color:red">공지</span>
+            </td>
+            <td>
+                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
+            </td>
+            <td th:text="${board.liked}">1</td>
+            <td th:text="${board.category}">1</td>
+            <td>
+                <span th:if="${board.createdDate != null}">
+                    <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                          th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                    <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                          th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                </span>
+                <span th:if="${board.createdDate == null}">날짜 없음</span>
+            </td>
+            <td th:text="${board.author.username}"></td>
+            <td th:text="${board.view}"></td>
+        </tr>
         <tr th:each="board : ${list}"
             th:classappend="${board.endDate != null && board.endDate.isAfter(#temporals.createNow().toLocalDate()) ? '' : 'expired'}">
             <td>
@@ -77,19 +95,18 @@
                 <span th:if="${board.liked <= -1}" style="color:blue">●</span>
                 <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
-            <td th:text="${board.id}">1</td>
             <td>
                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
             </td>
             <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
             <td>
-                    <span th:if="${board.createdDate != null}">
-                <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                      th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
-                <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                      th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
-            </span>
+                <span th:if="${board.createdDate != null}">
+                    <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                        th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                    <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                        th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                </span>
                 <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
             <td th:text="${board.author.username}"></td>
@@ -97,7 +114,7 @@
         </tr>
         </tbody>
     </table>
-     <!-- 검색 결과 없을 시 안내문-->
+    <!-- 검색 결과 없을 시 안내문-->
     <div th:if="${list.totalPages == 0}" class="no-posts-message">글이 없습니다.</div>
 
     <!--페이징 처리 -->

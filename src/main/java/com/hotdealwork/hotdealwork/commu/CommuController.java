@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.commu;
 
+import com.hotdealwork.hotdealwork.board.BoardDTO;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
@@ -37,8 +38,11 @@ public class CommuController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write") //localhost:8080/commu/write
-    public String commuWriteForm() {
-
+    public String commuWriteForm(Model model, Principal principal) {
+        if (principal != null) {
+            SiteUser loggedUser = userService.getUser(principal.getName());
+            model.addAttribute("loggedUser", loggedUser);
+        }
         return "commuwrite";
     }
 
@@ -64,11 +68,13 @@ public class CommuController {
                             @RequestParam(name = "hot", required = false, defaultValue = "0") int hot) {
 
         Page<CommuDTO> list = commuService.commuList(searchKeyword, category, searchType, hot, pageable);
+        Page<CommuDTO> notice = commuService.commuNotice(pageable);
 
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
         int endPage = Math.min(curPage + 5, list.getTotalPages());
 
+        model.addAttribute("notice", notice);
         model.addAttribute("list", list);
         model.addAttribute("curPage", curPage);
         model.addAttribute("startPage", startPage);
@@ -179,6 +185,39 @@ public class CommuController {
         }
         model.addAttribute("URL", String.format("/commu/view?id=%s", id));
 
+        return "message";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/report/{id}")
+    public String reportPost(@PathVariable("id") Integer id, Model model) {
+        commuService.reportPost(id);
+        model.addAttribute("message", "신고가 완료되었습니다.");
+        model.addAttribute("URL", "/commu/view?id="+id);
+        return "message";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/unreport/{id}")
+    public String unreportPost(@PathVariable("id") Integer id, Model model) {
+        commuService.unreportPost(id);
+        model.addAttribute("message", "신고가 해제되었습니다.");
+        model.addAttribute("URL", "/commu/view?id="+id);
+        return "message";
+    }
+
+    // 신고된 게시글 목록 조회
+    @GetMapping("/reported")
+    public String viewReportedPosts(Model model) {
+        model.addAttribute("reportedPosts", commuService.getReportedPosts());
+        return "reportedCommu";
+    }
+    // 신고된 게시글 삭제
+    @PostMapping("/deleteReported/{id}")
+    public String deleteReportedPost(@PathVariable Integer id, Model model) {
+        commuService.deleteReportedPost(id);
+        model.addAttribute("message", "신고된 글이 삭제되었습니다.");
+        model.addAttribute("URL", "/commu/reported");
         return "message";
     }
 }

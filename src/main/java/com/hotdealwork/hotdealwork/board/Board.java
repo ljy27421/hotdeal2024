@@ -63,10 +63,10 @@ public class Board {
     // 게시글의 임베딩 벡터 (예시: NLP 또는 AI 모델에 사용)
     private List<Double> embeddingVector;
 
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdDate = LocalDateTime.now();
-//    }
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
 //
 //    @Override
 //    public String toString() {

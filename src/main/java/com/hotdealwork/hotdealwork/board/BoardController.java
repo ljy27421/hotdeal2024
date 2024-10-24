@@ -40,7 +40,11 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
-    public String boardWriteForm() {
+    public String boardWriteForm(Model model, Principal principal) {
+        if (principal != null) {
+            SiteUser loggedUser = userService.getUser(principal.getName());
+            model.addAttribute("loggedUser", loggedUser);
+        }
         return "boardwrite";
     }
 
@@ -65,11 +69,12 @@ public class BoardController {
                             @RequestParam(name = "sortByEndDate", required = false, defaultValue = "false") boolean sortByEndDate) {
 
         Page<BoardDTO> list = boardService.boardList(searchKeyword, category, searchType, hot, filterByEndDate, sortByEndDate, pageable);
-
+        Page<BoardDTO> notice = boardService.boardNotice(pageable);
         int curPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(curPage - 4, 1);
         int endPage = Math.min(curPage + 5, list.getTotalPages());
 
+        model.addAttribute("notice", notice);
         model.addAttribute("list", list);
         model.addAttribute("curPage", curPage);
         model.addAttribute("startPage", startPage);
@@ -130,7 +135,7 @@ public class BoardController {
         board.setImages(boardTemp.getImages());
 
         boardService.boardWrite(board, files, userService.getUser(principal.getName()));
-        model.addAttribute("message", "글 작성이 완료되었습니다.");
+        model.addAttribute("message", "글 수정이 완료되었습니다.");
         model.addAttribute("URL", "/board/list");
 
         return "message";

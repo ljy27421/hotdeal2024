@@ -18,7 +18,7 @@ public class Commu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private  String content;
+    private String content;
     private String category;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
@@ -39,10 +39,13 @@ public class Commu {
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdDate = LocalDateTime.now();
-//    }
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private boolean reported = false; // 신고 여부 추가
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
 //
 //    @Override
 //    public String toString() {
