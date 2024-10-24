@@ -80,30 +80,31 @@
                                 <th>활성 상태</th>
                                 <th>정지 상태</th>
                                 <th>액션</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.id}"></td>
-                                <td th:text="${user.username}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.active} ? '활성' : '비활성'"></td>
-                                <td th:text="${user.suspended} ? '정지됨' : '정지 안됨'"></td>
-                                <td>
-                                    <form th:action="${user.suspended} ? @{/admin/unsuspendUser} : @{/admin/suspendUser}" method="post">
-                                        <input type="hidden" name="userId" th:value="${user.id}" />
-                                        <input type="text" name="reason" placeholder="정지 사유 입력" required th:if="${!user.suspended}" />
-                                        <button type="submit" th:text="${user.suspended} ? '정지 해제' : '정지'}"
-                                                class="btn btn-suspend btn-custom"
-                                                th:classappend="${user.suspended} ? 'btn-unsuspend' : ''">
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(users)}">
-                                <td colspan="6">등록된 사용자가 없습니다.</td>
-                            </tr>
-                        </tbody>
+                             </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.active} ? '활성' : '비활성'"></td>
+        <td th:text="${user.suspended} ? '정지됨' : '정지 안됨'"></td>
+        <td>
+            <form th:action="@{/admin/suspendUser}" method="post" th:if="${!user.suspended}">
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <input type="text" name="reason" placeholder="정지 사유 입력" required />
+                <button type="submit">정지</button>
+            </form>
+            <form th:action="@{/admin/unsuspendUser}" method="post" th:if="${user.suspended}">
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <button type="submit">정지 해제</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(users)}">
+        <td colspan="6">등록된 사용자가 없습니다.</td>
+    </tr>
+    </tbody>
                     </table>
                 </div>
             </div>
@@ -117,26 +118,21 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <th>게시물 ID</th>
-                                <th>게시물 제목</th>
+                                <th>제목</th>
                                 <th>작성자</th>
-                                <th>삭제</th>
+                                <th>신고 횟수</th>
+                                <th>상세보기</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="board : ${boards}">
-                                <td th:text="${board.id}"></td>
-                                <td th:text="${board.title}"></td>
-                                <td th:text="${board.author.username}"></td>
-                                <td>
-                                    <form th:action="@{/admin/deleteBoard}" method="post">
-                                        <input type="hidden" name="boardId" th:value="${board.id}" />
-                                        <button type="submit" class="btn btn-danger">삭제</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <td th:text="${board.title}"></td>
+    <td th:text="${board.author.username}"></td>
+    <td th:text="${board.reportCount}"></td>
+    <td><a th:href="@{/admin/reportedBoard/{id}(id=${board.id})}">상세보기</a></td>
+  </tr>
+  </tbody>
+</table>
                 </div>
             </div>
         </div>
@@ -146,7 +142,7 @@
             <h2 class="mb-3">공지사항</h2>
             <div class="card">
                 <div class="card-body">
-                    <form th:action="@{/admin/postAnnouncement}" method="post">
+                    <form th:action="@{/admin/createNotice}" method="post">
                         <div class="mb-3">
                             <label for="announcement-title" class="form-label">제목</label>
                             <input type="text" class="form-control" id="announcement-title" name="title" placeholder="공지사항 제목" required>
