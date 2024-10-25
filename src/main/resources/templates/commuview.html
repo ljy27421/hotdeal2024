@@ -59,8 +59,8 @@
     </div>
 
     <div th:if="${loggedUser != null}">
-        <a th:if="${commu.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${commu.id} + ');'">삭제</a>
-        <a th:if="${commu.author.id} == ${loggedUser.id}" th:href="@{/commu/modify/{id}(id=${commu.id})}">수정</a>
+        <a th:if="${commu.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${commu.id} + ');'" class="table-button">삭제</a>
+        <a th:if="${commu.author.id} == ${loggedUser.id}" th:href="@{/commu/modify/{id}(id=${commu.id})}" class="table-button">수정</a>
     </div>
 
     <div class="comment-section">

@@ -33,118 +33,118 @@
 <div class="container">
 
 
-<h1 th:text="${board.title}">제목</h1>
+    <h1 th:text="${board.title}">제목</h1>
 
-<table class="info-table">
-    <tr>
-        <td><strong>작성자:</strong> <span th:text="${board.author.username}">작성자</span></td>
-        <td><strong>작성일:</strong> <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span></td>
-        <td><strong>조회수:</strong> <span th:text="${board.view}">조회수</span></td>
-    </tr>
-</table>
+    <table class="info-table">
+        <tr>
+            <td><strong>작성자:</strong> <span th:text="${board.author.username}">작성자</span></td>
+            <td><strong>작성일:</strong> <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성일</span></td>
+            <td><strong>조회수:</strong> <span th:text="${board.view}">조회수</span></td>
+        </tr>
+    </table>
 
-<div class="admin-actions" th:if="${loggedUser != null && loggedUser.username == 'admin'} and ${board.category != '공지사항'}">
-    <form th:if="${board.author.active}" th:action="@{/admin/suspendUser}" method="post">
-        <input type="hidden" name="userId" th:value="${board.author.id}" />
-        <input type="text" name="reason" placeholder="정지 사유 입력" required />
-        <button type="submit">작성자 계정 정지</button>
-    </form>
-    <form th:if="${!board.author.active}" th:action="@{/admin/unsuspendUser}" method="post">
-        <input type="hidden" name="userId" th:value="${board.author.id}" />
-        <button type="submit">정지 해제</button>
-    </form>
-    <form th:if="${board.reported}" th:action="@{/board/unreport/{id}(id=${board.id})}" method="post">
-        <button type="submit">신고 해제</button>
-    </form>
-</div>
+    <div class="admin-actions" th:if="${loggedUser != null && loggedUser.username == 'admin'} and ${board.category != '공지사항'}">
+        <form th:if="${board.author.active}" th:action="@{/admin/suspendUser}" method="post">
+            <input type="hidden" name="userId" th:value="${board.author.id}" />
+            <input type="text" name="reason" placeholder="정지 사유 입력" required />
+            <button type="submit">작성자 계정 정지</button>
+        </form>
+        <form th:if="${!board.author.active}" th:action="@{/admin/unsuspendUser}" method="post">
+            <input type="hidden" name="userId" th:value="${board.author.id}" />
+            <button type="submit">정지 해제</button>
+        </form>
+        <form th:if="${board.reported}" th:action="@{/board/unreport/{id}(id=${board.id})}" method="post">
+            <button type="submit">신고 해제</button>
+        </form>
+    </div>
 
-<div th:if="${board.category != '공지사항'}" class="info-container">
-    <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
-    <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
-    <p th:text="'판매 링크 : ' + ${board.saleUrl}">판매 링크</p>
-    <p th:text="'시작 날짜: ' + (${board.startDate != null ? #temporals.format(board.startDate, 'yyyy-MM-dd') : ''})">시작 날짜</p>
-    <p th:text="'종료 날짜: ' + (${board.endDate != null ? #temporals.format(board.endDate, 'yyyy-MM-dd') : ''})">종료 날짜</p>
-</div>
+    <div th:if="${board.category != '공지사항'}" class="info-container">
+        <p th:text="'쇼핑몰 : ' + ${board.mall}">쇼핑몰 이름</p>
+        <p th:text="'상품명 : ' + ${board.productName}">상품명</p>
+        <p th:text="'판매 링크 : ' + ${board.saleUrl}">판매 링크</p>
+        <p th:text="'시작 날짜: ' + (${board.startDate != null ? #temporals.format(board.startDate, 'yyyy-MM-dd') : ''})">시작 날짜</p>
+        <p th:text="'종료 날짜: ' + (${board.endDate != null ? #temporals.format(board.endDate, 'yyyy-MM-dd') : ''})">종료 날짜</p>
+    </div>
 
-<div class="image-gallery" th:each="image : ${board.images}">
-    <img th:src="@{${image.filepath}}" th:alt="${image.filename}" alt="image">
-</div>
+    <div class="image-gallery" th:each="image : ${board.images}">
+        <img th:src="@{${image.filepath}}" th:alt="${image.filename}" alt="image">
+    </div>
 
-<p class="content" th:text="${board.content}">내용</p>
+    <p class="content" th:text="${board.content}">내용</p>
 
-<div class="report-button" th:if="${loggedUser != null} and ${board.category != '공지사항'}">
-    <form th:action="@{/board/report/{id}(id=${board.id})}" method="post">
-        <button type="submit">신고하기</button>
-    </form>
-</div>
+    <div class="report-button" th:if="${loggedUser != null} and ${board.category != '공지사항'}">
+        <form th:action="@{/board/report/{id}(id=${board.id})}" method="post">
+            <button type="submit">신고하기</button>
+        </form>
+    </div>
 
-<div class="vote-buttons" th:if="${board.category != '공지사항'}">
-    <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
-    <span class="vote-count" th:text="${board.liked}">0</span>
-    <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
-</div>
+    <div class="vote-buttons" th:if="${board.category != '공지사항'}">
+        <a class="vote-button" th:href="@{/board/like/{id}(id=${board.id})}">추천</a>
+        <span class="vote-count" th:text="${board.liked}">0</span>
+        <a class="vote-button" th:href="@{/board/dislike/{id}(id=${board.id})}">비추천</a>
+    </div>
 
-<div class="vote-buttons">
-    <a class="vote-button" th:href="@{/board/list}">목록</a>
-</div>
+    <div class="vote-buttons">
+        <a class="vote-button" th:href="@{/board/list}">목록</a>
+    </div>
 
-<div th:if="${loggedUser != null}">
-    <a th:if="${board.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'">삭제</a>
-    <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}">수정</a>
-</div>
+    <div th:if="${loggedUser != null}">
+        <a th:if="${board.author.id} == ${loggedUser.id} or ${loggedUser.username} == 'admin'" href="#" th:onclick="'return confirmDelete(' + ${board.id} + ');'" class="table-button">삭제</a>
+        <a th:if="${board.author.id} == ${loggedUser.id}" th:href="@{/board/modify/{id}(id=${board.id})}" class="table-button">수정</a>
+    </div>
 
-<div class="vote-buttons" th:if="${loggedUser != null}">
-    <a class="vote-button"
-       th:if="${board.category != '공지사항'}"
-       th:href="@{/board/interest/{id}(id=${board.id})}"
-       th:classappend="${loggedUser.interest != null && loggedUser.interest.contains(board.id)} ? 'interested' : ''">관심</a>
-</div>
+    <div class="vote-buttons" th:if="${loggedUser != null}">
+        <a class="vote-button"
+           th:if="${board.category != '공지사항'}"
+           th:href="@{/board/interest/{id}(id=${board.id})}"
+           th:classappend="${loggedUser.interest != null && loggedUser.interest.contains(board.id)} ? 'interested' : ''">관심</a>
+    </div>
 
-<div class="comment-section">
-    <h2>댓글</h2>
-    <form th:action="@{/replys/write/{boardId}(boardId=${board.id})}" method="post" class="comment-form">
-        <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea>
-        <button type="submit">댓글 작성</button>
-    </form>
-</div>
+    <div class="comment-section">
+        <h2>댓글</h2>
+        <form th:action="@{/replys/write/{boardId}(boardId=${board.id})}" method="post" class="comment-form">
+            <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea>
+            <button type="submit">댓글 작성</button>
+        </form>
+    </div>
 
-<div th:if="${replys.isEmpty()}">댓글이 없습니다.</div>
+    <div th:if="${replys.isEmpty()}">댓글이 없습니다.</div>
 
-<table class="comment-table" th:unless="${replys.isEmpty()}">
-    <thead>
-    <tr>
-        <th>작성자</th>
-        <th>내용</th>
-        <th>작성 시간</th>
-        <th>수정</th>
-        <th>삭제</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="reply : ${replys}" th:id="'reply-row-' + ${reply.id}">
-        <td th:text="${reply.author.username}">작성자</td>
-        <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
-        <td th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
-        <td th:if="${reply.author.id} == ${loggedUser?.id}">
-            <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
-        </td>
-        <td th:if="${reply.author.id} == ${loggedUser?.id} or ${loggedUser?.username} == 'admin'">
-            <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
-                <button type="submit" class="table-button">삭제</button>
-            </form>
-        </td>
-    </tr>
-    <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" class="edit-form">
-        <td colspan="5">
-            <form th:action="@{/replys/update/{replyId}(replyId=${reply.id})}" method="post">
-                <textarea name="content" th:text="${reply.content}" required></textarea>
-                <button type="submit" class="table-button">수정</button>
-                <button type="button" class="table-button" th:onclick="'hideEditForm(' + ${reply.id} + ')'">취소</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table class="comment-table" th:unless="${replys.isEmpty()}">
+        <thead>
+        <tr>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>작성 시간</th>
+            <th>수정</th>
+            <th>삭제</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reply : ${replys}" th:id="'reply-row-' + ${reply.id}">
+            <td th:text="${reply.author.username}">작성자</td>
+            <td th:text="${reply.content}" th:id="'reply-content-' + ${reply.id}">댓글 내용</td>
+            <td th:text="${#temporals.format(reply.createdDate, 'yyyy-MM-dd HH:mm:ss')}">작성 시간</td>
+            <td th:if="${reply.author.id} == ${loggedUser?.id}">
+                <button type="button" class="table-button" th:onclick="'showEditForm(' + ${reply.id} + ')'">수정</button>
+            </td>
+            <td th:if="${reply.author.id} == ${loggedUser?.id} or ${loggedUser?.username} == 'admin'">
+                <form th:action="@{/replys/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirmReplyDelete();">
+                    <button type="submit" class="table-button">삭제</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:each="reply : ${replys}" th:id="'edit-row-' + ${reply.id}" class="edit-form">
+            <td colspan="5">
+                <form th:action="@{/replys/update/{replyId}(replyId=${reply.id})}" method="post">
+                    <textarea name="content" th:text="${reply.content}" required></textarea>
+                    <button type="submit" class="table-button">수정</button>
+                    <button type="button" class="table-button" th:onclick="'hideEditForm(' + ${reply.id} + ')'">취소</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
