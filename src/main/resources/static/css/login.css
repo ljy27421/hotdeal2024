@@ -16,12 +16,12 @@ body {
 
 /* 로그인 박스 스타일 */
 .box {
-    margin: 0 auto; /* 중앙 정렬 */
+    margin: auto; /* 중앙 정렬 */
     background: #272727;
     color: #fff;
     padding: 40px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 40px;
     width: 300px;
     margin-bottom: 20px; /* 박스 아래 여백 */
 }
@@ -69,7 +69,7 @@ footer {
             margin-bottom: 20px;
         }
         .links a {
-            color: #ff5722;
+            color: #f3f3f3;
             text-decoration: none;
             font-size: 14px;
         }
