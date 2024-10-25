@@ -45,7 +45,7 @@ public class SiteUser {
     }
 
     public boolean isSuspended() {
-        return suspended;
+        return suspended != null && suspended; // null 체크 후 boolean 반환
     }
 
     // 정지 사유 설정 및 조회 메서드

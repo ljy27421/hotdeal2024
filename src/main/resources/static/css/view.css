@@ -344,3 +344,11 @@ footer {
     margin: 0 auto;
     padding: 0 20px;
 }
+.edit-delete-container {
+    display: flex;
+    gap: 10px; /* 버튼 사이의 간격 */
+}
+
+.edit-delete-form {
+    margin: 0; /* 기본 여백 제거 */
+}
