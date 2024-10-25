@@ -76,6 +76,10 @@ public class BoardService {
     @Transactional
     public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
+        Board existingBoard = board.getId() != null ? boardRepository.findById(board.getId()).orElse(null) : null;
+        if (existingBoard != null) {
+            board.setReplies(existingBoard.getReplies());
+        }
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
         }
