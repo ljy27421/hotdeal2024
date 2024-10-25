@@ -34,6 +34,11 @@
             <span>ID</span>
         </div>
 
+        <div class="inputBox">
+            <input type="email" id="email" th:field="*{email}" required>
+            <span>이메일</span>
+        </div>
+
         <!-- 비밀번호 입력 -->
         <div class="inputBox">
             <input type="password" id="password" th:field="*{password}" required>
@@ -44,12 +49,6 @@
         <div class="inputBox">
             <input type="password" id="checkPassword" th:field="*{checkPassword}" required>
             <span>비밀번호 확인</span>
-        </div>
-
-        <!-- 이메일 입력 -->
-        <div class="inputBox">
-            <input type="email" id="email" th:field="*{email}" required>
-            <span>이메일</span>
         </div>
 
         <!-- 닉네임 입력 -->
