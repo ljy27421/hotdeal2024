@@ -97,9 +97,11 @@ public class BoardService {
                 }
             }
         }
-        String combinedText = String.join(" ", board.getProductName(), board.getCategory());
-        List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
-        board.setEmbeddingVector(embeddingVector);
+        if (!board.getCategory().equals("공지사항")){
+            String combinedText = String.join(" ", board.getProductName(), board.getCategory());
+            List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+            board.setEmbeddingVector(embeddingVector);
+        }
 
         board.setAuthor(author);
         boardRepository.save(board);

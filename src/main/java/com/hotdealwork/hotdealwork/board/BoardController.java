@@ -188,6 +188,11 @@ public class BoardController {
     @GetMapping("/recommand")
     public String boardRecommand(Model model, Principal principal) {
         SiteUser siteUser = userService.getUser(principal.getName());
+        if (siteUser.getInterest().isEmpty()){
+            model.addAttribute("message","관심목록이 없습니다.");
+            model.addAttribute("URL", "/board/list");
+            return "message";
+        }
         List<Board> recommandedBoards = embeddingService.recommandBoards(siteUser);
         model.addAttribute("recommandedBoards", recommandedBoards);
         return "boardrecommand";
