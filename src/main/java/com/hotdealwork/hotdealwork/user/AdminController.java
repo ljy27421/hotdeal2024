@@ -22,16 +22,20 @@ public class AdminController {
     // 관리자 메뉴 페이지로 이동
     @GetMapping("/")
     public String adminMenu(Model model) {
-        model.addAttribute("currentUser", new SiteUser()); // 기본 사용자 정보 추가 (null 처리)
-        return "adminMenu";  // adminMenu.html 반환
+        List<SiteUser> users = adminService.getAllUsers();
+        List<Board> reportedBoards = adminService.getReportedBoards();
+        List<Commu> reportedCommus = adminService.getReportedCommus();
+        model.addAttribute("users", users);
+        model.addAttribute("boards", reportedBoards);
+        model.addAttribute("commus", reportedCommus);
+        return "adminpage";  // adminMenu.html 반환
     }
 
     // 모든 회원 조회
     @GetMapping("/users")
-    public String getAllUsers(Model model, @AuthenticationPrincipal SiteUser currentUser) {
+    public String getAllUsers(Model model) {
         List<SiteUser> users = adminService.getAllUsers();
         model.addAttribute("users", users);
-        model.addAttribute("currentUser", currentUser); // 현재 사용자 정보 추가
         return "users";  // src/main/resources/templates/users.html 사용
     }
 
@@ -49,21 +53,21 @@ public class AdminController {
     @PostMapping("/suspendUser")
     public String suspendUser(@RequestParam("userId") Long userId, @RequestParam("reason") String reason) {
         adminService.suspendUser(userId, reason);  // 사용자 정지 처리
-        return "redirect:/admin/users";  // 처리 후 사용자 목록 페이지로 리다이렉트
+        return "redirect:/admin/#users-section";  // 처리 후 사용자 목록 페이지로 리다이렉트
     }
 
     // 사용자 계정 정지 해제
     @PostMapping("/unsuspendUser")
     public String unsuspendUser(@RequestParam("userId") Long userId) {
         adminService.unsuspendUser(userId);  // 사용자 정지 해제 처리
-        return "redirect:/admin/users";  // 처리 후 사용자 목록 페이지로 리다이렉트
+        return "redirect:/admin/#users-section";  // 처리 후 사용자 목록 페이지로 리다이렉트
     }
 
     // 게시물 삭제
     @PostMapping("/deleteBoard")
     public String deleteBoard(@RequestParam("boardId") Integer boardId) {
         adminService.deleteBoard(boardId);  // 게시물 삭제 처리
-        return "redirect:/admin/reportedBoards";  // 처리 후 신고된 게시물 페이지로 리다이렉트
+        return "redirect:/admin/reported";  // 처리 후 신고된 게시물 페이지로 리다이렉트
     }
 
     // 회원 정보 수정 페이지로 이동
