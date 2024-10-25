@@ -1,10 +1,6 @@
 package com.hotdealwork.hotdealwork.commu;
 
 import com.hotdealwork.hotdealwork.DataNotFoundException;
-import com.hotdealwork.hotdealwork.board.Board;
-import com.hotdealwork.hotdealwork.board.BoardDTO;
-import com.hotdealwork.hotdealwork.board.BoardMainDTO;
-import com.hotdealwork.hotdealwork.board.QBoard;
 import com.hotdealwork.hotdealwork.image.Image;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
@@ -16,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -68,6 +62,11 @@ public class CommuService {
 
     // 글 작성 처리
     public void commuWrite(Commu commu, List<MultipartFile> files, SiteUser author) throws Exception{
+
+        Commu existingCommu = commu.getId() != null ? commuRepository.findById(commu.getId()).orElse(null) : null;
+        if (existingCommu != null) {
+            commu.setReplies(existingCommu.getReplies());
+        }
 
         if (commu.getImages() == null) {
             commu.setImages(new ArrayList<>());

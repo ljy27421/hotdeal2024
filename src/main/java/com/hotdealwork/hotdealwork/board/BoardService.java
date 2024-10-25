@@ -76,6 +76,10 @@ public class BoardService {
     @Transactional
     public void boardWrite(Board board, List<MultipartFile> files, SiteUser author) throws Exception{
 
+        Board existingBoard = board.getId() != null ? boardRepository.findById(board.getId()).orElse(null) : null;
+        if (existingBoard != null) {
+            board.setReplies(existingBoard.getReplies());
+        }
         if (board.getImages() == null) {
             board.setImages(new ArrayList<>());
         }
@@ -97,9 +101,11 @@ public class BoardService {
                 }
             }
         }
-        String combinedText = String.join(" ", board.getProductName(), board.getCategory());
-        List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
-        board.setEmbeddingVector(embeddingVector);
+        if (!board.getCategory().equals("공지사항")){
+            String combinedText = String.join(" ", board.getProductName(), board.getCategory());
+            List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+            board.setEmbeddingVector(embeddingVector);
+        }
 
         board.setAuthor(author);
         boardRepository.save(board);

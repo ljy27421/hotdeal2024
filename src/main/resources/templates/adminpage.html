@@ -46,7 +46,6 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4 text-center">관리자 페이지</h1>
-    <p class="text-muted text-center">현재 관리자: <strong th:text="${currentUser.username}"></strong></p>
 
     <!-- 탭 내비게이션 -->
     <ul class="nav nav-tabs mb-4" id="adminTab" role="tablist">
@@ -55,12 +54,6 @@
         </li>
         <li class="nav-item" role="presentation">
             <a class="nav-link" id="reported-boards-tab" data-bs-toggle="tab" href="#reported-boards-section" role="tab" aria-controls="reported-boards-section" aria-selected="false">신고된 게시물 조회</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="post-announcement-tab" data-bs-toggle="tab" href="#post-announcement-section" role="tab" aria-controls="post-announcement-section" aria-selected="false">공지사항</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="suspend-users-tab" data-bs-toggle="tab" href="#suspend-users-section" role="tab" aria-controls="suspend-users-section" aria-selected="false">계정 정지</a>
         </li>
     </ul>
 
@@ -118,79 +111,24 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark">
                             <tr>
+                                <th>게시판</th>
                                 <th>제목</th>
                                 <th>작성자</th>
-                                <th>신고 횟수</th>
                                 <th>상세보기</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="board : ${boards}">
-    <td th:text="${board.title}"></td>
-    <td th:text="${board.author.username}"></td>
-    <td th:text="${board.reportCount}"></td>
-    <td><a th:href="@{/admin/reportedBoard/{id}(id=${board.id})}">상세보기</a></td>
-  </tr>
-  </tbody>
-</table>
-                </div>
-            </div>
-        </div>
-
-        <!-- 공지사항 게시 -->
-        <div class="tab-pane fade" id="post-announcement-section" role="tabpanel" aria-labelledby="post-announcement-tab">
-            <h2 class="mb-3">공지사항</h2>
-            <div class="card">
-                <div class="card-body">
-                    <form th:action="@{/admin/createNotice}" method="post">
-                        <div class="mb-3">
-                            <label for="announcement-title" class="form-label">제목</label>
-                            <input type="text" class="form-control" id="announcement-title" name="title" placeholder="공지사항 제목" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="announcement-content" class="form-label">내용</label>
-                            <textarea class="form-control" id="announcement-content" name="content" rows="8" placeholder="공지사항 내용" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-custom">공지사항</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- 계정 정지 -->
-        <div class="tab-pane fade" id="suspend-users-section" role="tabpanel" aria-labelledby="suspend-users-tab">
-            <h2 class="mb-3">계정 정지</h2>
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>사용자 ID</th>
-                                <th>사용자 이름</th>
-                                <th>이메일</th>
-                                <th>활성 상태</th>
-                                <th>계정 정지</th>
+                                <td>핫딜</td>
+                                <td th:text="${board.title}"></td>
+                                <td th:text="${board.author.username}"></td>
+                                <td><a th:href="@{/board/view?id={id}(id=${board.id})}">상세보기</a></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.id}"></td>
-                                <td th:text="${user.username}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.active} ? '활성' : '비활성'"></td>
-                                <td>
-                                    <form th:action="${user.suspended} ? @{/admin/unsuspendUser} : @{/admin/suspendUser}" method="post">
-                                        <input type="hidden" name="userId" th:value="${user.id}" />
-                                        <input type="text" name="reason" placeholder="정지 사유 입력" required th:if="${!user.suspended}" />
-                                        <button type="submit" th:text="${user.suspended} ? '정지 해제' : '정지'}"
-                                                class="btn btn-suspend btn-custom"
-                                                th:classappend="${user.suspended} ? 'btn-unsuspend' : ''">
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(users)}">
-                                <td colspan="5">등록된 사용자가 없습니다.</td>
+                            <tr th:each="commu : ${commus}">
+                                <td>자유</td>
+                                <td th:text="${commu.title}"></td>
+                                <td th:text="${commu.author.username}"></td>
+                                <td><a th:href="@{/commu/view?id={id}(id=${commu.id})}">상세보기</a></td>
                             </tr>
                         </tbody>
                     </table>
