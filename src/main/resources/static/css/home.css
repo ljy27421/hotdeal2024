@@ -456,3 +456,6 @@ header {
 nav ul li a {
     color: #ffffff;  /* 내비게이션 링크 색을 흰색으로 */
 }
+html, body {
+    overflow-x: hidden;
+}

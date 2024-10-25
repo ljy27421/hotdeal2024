@@ -30,8 +30,6 @@
         <form th:action="@{/board/list}" method="get" id="fullForm">
             <button type="submit">전체글</button>
         </form>
-    </div>
-    <div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="sortForm">
             <input type="hidden" name="hot" th:value="${param.hot}">
             <input type="hidden" name="filterByEndDate" th:value="${param.filterByEndDate}">
@@ -103,9 +101,9 @@
             <td>
                 <span th:if="${board.createdDate != null}">
                     <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                        th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                          th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
                     <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                        th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                          th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
                 </span>
                 <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
