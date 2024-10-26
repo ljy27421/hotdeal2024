@@ -10,20 +10,6 @@
 <body>
 <div class="container">
     <h1>마이페이지</h1>
-
-    <!-- 프로필 섹션 -->
-    <div class="profile-section">
-        <img src="profile.jpg" alt="프로필 사진">
-        <h2>사용자 이름</h2>
-        <p>user@example.com</p>
-        <!-- 프로필 사진 변경 버튼 -->
-        <form action="/upload_profile_photo" method="POST" enctype="multipart/form-data">
-            <label for="profile-photo">프로필 사진 변경</label>
-            <input type="file" id="profile-photo" name="profile-photo">
-            <input type="submit" class="btn change-photo-btn" value="사진 변경">
-        </form>
-    </div>
-
     <!-- 사용자 정보 수정 섹션 -->
     <div class="form-section">
         <form action="/update_profile" method="POST">

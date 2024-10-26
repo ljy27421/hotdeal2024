@@ -233,4 +233,13 @@ public class UserController {
             return "delete_form";  // 회원 탈퇴 실패 시 다시 탈퇴 페이지로 이동
         }
     }
+    @Controller
+    public class UserProfileController {
+
+        @GetMapping("/mypage/")
+        public String myPage() {
+            return "mypage"; // templates/mypage.html로 이동
+        }
+    }
 }
+
