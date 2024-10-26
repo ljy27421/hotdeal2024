@@ -113,9 +113,13 @@ public class CommuController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String commuModify(@PathVariable("id") Integer id, Model model){
+    public String commuModify(@PathVariable("id") Integer id, Model model, Principal principal){
 
         Commu commu = commuService.getCommu(id);
+        if (principal != null) {
+            SiteUser loggedUser = userService.getUser(principal.getName());
+            model.addAttribute("loggedUser", loggedUser);
+        }
 
         model.addAttribute("commu", commu);
 

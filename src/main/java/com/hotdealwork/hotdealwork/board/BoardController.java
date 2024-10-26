@@ -112,9 +112,13 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id, Model model) {
+    public String boardModify(@PathVariable("id") Integer id, Model model, Principal principal) {
         Board board = boardService.getBoard(id);
         model.addAttribute("board", board);
+        if (principal != null) {
+            SiteUser loggedUser = userService.getUser(principal.getName());
+            model.addAttribute("loggedUser", loggedUser);
+        }
         return "boardmodify";
     }
 

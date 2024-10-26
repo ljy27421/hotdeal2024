@@ -12,7 +12,7 @@
 
 <div class="layout">
     <div class="list-header">
-        <h1>게시글 리스트 페이지</h1>
+        <h1>핫딜 게시판</h1>
         <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
@@ -63,6 +63,7 @@
             <th>추천수</th>
             <th>카테고리</th>
             <th>작성일</th>
+            <th>마감일</th>
             <th>작성자</th>
             <th>조회수</th>
         </tr>
@@ -86,6 +87,7 @@
                 </span>
                 <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
+            <td th:text="---"></td>
             <td th:text="${board.author.username}"></td>
             <td th:text="${board.view}"></td>
         </tr>
@@ -110,6 +112,7 @@
                 </span>
                 <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
+            <td th:text="${board.endDate}"></td>
             <td th:text="${board.author.username}"></td>
             <td th:text="${board.view}"></td>
         </tr>
