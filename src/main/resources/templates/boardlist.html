@@ -9,8 +9,9 @@
 </head>
 <body>
 <div th:replace="~{header.html}"></div>
+
 <div class="layout">
-    <div class="header">
+    <div class="list-header">
         <h1>게시글 리스트 페이지</h1>
         <button type="button" onclick="location.href='/board/recommand'">AI 게시글 추천</button>
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
@@ -30,6 +31,8 @@
         <form th:action="@{/board/list}" method="get" id="fullForm">
             <button type="submit">전체글</button>
         </form>
+    </div>
+    <div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="sortForm">
             <input type="hidden" name="hot" th:value="${param.hot}">
             <input type="hidden" name="filterByEndDate" th:value="${param.filterByEndDate}">
@@ -70,7 +73,7 @@
                 <span style="color:red">공지</span>
             </td>
             <td>
-                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
+                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
             </td>
             <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
@@ -94,16 +97,16 @@
                 <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
             <td>
-                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
+                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
             </td>
             <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
             <td>
                 <span th:if="${board.createdDate != null}">
                     <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                          th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                        th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
                     <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                          th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                        th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
                 </span>
                 <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
