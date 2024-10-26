@@ -1,402 +1,149 @@
-*  {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-:root {
-    --main-bg-color: #f8f9fa;
-    --main-text-color: #000;
-    --header-bg-color: #343a40;
-    --header-text-color: #fff;
-    --highlight-bg-color: #e9ecef;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --button-bg-color: #007bff;
-    --button-hover-bg-color: #0056b3;
-    --delete-button-bg-color: #f44336;
-    --delete-button-hover-bg-color: #d32f2f;
-    --edit-button-bg-color: #4CAF50;
-    --edit-button-hover-bg-color: #388E3C;
-    --cancel-button-bg-color: #6c757d;
-    --cancel-button-hover-bg-color: #5a6268;
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    padding: 80px 20px 20px;
-    padding-top: 88px;
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
-}
-
+/* 제목 스타일 */
 h1 {
-    margin-top: 30px;
-    font-size: 2.2em;
+    font-size: 1.8em;
     margin-bottom: 20px;
-    color: #212529;
+    color: #007bff;
 }
 
+/* 테이블 스타일 */
 .info-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-.info-table tr {
-    display: flex;
-    width: 100%;
-}
-
 .info-table td {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.info-table td:not(:last-child) {
-    border-right: 1px solid #ddd;
+    padding: 8px;
+    font-size: 0.9em;
+    border-bottom: 1px solid #ddd;
 }
 
 .info-table strong {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--header-bg-color);
+    font-weight: 600;
 }
 
-.info-table span {
-    font-size: 1em;
-    color: var(--main-text-color);
+/* 관리자 액션 버튼 스타일 */
+.admin-actions form,
+.report-button form,
+.vote-buttons a,
+.comment-form button {
+    display: inline-block;
+    margin: 5px 0;
 }
 
-
-div > p {
-    padding: 10px;
-    background-color: #333;
-    border: 1px solid #333;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 5px var(--shadow-color);
+.vote-button {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px 2px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
-div > p:first-child {
-    font-weight: bold;
-    color: #495057;
+.vote-button:hover {
+    background-color: #0056b3;
 }
 
-.image-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
+/* 신고 버튼 스타일 */
+.report-button form button {
+    padding: 8px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
+.report-button form button:hover {
+    background-color: #c82333;
+}
+
+/* 이미지 갤러리 */
 .image-gallery img {
-    max-width: 500px;
-    height: auto;
+    max-width: 100%;
+    margin: 10px 0;
     border-radius: 8px;
-    box-shadow: 0 0 5px var(--shadow-color);
 }
 
-p.content {
-    padding: 15px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px var(--shadow-color);
-    color: var(--main-text-color);
-}
-
+/* 댓글 섹션 */
 .comment-section {
     margin-top: 30px;
 }
 
 .comment-section h2 {
     font-size: 1.5em;
-    margin-bottom: 20px;
-    color: #495057;
-}
-
-.comment-form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px var(--shadow-color);
+    margin-bottom: 15px;
 }
 
 .comment-form textarea {
-    resize: vertical;
+    width: 100%;
+    height: 80px;
     padding: 10px;
-    margin-bottom: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.vote-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
-}
-
-.vote-button {
-    display: flex;
-    padding: 8px 15px;
-    background-color: var(--button-bg-color);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    width: 80px;
-    justify-content: center;
-}
-
-.vote-button:hover {
-    background-color: var(--button-hover-bg-color);
-}
-
-.vote-count {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--main-text-color);
-}
-
-.vote-button.interested {
-    background-color: #ff0000;
+    border-radius: 5px;
+    resize: none;
+    font-size: 1em;
 }
 
 .comment-form button {
-    align-self: flex-end;
-    padding: 10px 20px;
-    background-color: var(--button-bg-color);
-    color: #fff;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .comment-form button:hover {
-    background-color: var(--button-hover-bg-color);
+    background-color: #218838;
 }
 
+/* 댓글 테이블 */
 .comment-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px var(--shadow-color);
 }
 
-.comment-table th, .comment-table td {
-    padding: 15px;
-    border: 1px solid #ddd;
-    vertical-align: top;
+.comment-table th,
+.comment-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .comment-table th {
-    background-color: var(--header-bg-color);
-    color: var(--header-text-color);
-}
-
-.comment-table td:nth-child(2) {
-    width: 60%;
+    background-color: #f1f1f1;
+    font-weight: bold;
 }
 
 .table-button {
-    padding: 8px 15px;
-    background-color: #f44336;
-    color: #fff;
+    padding: 5px 10px;
+    background-color: #ffc107;
+    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
 }
 
 .table-button:hover {
-    background-color: var(--delete-button-hover-bg-color);
-}
-
-.edit-form {
-    display: none;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: 0 0 10px var(--shadow-color);
-}
-
-.edit-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.edit-form button {
-    margin-right: 10px;
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.edit-form button:hover {
-    background-color: var(--edit-button-hover-bg-color);
-}
-
-.edit-form button:last-of-type {
-    background-color: var(--cancel-button-bg-color);
-}
-
-.edit-form button:last-of-type:hover {
-    background-color: var(--cancel-button-hover-bg-color);
-
-}
-.info-container {
-    display: flex;
-    flex-wrap: wrap; /* 화면 크기에 따라 줄 바꿈 허용 */
-    gap: 20px; /* 항목 사이의 간격 */
-    margin-bottom: 20px;
-}
-
-.info-container p {
-    flex: 1; /* 항목을 동일 비율로 확장 */
-    min-width: 200px; /* 항목의 최소 너비 설정 */
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 5px var(--shadow-color);
-    color: var(--main-text-color);
-}
-#footer {
-    background-color: #333;  /* 푸터 배경색 */
-    color: #fff;             /* 푸터 글씨 색 */
-    text-align: center;      /* 텍스트 중앙 정렬 */
-    box-sizing: border-box;
-    width: 100%;             /* 화면 너비를 다 채움 */
-    padding: 20px 0;         /* 상하 여백을 설정하여 푸터 크기 조정 */
-    margin-top: auto;        /* 내용이 적으면 푸터가 페이지 아래에 달리도록 */
-}
-
-#footer p {
-    margin: 5px 0;           /* 상하 간격을 좁게 설정 */
-    padding: 0;              /* 추가적인 내부 여백 제거 */
-    line-height: 1.4;        /* 줄 간격을 적당하게 설정 */
-}
-
-/* footer-content가 있을 경우, 세로 정렬 */
-#footer .footer-content {
-    display: flex;
-    flex-direction: column;  /* 세로 방향으로 텍스트 배치 */
-    justify-content: center; /* 세로 정렬 */
-    align-items: center;     /* 수평 정렬 */
-    gap: 10px;               /* 요소들 사이의 간격을 적절히 설정 */
-}
-
-/* HTML 및 body에서 전체 레이아웃을 flex로 설정하여 푸터가 항상 맨 아래에 위치하도록 */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #eaf0f2;
-}
-
-/* 전체 페이지 레이아웃 설정 */
-body {
-    display: flex;
-    flex-direction: column; /* 콘텐츠를 세로로 배치 */
-    min-height: 100vh; /* 최소 높이를 화면 크기로 설정 */
-}
-
-/* main 콘텐츠가 차지하는 영역 */
-main {
-    flex-grow: 1; /* 페이지 내용이 부족하면 푸터가 하단에 위치하도록 설정 */
-}
-
-/* footer 스타일 */
-footer {
-    width: 100%;
-    height: 150px;
-    background-color: #2d2a30;
-    color: #ffffff;
-    text-align: left;
-    font: bold 16px sans-serif;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-.container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-.edit-delete-container {
-    display: flex;
-    gap: 10px; /* 버튼 사이의 간격 */
-}
-
-.edit-delete-form {
-    margin: 0; /* 기본 여백 제거 */
-}
-
-.report-button form {
-    display: inline-block;
-}
-
-.report-button button {
-    padding: 10px 15px;
-    background-color: #ffc107;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.report-button button:hover {
     background-color: #e0a800;
-}
-
-
-.admin-actions form {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.admin-actions button {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.admin-actions button:hover {
-    background-color: #218838;
-}
-
-.admin-actions form:last-of-type button {
-    background-color: #dc3545;
-}
-
-.admin-actions form:last-of-type button:hover {
-    background-color: #c82333;
 }
