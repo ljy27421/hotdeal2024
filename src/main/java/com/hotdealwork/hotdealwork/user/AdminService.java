@@ -6,6 +6,7 @@ import com.hotdealwork.hotdealwork.commu.Commu;
 import com.hotdealwork.hotdealwork.commu.CommuRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class AdminService {
 
     // 모든 회원 조회
     public List<SiteUser> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     // 특정 회원 조회
