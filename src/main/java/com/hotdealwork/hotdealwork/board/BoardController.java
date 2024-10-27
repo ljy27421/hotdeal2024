@@ -1,5 +1,6 @@
 package com.hotdealwork.hotdealwork.board;
 
+import com.hotdealwork.hotdealwork.commu.Commu;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -145,6 +147,48 @@ public class BoardController {
         return "message";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/like/{id}")
+    public String boardLike(Principal principal, @PathVariable("id") Integer id, Model model) {
+        Board board = boardService.getBoard(id);
+        SiteUser siteUser = userService.getUser(principal.getName());
+
+        if (siteUser.getLikes() == null){
+            siteUser.setLikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+        }
+
+        if (siteUser.getLikes().contains(board.getId())){
+            model.addAttribute("message", "이미 추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 추천했습니다.");
+            this.boardService.boardLike(board, siteUser);
+        }
+        model.addAttribute("URL", String.format("/board/view?id=%s", id));
+
+        return "message";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/dislike/{id}")
+    public String boardDislike(Principal principal, @PathVariable("id") Integer id, Model model) {
+        Board board = boardService.getBoard(id);
+        SiteUser siteUser = userService.getUser(principal.getName());
+
+        if (siteUser.getDislikes() == null){
+            siteUser.setDislikes(new ArrayList<>());//            siteUser.setInterestVector(new ArrayList<>(Collections.nCopies(1536,0.0)));
+        }
+
+        if (siteUser.getDislikes().contains(board.getId())){
+            model.addAttribute("message", "이미 비추천한 글입니다.");
+        } else {
+            model.addAttribute("message", "글을 비추천했습니다.");
+            this.boardService.boardDislike(board, siteUser);
+        }
+        model.addAttribute("URL", String.format("/board/view?id=%s", id));
+
+        return "message";
+    }
+
     // 1. 신고 버튼 클릭 시 완료 메시지 출력
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/report/{id}")
@@ -192,7 +236,7 @@ public class BoardController {
     @GetMapping("/recommand")
     public String boardRecommand(Model model, Principal principal) {
         SiteUser siteUser = userService.getUser(principal.getName());
-        if (siteUser.getInterest().isEmpty()){
+        if (siteUser.getInterest() == null || siteUser.getInterest().isEmpty()){
             model.addAttribute("message","관심목록이 없습니다.");
             model.addAttribute("URL", "/board/list");
             return "message";

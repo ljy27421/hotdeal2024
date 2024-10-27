@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,21 +14,21 @@
     <div class="form-section">
         <form action="/update_profile" method="POST">
             <label for="username">이름</label>
-            <input type="text" id="username" name="username" value="사용자 이름">
+            <input type="text" id="username" name="username" th:value="${user.username}" readonly>
 
             <label for="email">이메일</label>
-            <input type="email" id="email" name="email" value="user@example.com">
-
-            <label for="password">비밀번호 변경</label>
-            <input type="password" id="password" name="password" placeholder="새로운 비밀번호">
-
-            <input type="submit" class="btn" value="정보 수정">
+            <input type="email" id="email" name="email" th:value="${user.email}" readonly>
         </form>
 
-        <form action="/delete" method="POST">
+        <form action="/user/delete" method="POST" onsubmit="return confirmDeleteUser();">
             <input type="submit" class="btn logout-btn" value="회원탈퇴">
         </form>
     </div>
 </div>
+<script>
+    function confirmDeleteUser() {
+        return confirm("정말로 회원 탈퇴를 하시겠습니까?");
+    }
+</script>
 </body>
 </html>

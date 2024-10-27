@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -60,6 +61,14 @@ public class UserController {
             model.addAttribute("message", "비밀번호가 일치하지 않습니다.");
             return "verifyPassword";  // 비밀번호 확인 페이지로 다시 이동
         }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public String mypage(Principal principal, Model model) {
+        SiteUser user = userService.getUser(principal.getName());
+        model.addAttribute("user", user);
+        return "mypage";
     }
 
     // 회원 정보 수정 페이지로 이동
@@ -214,24 +223,19 @@ public class UserController {
         return "message";  // 비밀번호 재설정 페이지로 다시 이동
     }
 
-    // 회원 탈퇴 페이지 이동
-    @GetMapping("/delete")
-    public String deleteForm() {
-        return "delete_form";  // delete_form.html 파일로 이동
-    }
 
     // 회원 탈퇴 처리
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
-        boolean isDeleted = userService.deleteUser(username, password);
-
-        if (isDeleted) {
-            model.addAttribute("message", "회원 탈퇴가 성공적으로 완료되었습니다.");
-            return "redirect:/";  // 회원 탈퇴 성공 시 메인 페이지로 리다이렉트
+    public String deleteUser(Principal principal, RedirectAttributes redirectAttributes) {
+        SiteUser user = userService.getUser(principal.getName());
+        if (user != null) {
+            userRepository.delete(user); // 사용자를 삭제합니다.
+            redirectAttributes.addFlashAttribute("message", "회원 탈퇴가 완료되었습니다.");
         } else {
-            model.addAttribute("message", "회원 탈퇴를 실패했습니다.");
-            return "delete_form";  // 회원 탈퇴 실패 시 다시 탈퇴 페이지로 이동
+            redirectAttributes.addFlashAttribute("error", "사용자를 찾을 수 없습니다.");
         }
+
+        return "redirect:/user/logout";
     }
     @Controller
     public class UserProfileController {
