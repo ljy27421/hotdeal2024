@@ -28,6 +28,7 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private SiteUser author;
 
     @Column(nullable = false)

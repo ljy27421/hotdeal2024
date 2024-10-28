@@ -1,5 +1,8 @@
 package com.hotdealwork.hotdealwork.user;
 
+import com.hotdealwork.hotdealwork.board.BoardRepository;
+import com.hotdealwork.hotdealwork.commu.CommuRepository;
+import com.hotdealwork.hotdealwork.reply.ReplyRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,9 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final CommuRepository commuRepository;
+    private final ReplyRepository replyRepository;
 
     // 로그인 페이지 이동 (GET 요청)
     @GetMapping("/login")
@@ -229,6 +235,9 @@ public class UserController {
     public String deleteUser(Principal principal, RedirectAttributes redirectAttributes) {
         SiteUser user = userService.getUser(principal.getName());
         if (user != null) {
+            user.getBoards().forEach(board -> boardRepository.delete(board));
+            user.getCommus().forEach(commu -> commuRepository.delete(commu));
+            user.getReplies().forEach(reply -> replyRepository.delete(reply));
             userRepository.delete(user); // 사용자를 삭제합니다.
             redirectAttributes.addFlashAttribute("message", "회원 탈퇴가 완료되었습니다.");
         } else {

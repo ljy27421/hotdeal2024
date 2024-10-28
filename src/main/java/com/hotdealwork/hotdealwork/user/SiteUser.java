@@ -1,5 +1,8 @@
 package com.hotdealwork.hotdealwork.user;
 
+import com.hotdealwork.hotdealwork.board.Board;
+import com.hotdealwork.hotdealwork.commu.Commu;
+import com.hotdealwork.hotdealwork.reply.Reply;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -38,6 +41,16 @@ public class SiteUser {
     // 계정 정지 사유 필드 추가
     @Column(length = 255)
     private String suspensionReason;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> boards;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Commu> commus;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies;
+
 
     // 계정 정지 상태 설정 메서드
     public void setSuspended(boolean suspended) {

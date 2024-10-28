@@ -22,9 +22,13 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
 
     public final BooleanPath active = createBoolean("active");
 
+    public final ListPath<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard> boards = this.<com.hotdealwork.hotdealwork.board.Board, com.hotdealwork.hotdealwork.board.QBoard>createList("boards", com.hotdealwork.hotdealwork.board.Board.class, com.hotdealwork.hotdealwork.board.QBoard.class, PathInits.DIRECT2);
+
     public final ListPath<Integer, NumberPath<Integer>> commuDislikes = this.<Integer, NumberPath<Integer>>createList("commuDislikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
 
     public final ListPath<Integer, NumberPath<Integer>> commuLikes = this.<Integer, NumberPath<Integer>>createList("commuLikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
+
+    public final ListPath<com.hotdealwork.hotdealwork.commu.Commu, com.hotdealwork.hotdealwork.commu.QCommu> commus = this.<com.hotdealwork.hotdealwork.commu.Commu, com.hotdealwork.hotdealwork.commu.QCommu>createList("commus", com.hotdealwork.hotdealwork.commu.Commu.class, com.hotdealwork.hotdealwork.commu.QCommu.class, PathInits.DIRECT2);
 
     public final ListPath<Integer, NumberPath<Integer>> dislikes = this.<Integer, NumberPath<Integer>>createList("dislikes", Integer.class, NumberPath.class, PathInits.DIRECT2);
 
@@ -39,6 +43,8 @@ public class QSiteUser extends EntityPathBase<SiteUser> {
     public final StringPath nickname = createString("nickname");
 
     public final StringPath password = createString("password");
+
+    public final ListPath<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply> replies = this.<com.hotdealwork.hotdealwork.reply.Reply, com.hotdealwork.hotdealwork.reply.QReply>createList("replies", com.hotdealwork.hotdealwork.reply.Reply.class, com.hotdealwork.hotdealwork.reply.QReply.class, PathInits.DIRECT2);
 
     public final StringPath securityAnswer = createString("securityAnswer");
 

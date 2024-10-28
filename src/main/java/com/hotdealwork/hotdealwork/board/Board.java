@@ -5,6 +5,8 @@ import com.hotdealwork.hotdealwork.reply.Reply;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +42,7 @@ public class Board {
     private List<Reply> replies;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private SiteUser author;
 
     @Column(columnDefinition = "integer default 0", nullable = false)
