@@ -1,48 +1,59 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif; /* Corrected 'Popping' to 'Poppins' */
+    font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
 }
 
+/* HEADER STYLES */
 .header {
     position: relative;
     width: 100%;
     height: 130px;
-    background: #272727;
-    color: #272727;
+    background: linear-gradient(135deg, #272727, #414141); /* Adds gradient */
+    color: #525252;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Enhances header shadow */
+    z-index: 10;
 }
 
 nav {
-    background: #272727;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: 10px 10%;
 }
 
-
-.logo{
-    width: 70px; /* Logo size */
+.logo {
+    width: 70px;
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.user-pic{
-    width: 40px; /* Added missing semicolon */
+.logo:hover {
+    transform: scale(1.1); /* Smooth zoom */
+    filter: brightness(1.2); /* Lightens the logo on hover */
+}
+
+.user-pic {
+    width: 40px;
     border-radius: 50%;
     cursor: pointer;
     margin-left: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds shadow to user icon */
+    transition: box-shadow 0.3s ease;
 }
 
+.user-pic:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Deepens shadow on hover */
+}
+
+/* NAVIGATION STYLES */
 nav ul {
     display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
     list-style: none;
 }
 
@@ -50,43 +61,73 @@ nav ul li {
     margin: 0 20px;
 }
 
-nav ul li a{
+nav ul li a {
     color: #fcfcfc;
     text-decoration: none;
     font-size: 1.5em;
+    position: relative;
+    transition: color 0.3s ease;
 }
 
-.sub-menu-wrap{
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #ff6b6b; /* Underline hover effect color */
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ff6b6b;
+}
+
+nav ul li a:hover::after {
+    width: 100%; /* Expands underline on hover */
+}
+
+/* SUBMENU STYLES */
+.sub-menu-wrap {
     position: absolute;
     top: 100%;
-    right: 0;
+    right: 20px;
     width: 320px;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out, padding 0.3s ease;
+    padding: 0;
 }
+
 .sub-menu-wrap.open-menu {
     max-height: 400px;
-    overflow:visible;
 }
-.sub-menu{
-    background: #fff;
+
+.sub-menu {
+    background: #ffffff;
+    border-radius: 8px;
     padding: 20px;
     margin: 10px;
 }
-.user-info{
+
+.user-info {
     display: flex;
     align-items: center;
 }
-.user-info h3{
+
+.user-info h3 {
     font-weight: 500;
+    color: #333333;
 }
-.user-info img{
+
+.user-info img {
     width: 60px;
     border-radius: 50%;
     margin-right: 15px;
 }
-.sub-menu hr{
+
+.sub-menu hr {
     border: 0;
     height: 1px;
     width: 100%;
@@ -94,33 +135,69 @@ nav ul li a{
     margin: 15px 0 10px;
 }
 
-.sub-menu-link{
+/* SUBMENU LINKS */
+.sub-menu-link {
     display: flex;
-    align-items: center; /* Fixed 'aling-items' to 'align-items' */
+    align-items: center;
     text-decoration: none;
     color: #525252;
     margin: 12px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.sub-menu-link p{
+.sub-menu-link:hover {
+    background: #f0f0f0; /* Light hover effect */
+    transform: translateX(5px); /* Shifts right on hover */
+}
+
+.sub-menu-link p {
     width: 100%;
 }
 
-.sub-menu-link img{
+.sub-menu-link img {
     width: 40px;
     background: #e5e5e5;
     border-radius: 50%;
     padding: 8px;
     margin-right: 15px;
 }
-.sub-menu-link span{
+
+.sub-menu-link span {
     font-size: 22px;
-
 }
-.sub-menu-link:hover span{
-    transform: translateX(5px);
-}
-.sub-menu-link:hover p{
-    font-weight: 600;
 
+.sub-menu-link:hover span {
+    color: #ff6b6b; /* Changes color on hover */
+}
+
+/* SMOOTH DROPDOWN TRANSITION */
+.sub-menu-wrap {
+    transition: max-height 0.5s ease, padding 0.5s ease;
+}
+
+/* RESPONSIVE STYLES */
+@media screen and (max-width: 768px) {
+    .header, nav {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .logo {
+        width: 50px;
+    }
+
+    .sub-menu-link span {
+        font-size: 18px;
+    }
 }
