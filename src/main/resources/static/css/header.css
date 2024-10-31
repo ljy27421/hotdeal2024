@@ -58,7 +58,8 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 20px;
+    position: relative;
+    margin: 0 60px;
 }
 
 nav ul li a {
@@ -200,4 +201,22 @@ nav ul li a:hover::after {
     .sub-menu-link span {
         font-size: 18px;
     }
+}
+.hotdeal-submenu,
+.commu-submenu {
+    position: absolute;
+    left: 50%; /* 부모 요소의 50% 위치 */
+    transform: translateX(-50%); /* 요소를 왼쪽으로 50% 이동하여 중앙 정렬 */
+    width: 200px;
+}
+
+.hotdeal-submenu .sub-menu,
+.commu-submenu .sub-menu {
+    padding: 10px;
+}
+
+/* 프로필 서브메뉴는 기본 스타일 유지 */
+#subMenu {
+    width: 320px;
+    right: 20px;
 }

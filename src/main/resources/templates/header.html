@@ -15,9 +15,30 @@
                 <img src="/image/logo.jpg" class="logo" alt="Logo" th:href="@{/}">
             </a>
             <ul style="display: flex; margin: 0; padding: 0; list-style: none;">
-                <li><a href="/">메인</a></li>
-                <li><a href="/board/list">핫딜</a></li>
-                <li><a href="/commu/list">커뮤니티</a></li>
+                <li>
+                    <a href="/">메인</a>
+                </li>
+                <li>
+                    <a href="/board/list" class="menu-item">핫딜</a>
+                    <div class="sub-menu-wrap hotdeal-submenu">
+                        <div class="sub-menu">
+                            <a href="#" class="sub-menu-link">인기 글</a>
+                            <a href="#" class="sub-menu-link">진행중인 글</a>
+                            <a href="#" class="sub-menu-link">전체 글</a>
+                            <a href="#" class="sub-menu-link">최신순</a>
+                            <a href="#" class="sub-menu-link">마감 임박순</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="/commu/list" class="menu-item">커뮤니티</a>
+                    <div class="sub-menu-wrap commu-submenu">
+                        <div class="sub-menu">
+                            <a href="#" class="sub-menu-link">인기 글</a>
+                            <a href="#" class="sub-menu-link">전체 글</a>
+                        </div>
+                    </div>
+                </li>
             </ul>
             <div onclick="toggleMenu()">
                 <img src="/image/user.png" class="user-pic" alt="User Menu Icon">
@@ -64,6 +85,21 @@
     </div>
 </header>
 <script>
+    document.querySelectorAll('nav ul li').forEach(item => {
+        const submenu = item.querySelector('.sub-menu-wrap');
+
+        if (submenu) {
+            // 마우스가 메뉴 항목 위에 있을 때 서브메뉴 열기
+            item.addEventListener('mouseenter', () => {
+                submenu.classList.add('open-menu');
+            });
+
+            // 마우스가 메뉴 항목을 벗어날 때 서브메뉴 닫기
+            item.addEventListener('mouseleave', () => {
+                submenu.classList.remove('open-menu');
+            });
+        }
+    });
     let subMenu = document.getElementById("subMenu");
 
     function toggleMenu(){
