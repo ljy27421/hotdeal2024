@@ -22,11 +22,12 @@
                     <a href="/board/list" class="menu-item">핫딜</a>
                     <div class="sub-menu-wrap hotdeal-submenu">
                         <div class="sub-menu">
-                            <a href="#" class="sub-menu-link">인기 글</a>
-                            <a href="#" class="sub-menu-link">진행중인 글</a>
-                            <a href="#" class="sub-menu-link">전체 글</a>
-                            <a href="#" class="sub-menu-link">최신순</a>
-                            <a href="#" class="sub-menu-link">마감 임박순</a>
+                            <a href="#" class="sub-menu-link">식품</a>
+                            <a href="#" class="sub-menu-link">의류</a>
+                            <a href="#" class="sub-menu-link">생활용품</a>
+                            <a href="#" class="sub-menu-link">전자제품</a>
+                            <a href="#" class="sub-menu-link">상품권</a>
+                            <a href="#" class="sub-menu-link">기타</a>
                         </div>
                     </div>
                 </li>
@@ -34,8 +35,9 @@
                     <a href="/commu/list" class="menu-item">커뮤니티</a>
                     <div class="sub-menu-wrap commu-submenu">
                         <div class="sub-menu">
-                            <a href="#" class="sub-menu-link">인기 글</a>
-                            <a href="#" class="sub-menu-link">전체 글</a>
+                            <a href="#" class="sub-menu-link">자유 게시판</a>
+                            <a href="#" class="sub-menu-link">질문 게시판</a>
+                            <a href="#" class="sub-menu-link">후기 게시판</a>
                         </div>
                     </div>
                 </li>
@@ -50,7 +52,7 @@
                         </div>
                         <div class="user-info" sec:authorize="isAnonymous()">
                             <img src="/image/user.png" alt="User picture">
-                            <h2>로그인해주세요</h2>
+                            <h2>비회원상태</h2>
                         </div>
                         <hr>
                         <a sec:authorize="isAuthenticated()" href="/user/mypage" class="sub-menu-link">
