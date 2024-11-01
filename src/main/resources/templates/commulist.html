@@ -16,21 +16,22 @@
     <button type="button" onclick="location.href='/commu/write'">글쓰기</button>
   </div>
 
+  <!-- 카테고리 링크 -->
+  <div class="category-links">
+    <a th:href="@{/commu/list(category='자유')}">자유</a>
+    <a th:href="@{/commu/list(category='질문')}">질문</a>
+    <a th:href="@{/commu/list(category='후기')}">후기</a>
+  </div>
+
   <div class="filter-buttons">
     <form th:action="@{/commu/list}" method="get" id="hotForm">
+      <input type="hidden" name="category" th:value="${param.category}">
       <input type="hidden" name="hot" value="1">
       <button type="submit">인기글</button>
     </form>
     <form th:action="@{/commu/list}" method="get" id="fullForm">
       <button type="submit">전체글</button>
     </form>
-  </div>
-
-  <!-- 카테고리 링크 -->
-  <div class="category-links">
-    <a th:href="@{/commu/list(category='자유', hot=${param.hot})}">자유</a>
-    <a th:href="@{/commu/list(category='질문', hot=${param.hot})}">질문</a>
-    <a th:href="@{/commu/list(category='후기', hot=${param.hot})}">후기</a>
   </div>
 
   <table th:if="${list.totalPages > 0}">

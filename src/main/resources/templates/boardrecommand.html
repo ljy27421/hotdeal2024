@@ -39,7 +39,6 @@
         <thead>
         <tr>
             <th>●</th>
-            <th>글번호</th>
             <th>제목</th>
             <th>추천수</th>
             <th>카테고리</th>
@@ -55,7 +54,6 @@
                 <span th:if="${board.liked <= -1}" style="color:blue">●</span>
                 <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
-            <td th:text="${board.id}">1</td>
             <td>
                 <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
             </td>

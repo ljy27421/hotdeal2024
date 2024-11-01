@@ -17,24 +17,35 @@
         <button type="button" onclick="location.href='/board/write'">글쓰기</button>
     </div>
 
+    <!-- 카테고리 링크 -->
+    <div class="category-links">
+        <a th:href="@{/board/list(category='식품')}">식품</a>
+        <a th:href="@{/board/list(category='의류')}">의류</a>
+        <a th:href="@{/board/list(category='생활용품')}">생활용품</a>
+        <a th:href="@{/board/list(category='전자제품')}">전자제품</a>
+        <a th:href="@{/board/list(category='상품권')}">상품권</a>
+        <a th:href="@{/board/list(category='기타')}">기타</a>
+        <a th:href="@{/board/list}">전체글</a>
+    </div>
+
     <div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="hotForm">
             <input type="hidden" name="hot" value="1">
+            <input type="hidden" name="category" th:value="${param.category}">
             <input type="hidden" name="filterByEndDate" th:value="${param.filterByEndDate}">
             <button type="submit">인기글</button>
         </form>
         <form th:action="@{/board/list}" method="get" id="activePostsForm">
             <input type="hidden" name="filterByEndDate" value="1">
+            <input type="hidden" name="category" th:value="${param.category}">
             <input type="hidden" name="hot" th:value="${param.hot}">
             <button type="submit">진행중인 글</button>
-        </form>
-        <form th:action="@{/board/list}" method="get" id="fullForm">
-            <button type="submit">전체글</button>
         </form>
     </div>
     <div class="filter-buttons">
         <form th:action="@{/board/list}" method="get" id="sortForm">
             <input type="hidden" name="hot" th:value="${param.hot}">
+            <input type="hidden" name="category" th:value="${param.category}">
             <input type="hidden" name="filterByEndDate" th:value="${param.filterByEndDate}">
             <button type="submit" name="sortByEndDate" value="0" th:classappend="${param.sortBy == 'id' ? 'active' : ''}">
                 최신순
@@ -43,16 +54,6 @@
                 마감 임박순
             </button>
         </form>
-    </div>
-
-    <!-- 카테고리 링크 -->
-    <div class="category-links">
-        <a th:href="@{/board/list(category='식품', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">식품</a>
-        <a th:href="@{/board/list(category='의류', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">의류</a>
-        <a th:href="@{/board/list(category='생활용품', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">생활용품</a>
-        <a th:href="@{/board/list(category='전자제품', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">전자제품</a>
-        <a th:href="@{/board/list(category='상품권', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">상품권</a>
-        <a th:href="@{/board/list(category='기타', hot=${param.hot}, filterByEndDate=${param.filterByEndDate}, sortByEndDate=${param.sortByEndDate})}">기타</a>
     </div>
 
     <table th:if="${list.totalPages > 0}">

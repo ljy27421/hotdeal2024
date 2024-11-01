@@ -56,6 +56,7 @@ public class EmbeddingService {
         if (denominator == 0) {
             return 0.0;
         }
+        System.out.println(dotProduct / denominator);
 
         return dotProduct / denominator;
     }
@@ -82,6 +83,7 @@ public class EmbeddingService {
                 .toList();
 
         List<Board> recommandedBoards = validBoards.stream()
+                .filter(board -> calculatingCosineSimilarity(userVector, board.getEmbeddingVector()) >= 0.45)
                 .sorted((board1, board2) -> {
 //                    double similarity1 = calculatingCosineSimilarity(siteUser.getInterestVector(), board1.getEmbeddingVector());
 //                    double similarity2 = calculatingCosineSimilarity(siteUser.getInterestVector(), board2.getEmbeddingVector());
@@ -89,8 +91,8 @@ public class EmbeddingService {
                     double similarity2 = calculatingCosineSimilarity(userVector, board2.getEmbeddingVector());
                     return Double.compare(similarity2, similarity1);
                 })
-                .limit(10)
                 .toList();
+
         return recommandedBoards;
     }
 

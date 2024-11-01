@@ -88,6 +88,7 @@
             </form>
             <form th:action="@{/admin/unsuspendUser}" method="post" th:if="${user.suspended}">
                 <input type="hidden" name="userId" th:value="${user.id}" />
+                <input type="text" name="reason" th:value="${user.suspensionReason}" readonly />
                 <button type="submit">정지 해제</button>
             </form>
         </td>
