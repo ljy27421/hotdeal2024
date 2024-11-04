@@ -56,7 +56,6 @@ public class EmbeddingService {
         if (denominator == 0) {
             return 0.0;
         }
-        System.out.println(dotProduct / denominator);
 
         return dotProduct / denominator;
     }
