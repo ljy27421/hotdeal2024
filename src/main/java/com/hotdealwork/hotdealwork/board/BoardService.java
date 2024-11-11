@@ -84,7 +84,13 @@ public class BoardService {
         }
 
         if(files != null && !files.isEmpty()){
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+            String projectPath = "/home/ubuntu/uploads";
+
+            File directory = new File(projectPath);
+            if (!directory.exists()) {
+                directory.mkdirs();  // 디렉토리 생성
+            }
+
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     UUID uuid = UUID.randomUUID();
@@ -94,7 +100,7 @@ public class BoardService {
 
                     Image image = new Image();
                     image.setFilename(fileName);
-                    image.setFilepath("/files/" + fileName);
+                    image.setFilepath("http://43.203.253.255:8080/uploads/" + fileName);
                     image.setBoard(board);
                     board.getImages().add(image);
                 }

@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 정적 리소스 경로 매핑
-        registry.addResourceHandler("/files/**")
-                .addResourceLocations("classpath:/static/files/");
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:///home/ubuntu/uploads/");
     }
 }
