@@ -73,7 +73,7 @@ public class CommuService {
         }
 
         if(files != null && !files.isEmpty()){
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/files";
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     UUID uuid = UUID.randomUUID();

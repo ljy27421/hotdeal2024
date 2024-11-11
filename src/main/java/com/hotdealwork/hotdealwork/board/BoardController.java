@@ -1,6 +1,5 @@
 package com.hotdealwork.hotdealwork.board;
 
-import com.hotdealwork.hotdealwork.commu.Commu;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;

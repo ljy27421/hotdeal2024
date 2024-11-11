@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 정적 리소스 경로 매핑
         registry.addResourceHandler("/files/**")
-                .addResourceLocations("classpath:/files/");
+                .addResourceLocations("classpath:/static/files/");
     }
 }

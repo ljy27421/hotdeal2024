@@ -1,6 +1,5 @@
 package com.hotdealwork.hotdealwork.board;
 
-import com.google.gson.Gson;
 import com.hotdealwork.hotdealwork.DataNotFoundException;
 import com.hotdealwork.hotdealwork.embedding.EmbeddingService;
 import com.hotdealwork.hotdealwork.image.Image;
@@ -85,7 +84,7 @@ public class BoardService {
         }
 
         if(files != null && !files.isEmpty()){
-            String projectPath = System.getProperty("user.dir") + "/src/main/resources/files";
+            String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
                     UUID uuid = UUID.randomUUID();

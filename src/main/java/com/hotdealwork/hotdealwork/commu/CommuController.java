@@ -1,6 +1,5 @@
 package com.hotdealwork.hotdealwork.commu;
 
-import com.hotdealwork.hotdealwork.board.BoardDTO;
 import com.hotdealwork.hotdealwork.image.ImageRepository;
 import com.hotdealwork.hotdealwork.reply.ReplyService;
 import com.hotdealwork.hotdealwork.user.SiteUser;
