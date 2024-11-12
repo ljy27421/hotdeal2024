@@ -100,7 +100,8 @@ public class BoardService {
 
                     Image image = new Image();
                     image.setFilename(fileName);
-                    image.setFilepath("http://43.203.253.255:8080/uploads/" + fileName);
+                    image.setFilepath("http://hotdealwork.duckdns.org:8080/uploads/" + fileName);
+
                     image.setBoard(board);
                     board.getImages().add(image);
                 }
