@@ -89,7 +89,7 @@ public class CommuService {
 
                     Image image = new Image();
                     image.setFilename(fileName);
-                    image.setFilepath("http://hotdealwork.duckdns.org/uploads/" + fileName);
+                    image.setFilepath("http://hotdealwork.duckdns.org:8080/uploads/" + fileName);
                     image.setCommu(commu);
                     commu.getImages().add(image);
                 }
