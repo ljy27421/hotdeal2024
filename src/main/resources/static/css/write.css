@@ -11,7 +11,7 @@ body {
     max-width: 80%; /* Adjust the width to be a percentage for better responsiveness */
     margin: 20px auto; /* Adds a bit of spacing at the top */
     background-color: #ffffff;
-    padding: 25px; /* Slightly increase padding for breathing room */
+    padding: 80px; /* Slightly increase padding for breathing room */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
