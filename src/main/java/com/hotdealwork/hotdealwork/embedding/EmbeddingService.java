@@ -82,7 +82,7 @@ public class EmbeddingService {
                 .toList();
 
         List<Board> recommandedBoards = validBoards.stream()
-                .filter(board -> calculatingCosineSimilarity(userVector, board.getEmbeddingVector()) >= 0.05)
+                .filter(board -> calculatingCosineSimilarity(userVector, board.getEmbeddingVector()) >= 0.30)
                 .sorted((board1, board2) -> {
 //                    double similarity1 = calculatingCosineSimilarity(siteUser.getInterestVector(), board1.getEmbeddingVector());
 //                    double similarity2 = calculatingCosineSimilarity(siteUser.getInterestVector(), board2.getEmbeddingVector());
