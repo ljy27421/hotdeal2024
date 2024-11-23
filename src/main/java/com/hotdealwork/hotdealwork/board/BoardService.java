@@ -167,7 +167,9 @@ public class BoardService {
                         board.endDate,
                         board.liked,
                         board.author,
-                        board.view
+                        board.view,
+                        board.price,
+                        board.deliveryPrice
                 ))
                 .from(board)
                 .where(builder)
@@ -200,7 +202,9 @@ public class BoardService {
                         board.endDate,
                         board.liked,
                         board.author,
-                        board.view
+                        board.view,
+                        board.price,
+                        board.deliveryPrice
                 ))
                 .from(board)
                 .where(builder)
