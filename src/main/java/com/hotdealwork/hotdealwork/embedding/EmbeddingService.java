@@ -37,7 +37,7 @@ public class EmbeddingService {
         List<String> texts = List.of(translatedText);
 
         EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
-                .model("text-embedding-3-small")
+                .model("text-embedding-3-large")
                 .input(texts)
                 .build();
 
@@ -48,9 +48,9 @@ public class EmbeddingService {
     public String getTranslation(String text) {
         try {
             ChatCompletionRequest chatRequest = ChatCompletionRequest.builder()
-                .model("gpt-4")
+                .model("gpt-4o-mini")
                 .messages(List.of(
-                        new ChatMessage("system", "Translate the following text from Korean to English."),
+                        new ChatMessage("system", "Translate the following text from Korean to English and remove any special characters."),
                         new ChatMessage("user", text)
                 ))
                 .build();
@@ -62,6 +62,7 @@ public class EmbeddingService {
             }
 
             String translatedText = result.getChoices().get(0).getMessage().getContent().trim();
+            System.out.println(translatedText);
             return translatedText;
 
         } catch (Exception e) {
