@@ -40,11 +40,13 @@
         <tr>
             <th>●</th>
             <th>제목</th>
-            <th>추천수</th>
+            <th>가격 / 배송비</th>
             <th>카테고리</th>
             <th>작성일</th>
+            <th>마감일</th>
             <th>작성자</th>
             <th>조회수</th>
+            <th>추천수</th>
         </tr>
         </thead>
         <tbody>
@@ -55,18 +57,23 @@
                 <span th:if="${board.liked > -1 and board.liked < 1}">●</span>
             </td>
             <td>
-                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목제목제목제목제목제목제목제목</a>
+                <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+            <td th:text="${board.price} + ' / ' + ${board.deliveryPrice}"></td>
             </td>
-            <td th:text="${board.liked}">1</td>
             <td th:text="${board.category}">1</td>
             <td>
-                        <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                              th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
-                <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
-                      th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                <span th:if="${board.createdDate != null}">
+                    <span th:if="${#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                          th:text="${#temporals.format(board.createdDate, 'HH:mm')}"></span>
+                    <span th:if="${!#temporals.createNow().toLocalDate().isEqual(board.createdDate.toLocalDate())}"
+                          th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}"></span>
+                </span>
+                <span th:if="${board.createdDate == null}">날짜 없음</span>
             </td>
+            <td th:text="${board.endDate}"></td>
             <td th:text="${board.author.username}"></td>
             <td th:text="${board.view}"></td>
+            <td th:text="${board.liked}">1</td>
         </tr>
         </tbody>
     </table>
