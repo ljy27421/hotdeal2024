@@ -108,8 +108,7 @@ public class BoardService {
             }
         }
         if (!board.getCategory().equals("공지사항")){
-            String combinedText = String.join(" ", board.getProductName(), board.getCategory());
-            List<Double> embeddingVector = embeddingService.getEmbedding(combinedText);
+            List<Double> embeddingVector = embeddingService.getEmbedding(board.getProductName());
             board.setEmbeddingVector(embeddingVector);
         }
 
@@ -168,7 +167,9 @@ public class BoardService {
                         board.endDate,
                         board.liked,
                         board.author,
-                        board.view
+                        board.view,
+                        board.price,
+                        board.deliveryPrice
                 ))
                 .from(board)
                 .where(builder)
@@ -201,7 +202,9 @@ public class BoardService {
                         board.endDate,
                         board.liked,
                         board.author,
-                        board.view
+                        board.view,
+                        board.price,
+                        board.deliveryPrice
                 ))
                 .from(board)
                 .where(builder)

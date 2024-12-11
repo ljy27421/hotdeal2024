@@ -26,8 +26,8 @@ public class Board {
     private String mall;
     private String productName;
     private Long price;
+    private Long deliveryPrice;
     private String saleUrl;
-    private LocalDate startDate;
     private LocalDate endDate;
 
     private Boolean expired = false;

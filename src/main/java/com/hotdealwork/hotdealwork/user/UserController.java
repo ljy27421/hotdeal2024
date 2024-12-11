@@ -141,6 +141,12 @@ public class UserController {
             return "signup_form";
         }
 
+        if (userService.isUsernameExist(userCreateForm.getUsername())) {
+            bindingResult.rejectValue("username", "duplicated", "이미 존재하는 아이디입니다.");
+            return "signup_form";
+        }
+
+
         try {
             userService.create(
                     userCreateForm.getUsername(),

@@ -152,6 +152,11 @@ public class UserService {
         return user;
     }
 
+    public boolean isUsernameExist(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+
     // 회원 탈퇴 메서드
     public boolean deleteUser(String username, String password) {
         Optional<SiteUser> userOptional = userRepository.findByusername(username);

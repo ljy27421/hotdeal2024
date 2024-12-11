@@ -20,10 +20,12 @@ public class BoardDTO {
     private SiteUser author;
     private Integer liked;
     private LocalDateTime createdDate;
+    private Long price;
+    private Long deliveryPrice;
 
     @Builder
     public BoardDTO(Integer id, String title, String category, LocalDateTime createdDate,
-                    LocalDate endDate, Integer liked, SiteUser author, Integer view) {
+                    LocalDate endDate, Integer liked, SiteUser author, Integer view, Long price, Long deliveryPrice) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -32,6 +34,8 @@ public class BoardDTO {
         this.liked = liked;
         this.author = author;
         this.view = view;
+        this.price = price;
+        this.deliveryPrice = deliveryPrice;
     }
 
 }

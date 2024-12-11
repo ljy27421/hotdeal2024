@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/list.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <title>게시글 리스트 페이지</title>
+</head>
+<body>
+<div th:replace="~{header.html}"></div>
+<div class="layout">
+    <div class="list-header">
+        <h1>최신 뽐뿌 게시글</h1>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${ppomppuItems}">
+            <td>
+                <a th:href="${item.link}" th:text="${item.title}"></a>
+            </td>
+            <td th:text="${item.author}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/board/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('/board/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    });
+</script>
+
+</body>
+</html>

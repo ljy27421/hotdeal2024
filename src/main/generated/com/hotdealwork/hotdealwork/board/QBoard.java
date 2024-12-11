@@ -30,6 +30,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
+    public final NumberPath<Long> deliveryPrice = createNumber("deliveryPrice", Long.class);
+
     public final ListPath<Double, NumberPath<Double>> embeddingVector = this.<Double, NumberPath<Double>>createList("embeddingVector", Double.class, NumberPath.class, PathInits.DIRECT2);
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
@@ -53,8 +55,6 @@ public class QBoard extends EntityPathBase<Board> {
     public final BooleanPath reported = createBoolean("reported");
 
     public final StringPath saleUrl = createString("saleUrl");
-
-    public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
     public final StringPath title = createString("title");
 

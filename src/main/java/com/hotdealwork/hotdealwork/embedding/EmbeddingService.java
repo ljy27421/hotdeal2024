@@ -4,6 +4,9 @@ import com.hotdealwork.hotdealwork.board.Board;
 import com.hotdealwork.hotdealwork.board.BoardRepository;
 import com.hotdealwork.hotdealwork.user.SiteUser;
 import com.theokanning.openai.OpenAiService;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.embedding.EmbeddingResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +33,44 @@ public class EmbeddingService {
     }
 
     public List<Double> getEmbedding(String text) {
-        List<String> texts = List.of(text);
+        String translatedText = getTranslation(text);
+        List<String> texts = List.of(translatedText);
 
         EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
-                .model("text-embedding-3-small")
+                .model("text-embedding-3-large")
                 .input(texts)
                 .build();
 
         EmbeddingResult result = openAiService.createEmbeddings(embeddingRequest);
-//        System.out.println(result.getData().get(0).getEmbedding());
         return result.getData().get(0).getEmbedding();
     }
+
+    public String getTranslation(String text) {
+        try {
+            ChatCompletionRequest chatRequest = ChatCompletionRequest.builder()
+                .model("gpt-4o-mini")
+                .messages(List.of(
+                        new ChatMessage("system", "Translate the following text from Korean to English and remove any special characters."),
+                        new ChatMessage("user", text)
+                ))
+                .build();
+
+            ChatCompletionResult result = openAiService.createChatCompletion(chatRequest);
+            if (result.getChoices().isEmpty()) {
+                System.out.println("API 응답이 비어 있습니다.");
+                return "";
+            }
+
+            String translatedText = result.getChoices().get(0).getMessage().getContent().trim();
+            System.out.println(translatedText);
+            return translatedText;
+
+        } catch (Exception e) {
+            System.out.println("번역 중 오류 발생: " + e.getMessage());
+            return "";
+        }
+    }
+
 
     public double calculatingCosineSimilarity(List<Double> vectorA, List<Double> vectorB) {
         double dotProduct = 0.0;
